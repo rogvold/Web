@@ -1,0 +1,126 @@
+body {
+    padding-top: 60px !important;
+}
+*, ::after, ::before {
+    box-sizing: content-box !important;
+}
+
+hr{
+    border-bottom-color: #DBD2C6 !important;
+}
+
+.capty-caption{
+    padding-left: 0px !important;
+}
+
+.oneBox [class^="icon-"], .oneBox [class*=" icon-"]{
+    vertical-align: middle !important;
+}
+
+div.timeline-event {
+    border: none;
+    background: none;
+    border-radius: 0;
+}
+div.timeline-event-selected {
+    border: none;
+    background: none;
+}
+div.timeline-event-content {
+    margin: 0;
+}
+div.timeline-event-range {
+    border: none;
+    border-radius: 0;
+    height: 100px;
+    width: 100%;
+    position: relative;
+    overflow: visible;
+}
+div.bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    border: 1px solid #4C453D;
+
+    border: 3px solid #4C453D;
+
+    /* height and color is set for each individual bar */
+}
+
+div.bar:hover{
+
+
+}
+
+div.requirement {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 2px solid gray;
+    background: #e5e5e5;
+    opacity: 0.5;
+}
+
+div.maxBar{
+    background-color: #bf2a2a;
+    color: lightblue;
+}
+
+div.maxBar:hover{
+    /*    background-color: red;*/
+    color: lightblue;
+    /*    z-index: 100000;*/
+}
+
+div.myBar:hover .bar{
+    border: 3px dashed lightyellow;
+    opacity: 0.8;
+    z-index: 100000;
+    border-radius: 6px;
+
+}
+
+
+div.myBar:active .bar{
+    border: 3px dashed lightyellow;
+    opacity: 0.8;
+    z-index: 100000;
+    border-radius: 6px;
+
+}
+
+div.avrBar{
+    background-color: #f2c777;
+/*    background-color: #FF6E01;*/
+    border-top: 3px solid darkgoldenrod !important;
+    color: darkcyan;
+}
+div.minBar{
+    background-color: #092140;
+/*    background-color: green;*/
+    border-top: 3px solid darkblue !important;
+    color: wheat;
+
+}
+
+div.timeline-event-range{
+    border: none !important;
+}
+
+#mytimeline{
+    /*    margin-bottom: 30px;*/
+    padding: 4px;
+    border: 1px solid #CFCDC1;
+    background-color: #EDEDE3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.496094) 0px 2px 7px 0px;
+    /*    height: 230px;*/
+    /*    padding: 6px 6px 6px 6px;*/
+}

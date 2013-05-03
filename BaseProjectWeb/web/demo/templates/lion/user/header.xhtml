@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:composition xmlns="http://www.w3.org/1999/xhtml">
+
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
+            <a class="brand" href="http://cardiomood.com">
+                <img src="../templates/lion/images/heart11.png" alt="" />
+                CardioMood
+            </a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+
+                    <!--                    Home-->
+                    <c:if test="#{tab_num == 1}">
+                        <li class="active">
+                            <a href="#">
+                                <i class="icon-home icon-white"></i>
+                                Home
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{tab_num != 1}">
+                        <li>
+                            <a href="home.xhtml">
+                                <i class="icon-home icon-white"></i>
+                                Home
+                            </a>
+                        </li>
+                    </c:if>
+
+                    <!--                    History-->
+                    <c:if test="#{tab_num == 2}">
+                        <li class="active">
+                            <a href="history.xhtml">
+                                <i class="icon-time icon-white"></i>
+                                History
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{tab_num != 2}">
+                        <li>
+                            <a href="history.xhtml">
+                                <i class="icon-time icon-white"></i>
+                                History
+                            </a>
+                        </li>
+                    </c:if>
+
+                    <!--                    Friends-->
+                    <c:if test="#{tab_num == 3}">
+                        <li class="active">
+                            <a href="friends.xhtml">
+                                <i class="icon-glass icon-white"></i>
+                                Friends
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{tab_num != 3}">
+                        <li>
+                            <a href="friends.xhtml">
+                                <i class="icon-glass icon-white"></i>
+                                Friends
+                            </a>
+                        </li>
+                    </c:if>
+
+                    <!--                    Doctors-->
+                    <c:if test="#{tab_num == 4}">
+                        <li class="active">
+                            <a href="doctors.xhtml">
+                                <i class="icon-eye-open icon-white"></i>
+                                Doctors
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{tab_num != 4}">
+                        <li>
+                            <a href="doctors.xhtml">
+                                <i class="icon-eye-open icon-white"></i>
+                                Doctors
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+                
+                <span style="display: inline-block; float: right; color: whitesmoke; font-size: 16px; padding-top: 10px; margin-right: -50px; ">
+                    This is a very fresh demo. More informative one will be available soon.
+                </span>
+            </div>
+        </ui:composition>
+    </body>
+</html>

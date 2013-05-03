@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="utf-8"/>
+
+        <link rel="icon" href="guest/fav.png" type="image/x-icon"/>
+        <link rel="shortcut icon" href="guest/fav.png" type="image/x-icon"/>
+
+        <title>CardioMood. Control your stress</title>
+        <link rel="stylesheet" href="guest/css/reset.css"/>
+        <!--        <link rel="stylesheet" href="guest/css/style.css"/>-->
+        <link rel="stylesheet" href="guest/css/style.css"/>
+        <link rel="stylesheet" href="guest/css/slider.css"/>
+        <link rel="stylesheet" href="guest/css/responsive.css"/>
+        <link rel="stylesheet" href="guest/css/custom.css"/>
+        <link rel="stylesheet" href="guest/css/jquery.pnotify.default.css"/>
+        <!--JS Section-->
+        <!-- include the Tools -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+        <script src="http://calebjacob.com/tooltipster/js/jquery.tooltipster.js" type="text/javascript" />
+
+        <script src="guest/touch.js" type="text/javascript"></script>
+        <script src="guest/js/trans.js" type="text/javascript"></script>
+
+        <script src="guest/js/knockout.js" type="text/javascript"></script>
+
+
+
+        <script src="guest/js/core.js" type="text/javascript"></script>
+        <script src="guest/js/jquery.validate.js" type="text/javascript"></script>
+        <script src="guest/js/jquery.pnotify.min.js" type="text/javascript"></script>
+        
+                <script src="guest/js/swipe.js" type="text/javascript"></script>
+                <script src="guest/js/smartresize.js" type="text/javascript"></script>
+        <script src="guest/js/custom.js" type="text/javascript"></script>
+
+
+        <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'/>
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'/> 
+        <link href="guest/css/tooltipster.css" rel="stylesheet" type="text/css"  />
+
+
+    </head>
+    <body screen_capture_injected="true" data-twttr-rendered="true" style="
+            ">
+        <div class="allWrap" style="background: url('guest/texture.jpg')">
+            <div class="topWrap" style="background: #EDECE6 url('guest/pattern.png') repeat; ">
+                <div class="topWrapInner" style="
+                     background: transparent url('guest/ibackground5.png') center repeat;
+                     ">
+                    <div class="inner">
+                        <div class="logo">
+                            <img src="guest/logo4.png" height="50px;" alt=""/>
+                        </div>
+                        <div class="slidersWrap">
+                            <a class="prev browse left disabled"></a>
+                            <div class="scrollablePhone" style="">
+                                <div id="scrollablePhone">
+                                    <ul class="items" style="width: 1275px; -webkit-transition-duration: 400ms; -webkit-transform: translate3d(0px, 0px, 0px); ">
+                                        <li class="item" style="background-image: url(guest/current.png) ; width: 255px; background-size: 100% 100%; display: table-cell; vertical-align: top;  "></li>
+                                        <li class="item" style="background-image: url(guest/history.png) ; width: 255px; background-size: 100% 100%; display: table-cell; vertical-align: top;"></li>
+                                        <li class="item" style="background-image: url(guest/session.png) ; width: 255px; background-size: 100% 100%; display: table-cell; vertical-align: top;"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="scrollableText" class="scrollableText">
+                                <ul class="items" style="width: 4000px; width: 755px; ">
+                                    <li class="item" style="width: 800px; display: table-cell; vertical-align: top; ">
+                                        <div class="hypedText" style="color: #f0712a; text-shadow: -1px -1px 1px #000, 1px 1px 1px #fff; padding-top: 15px;">
+                                            <i>control your </i> <i style="color: darkred;">stress</i>  <b style="margin-left: 10px;"> with</b><br/><br/>
+                                            <span style="font-family: 'Pacifico', Arial; text-transform: none; font-size: 80px; height: 60px; display: inline-block; ">Sensor and Phone</span>
+                                        </div>
+                                        <br/>
+                                        <p class="smallText" style="color: firebrick; " >
+                                            CardioMood collects your heart rate data from a tiny sensor and calculates your tension. Personalized feedback from CardioMood helps you to healthify your lifestyle!  
+                                            <a href="demo/home.xhtml" style="margin-left: 20px; float: right;">Take a tour</a>
+                                        </p>
+                                    </li>
+                                    <li class="item" style="width: 800px; display: table-cell; vertical-align: top; ">
+                                        <div class="regularText smallText" style="font-size: 2.3em; color: fireBrick; font-family: museo_sans_500regular;">
+                                            <!--                                            <i>Find professionals</i>-->
+                                            Analyze your history and observe your health improvement. Receive advice from CardioMood based on long-term heart rate measurements
+                                        </div>
+                                    </li>
+                                    <li class="item" style="width: 800px; display: table-cell; vertical-align: top; ">
+                                        <div class="regularText" style="font-size: 2.3em; color: fireBrick; font-family: museo_sans_500regular; padding-top: 30px;">
+                                            <!--                                            <i>Discover</i> the most<br/> successful, influential, <br/>like-minded people <br/>around you-->
+                                            View recorded sessions and calculated stress indexes. Get general recommendations from the system and detailed info from the doctors
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="navi">
+                                <a class="active"></a>
+                                <a></a>
+                                <a></a>
+                            </div>
+                            <a class="next browse right"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subscriptWrap" style="background-color: #FF6E01; background-image: url('guest/dwood.jpg'); box-shadow: 0 3px 8px rgba(0, 0, 0, .5);">
+                <div class="inner" style="width: 1040px;">
+                    <span style="padding-top: 5px;">Soon:</span>
+                    <a class="icon icon-apple"><i></i> </a>
+                    <a class="icon icon-droid"><i></i> </a>
+                    <a class="icon icon-apple win8"><i></i> </a>
+
+
+                    <form action="#" method="post" style="margin-left: 20px;"
+                          id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="subscribeForm validate" target="_blank" novalidate="novalidate">
+
+                        <input id="mce-EMAIL" data-bind="value: email" class="email usr_mail" type="email" name="EMAIL" placeholder="Your e-mail" style=" color: red; background: lightgoldenrodyellow; opacity: 0.7;" required=""/>
+                        <!--                        <input type="submit" value="Let me know" name="subscribe" id="mc-embedded-subscribe" class="button usr_submit"/>-->
+                        <div class="button wood" data-bind="click: spanClicked" style="background-image: url(guest/wood_pattern.png);">
+                            <div class="shine"> Let me know </div>
+                        </div>
+
+                        <div class="bubble">Keep yourself updated by subscribing <br/> to our newsletter</div>
+                        <span class="bubble_corner"></span>
+                        <div id="message_warning"></div>
+                    </form>
+                    <!--End mc_embed_signup-->
+                </div>
+            </div>
+            <div class="content">
+                <div class="shortLinks">
+                    <a class="icon icon-presentation" href="http://cardiomood.com/BaseProjectWeb/faces/demo/home.xhtml"><i></i>A tour in the system</a>
+                    <a title="Press kit" class="icon icon-press myTooltip" href="#firstHow" onclick="window.location.href = document.location.href.match(/(^[^#]*)/)[0] + '#firstHow'" ><i></i>How it works</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div id="howorks" class="howWorks" style="background: transparent url('guest/howworks_hd2.png') top center no-repeat;">
+
+                    <span style="width: 350px; display: inline-block; margin: 0px;" title="User connects a sensor and client app gathers heart rate data" id="firstHow" class="myTooltip">
+                        <img src="guest/first.png" style="width: 100%;" />
+                    </span>
+                    <span style="width: 200px; display: inline-block;margin: 0px;"  >
+                        <img src="guest/rarrow.png" style="width: 100%;  margin-bottom: 140px; " />
+                    </span>
+                    <span style="width: 350px; display: inline-block;" title="Data is sent to server" class="myTooltip" >
+                        <img src="guest/second2.png" style="width: 100%;" />
+                    </span>
+
+                    <div style="display: block; width: 550px; height: 60px;">
+                        <img src="guest/olli.png" style="width: 100%; height: 100%; margin-left: 180px;" />
+                    </div>
+
+                    <span style="width: 350px; display: inline-block; " title="Tension indexes are calculated in the cloud" class="myTooltip" >
+                        <img src="guest/three.png" style="width: 100%; margin-bottom: 70px;" />
+                    </span>
+                    <span style="width: 200px; display: inline-block;margin: 0px;">
+                        <img src="guest/rarrow.png" style="width: 100%;  margin-bottom: 140px; " />
+                    </span>
+                    <span style="width: 350px; display: inline-block;" title="Go to cardiomood.com" class="myTooltip">
+                        <img src="guest/four.png" style="width: 100%; margin-bottom: 55px;" />
+                    </span>
+
+                    <div style="display: block; width: 950px; height: 60px;" class="myTooltip">
+                        <img src="guest/olli.png" style="width: 30%; float: right; height: 100%; margin-right: 180px; margin-top: -30px;" />
+                    </div>
+
+                    <span style="width: 550px; display: inline-block;  margin: 0px;" title="View information and personal recommendations on our site" class="myTooltip">
+                        <img src="guest/five.png" style="width: 100%;" />
+                    </span>
+
+                    <div class="clearfix" style="border-bottom: 2px dashed whitesmoke; display: block;"></div>
+                    <div style="border-bottom: 3px dashed lightsalmon; display: block; margin-top:  80px; "></div>
+                    <h1 style="margin: 30px 0; font-size: 30px; color: fireBrick;">About</h1>
+
+                    <span  style="font-size: 24px;">
+                        <p>
+                            <span style="color: #F0712A; font-family: 'Pacifico', Arial; font-weight: bold; margin:0 7px;">CardioMood</span> is a system which helps to maintain a healthy lifestyle. Its goal is analysing users’ heart rate data and giving personal recommendations (either automatic or feedback from real doctors) that help users to organize their life in a healthy way.
+                        </p> <br/>
+                        <p>
+                            We gather user’s heart rate data from a bluetooth sensor (like Polar H7) and calculate tension indexes. User can view his data and track progress. After the 1st measurement user starts receiving the personal recommendations. These recommendations become more accurate in time. Also the accuracy depends on the amount of records. The more sessions - the better recommendations. User can purchase the subscription for professional personal advice from the doctor. 
+                        </p><br/>
+                        <p>
+
+                            We plan to release client applications on various mobile and desktop platforms, including iOS, Android, Windows Vista/XP/7, Windows RT, Mac OS X. All user needs to start enrolling in the system is a client application and heart rate sensor. He can access his information through web interface.
+                        </p><br/>
+
+                        <p>
+
+                            Currently we are testing and improving our system on students before and after physical trainings. Also we are consulting with doctors and scientists who work in cardiology and with heart data. 
+                        </p><br/>
+                        <p>
+
+                            Our team is planning to create large ecosystem for maintining a healthy lifestyle. We consider supporting new sensors, gathering other health indicators like temperature, blood pressure, etc. and improving feedback quality.  
+                        </p><br/>
+
+                        <p>
+                            So with <span style="color: #F0712A; font-family: 'Pacifico', Arial; font-weight: bold; margin:0 7px;">CardioMood</span> you can easily track and improve your health!
+                        </p>
+                    </span>
+                </div>
+            </div>
+            <div class="push"></div>
+        </div>
+        <footer>
+            <div class="inner">
+                <div class="mailUs">
+                    <a class="icon icon-mail" href="mailto:hello@cardiomood.com"><i></i>hello@cardiomood.com</a>
+                </div>
+                <div class="slogan">CardioMood — control your stress with ease</div>
+                <div class="copy">
+                    <span class="icon "><i></i>CardioMood © 2013</span>
+                </div>
+            </div>
+        </footer>
+        <script src="guest/js/smooth_scroll.js" type="text/javascript"></script>
+
+    </body>
+</html>

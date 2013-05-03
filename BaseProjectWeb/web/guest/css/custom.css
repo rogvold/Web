@@ -1,0 +1,59 @@
+.button {
+    position: relative;
+    border: none;
+    display: inline-block;
+    box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.2),
+        inset 0px -5px 0px 0px rgba(0,0,0,0.3),
+        inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    /*                margin: 36px;*/
+    margin-left: 10px; padding: 5px;
+}
+
+.button:active {
+    box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.2),
+        inset 0px -2px 0px 0px rgba(0,0,0,0.3),
+        inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+    top: 3px;
+}
+
+.button div {
+    padding: 10px 20px 12px 20px;
+    color: rgba(0,0,0,0.7);
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.4);
+}
+.button:active div {
+    padding-bottom: 9px;
+}
+.wood {
+    background-image: url(http://subtlepatterns.com/patterns/wood_pattern.png);
+}
+
+.tooltip-theme{
+    font-size: 30px;
+}
+
+.myTooltip{
+    cursor: pointer;
+}
+
+
+.win8 i{
+    left: 0 !important ;
+    position: absolute !important;
+    width: 40px !important;
+    height: 44px !important;
+    background-image: url('../win8_3.png') !important;
+    background-position: 0 0 !important;
+    background-repeat: no-repeat !important;
+    margin-right: 15px !important;
+    top: 4px !important; 
+}
+
+.ui-pnotify{
+    background-color: lightgoldenrodyellow;
+}

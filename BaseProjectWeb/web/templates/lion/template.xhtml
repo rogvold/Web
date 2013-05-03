@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>CardioMood</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!--        css-->
+<!--        <link href="#{request.contextPath}/templates/lion/css/bootstrap.css" rel="stylesheet" />-->
+        <link href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/jquery.capty.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/jquery.easy-pie-chart.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/jquery.pnotify.default.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/main.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/custom.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/templates/lion/css/buttons.css" rel="stylesheet" />
+        <link href="#{request.contextPath}/timeline/timeline.css" rel="stylesheet" type="text/css"  />
+        <link href="#{request.contextPath}/templates/lion/css/tooltipster.css" rel="stylesheet" type="text/css"  />
+
+
+        <!--        javascript        -->
+        <script src="#{request.contextPath}/templates/lion/js/jquery.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.ui.widget.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/highcharts.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.capty.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.easy-pie-chart.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.fileupload.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.iframe-transport.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.pnotify.min.js" type="text/javascript" />
+
+        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+        <script src="#{request.contextPath}/timeline/timeline.js" type="text/javascript"></script>
+        <script src="#{request.contextPath}/js/moment.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/history.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/jquery.tooltipster.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/historyUtils.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/historyPlot.js" type="text/javascript" />
+
+    </h:head>
+    <h:body style="background-image: url('http://wbpreview.com/previews/WB0967058/assets/img/sep-half.png')">
+
+        <!-- NAVIGATION MENU -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ui:insert name="header">
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Example row of columns -->
+            <ui:insert name="container">
+                <div class="row">
+
+                </div>
+            </ui:insert>
+            <div class="row">
+
+                <div class="span3">
+                    <ui:insert name="leftbar">
+                    </ui:insert>
+                </div>
+
+                <div class="span9">
+                    <ui:insert name="content">
+                    </ui:insert>
+                </div>
+
+            </div><!-- /row -->
+        </div><!-- /container -->
+
+        <br />
+
+
+        <div id="footerwrap">
+            <ui:insert name="footer">
+            </ui:insert>
+        </div><!-- /footerwrap -->
+
+        <div id="content-target" style="">
+            <ui:insert name="hiddenBlock">
+            </ui:insert>
+        </div>
+
+        <!--        scripts-->
+        <ui:insert name="scripts">
+        </ui:insert>
+
+    </h:body>
+</html>

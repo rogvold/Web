@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" >
+    <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'/>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/bootstrap.css" rel="stylesheet"/>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'/> 
+        <link href="#{request.contextPath}/js/pines/jquery.pnotify.default.css" rel="stylesheet"/>
+        <link href="#{request.contextPath}/css/login.css" rel="stylesheet"/>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/fullcalendar/fullcalendar.css" rel="stylesheet"/>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/fullcalendar/fullcalendar.print.css" rel="stylesheet"/>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/js/jquery.validate.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/js/knockout.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/js/pines/jquery.pnotify.min.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/js/custom/login.js"></script>
+
+
+        <style type="text/css">
+            .textItem{
+                overflow: hidden; /* Обрезаем все, что не помещается в область */
+                text-overflow: ellipsis; /* Добавляем многоточие */
+                white-space: nowrap;
+                max-width: 180px;
+            }
+
+            .user_li{
+                cursor: pointer;
+                list-style-type: none;
+            }
+
+            .myData{
+                overflow: hidden; /* Обрезаем все, что не помещается в область */
+                text-overflow: ellipsis; /* Добавляем многоточие */
+                white-space: nowrap;
+                display: block;
+                width: 200px;
+                font-size: 20px;
+                line-height: 25px;
+            }
+
+            .user_li:hover{
+                color: lightcoral;
+            }
+
+            .fc-widget-content{
+                padding-top: 0px;
+                padding-left: 0px;
+            }
+
+            .users_ul{
+                margin-left: 5px;
+            }
+
+            .info_close:hover{
+                color: lightcoral;
+            }
+            
+/*            tr:first-of-type{
+                background-color: lightsalmon;
+            }*/
+
+        </style>
+
+
+        <script>
+            // <![CDATA[
+            function SimpleTimetablePoint(day, lesson){
+                this.day = day;
+                this.lesson = lesson;
+            }
+            
+            function getLiForUser(su, num){
+                var n = parseInt(num);
+                n++;
+                
+                if ((su.firstName == "") && (su.lastName == ""))
+                    return "<li class=\"user_li\" id=\"user_"+su.id+"\">" + n +') ' + su.email + "</li> ";
+
+                return "<li class=\"user_li\" id=\"user_"+su.id+"\" >" + n +') '  + su.firstName + " " + su.lastName+" </li> ";
+            }
+            
+            function getUlContentForPoint(point){
+                var s = "";
+                for (i in point.users){
+                    s+=getLiForUser(point.users[i], i );
+                }
+                console.log(s);
+                return s;
+            }
+            
+            function fillTimetabeWithUsers(timetable){
+                for (i in timetable){
+                    var cl = "#ul_"+timetable[i].day+"_"+timetable[i].lesson;
+                    $(cl).html(getUlContentForPoint(timetable[i]));
+                }
+            }
+            
+            function addUsersToTimetable(){
+                $.ajax({
+                    type: "GET",
+                    url: "/BaseProjectWeb/resources/timetable/full",
+                    success: function(res) {
+                        console.log(res);
+                        timetable = res.data;
+                        fillTimetabeWithUsers(res.data);
+                    }
+                });
+            }
+            
+            function fillCheckboxes(array){
+                for (i in array){
+                    var s = '.inp_' + array[i].day+'_'+array[i].lesson;
+                    $(s).prop('checked', true);
+                    $(s).parents(".fc-widget-content").css('background-color','#FFC');
+                }
+            }
+            
+            function getSTPByCheckBoxClass(cl){
+                var re =  /inp_([0-9]+)_([0-9]+)/g
+                var match = re.exec(cl);
+                return new SimpleTimetablePoint(match[1], match[2]);
+            }
+            
+            function getSelectedPointsArray(){
+                var checkedArray = new Array();
+                $( "input:checked" ).each(function(data){
+                    $(this).parents(".fc-widget-content").css('background-color','#FFC');
+                    checkedArray.push(getSTPByCheckBoxClass($(this).attr('class')));
+                });
+                console.log(checkedArray);
+                return checkedArray;
+            }
+            
+            function updateMyTimetable(){
+                $.ajax({
+                    type: "POST",
+                    url: "/BaseProjectWeb/resources/timetable/update",
+                    data: JSON.stringify(getSelectedPointsArray()),
+                    success: function(res){
+                        $.pnotify({text: 'Данные успешно обновлены'});
+                        console.log(res);
+                        addUsersToTimetable();
+                    }
+                });
+            }
+            
+            function initMyTimetable(){
+                $( "input:checkbox" ).parents(".fc-widget-content").css('background-color','transparent');
+                
+                $.ajax({
+                    type: "GET",
+                    url: "/BaseProjectWeb/resources/timetable/my",
+                    success: function(res){
+                        console.log(res);
+                        fillCheckboxes(res.data);
+                    }
+                });
+            }
+            
+            function updateAvatar(su){
+                console.log('updateAvatar');
+                console.log(su);
+                $('#ava').attr('src', '/BaseProjectWeb/avatar?avatar_id='+su.id+'&' + Math.random());
+                setTimeout(function(){$('#ava').attr('src', '/BaseProjectWeb/avatar?avatar_id='+su.id+'&' + Math.random());}, 1000);
+            }
+            
+            function findUserInTimetable(userId){
+                console.log('findUserInTimetable: timetable=' + timetable);
+                for (i in timetable){
+                    for (j in timetable[i].users){
+                        if (timetable[i].users[j].id == userId){
+                            return timetable[i].users[j];
+                        }
+                    }
+                }
+            }
+            
+            function getUserIdByClass(cl){
+                var re =  /user_([0-9]+)/g
+                var match = re.exec(cl);
+                return match[1];
+            }
+            
+            function clearCard(){
+                $('#last_name').text("");
+                $('#first_name').text("");
+                $('#user_email').text("");
+                $('#user_phone').text("");
+                $('#user_department').text("");
+            }
+            
+            function updateUserCard(u){
+                clearCard();
+                updateAvatar(u);
+                $('#last_name').text(u.lastName);
+                $('#first_name').text(u.firstName);
+                $('#user_email').text(u.email);
+                $('#user_phone').text(u.phone);
+                $('#user_department').text(u.department);
+            }
+            
+            function selectUser(cl){
+                console.log('selecting user with li id = ' + cl);
+                var userId = getUserIdByClass(cl);
+                console.log(userId);
+                var u = findUserInTimetable(userId);
+                updateUserCard(u);
+                $('#printable').show('toggle');
+            }
+            
+            function init(){
+
+                $('.user_li').live('click', function(){
+                    selectUser($(this).attr('id'));
+                });
+                
+                
+                initMyTimetable();
+                addUsersToTimetable();
+            }
+            
+            $(function(){
+                $('input:checkbox').change(function() {
+                    $( "input:checkbox" ).parents(".fc-widget-content").css('background-color','transparent');
+                    updateMyTimetable();
+
+                });
+                
+                init();
+                
+                setInterval(function(){ init();}, 30000);
+
+
+            })
+            
+            
+            
+            //]]>
+        </script>
+
+    </h:head>
+    <h:body>
+        <c:if test="#{webSession.signedIn}">
+            <span style="top: 20px; left: 10px;">
+                <a href="profile.xhtml">
+                    Вернуться в профиль
+                </a>
+            </span>
+
+        </c:if>
+        <center>
+            <h1>
+                Расписание
+            </h1>
+        </center>
+
+
+        <div class="fc-content" style="position: relative; min-height: 1px; ">
+            <div class="fc-view fc-view-month fc-grid" style="position: relative; " unselectable="on">
+
+
+                <h:panelGrid columns="6" columnClasses="fc-widget-content, fc-widget-content, fc-widget-content, fc-widget-content, fc-widget-content, fc-widget-content "  styleClass="fc-border-separate" style="width: 100%;"  >
+
+                    <h:outputText style="font-weight: bold; font-size: 20px; width: 100%;" value="Понедельник"/>
+                    <h:outputText style="font-weight: bold; font-size: 20px;" value="Вторник"/>
+                    <h:outputText style="font-weight: bold; font-size: 20px;" value="Среда"/>
+                    <h:outputText style="font-weight: bold; font-size: 20px;" value="Четверг"/>
+                    <h:outputText style="font-weight: bold; font-size: 20px;" value="Пятница"/>
+                    <h:outputText style="font-weight: bold; font-size: 20px;"  value="Суббота"/>
+
+                    <c:forEach items="#{timetableBean.timetable}" var="point">
+                        <h:panelGroup style="height: 103px; display: block;">
+                            <!--                        <div style="min-height: 103px; ">-->
+                            <div class="span4" >
+                                <span  style=" background-color: #E4E4DA; font-weight: bold; border-bottom: 1px dashed lightgray; display: inline-block; border-right: 1px dashed lightgray; border-bottom-right-radius: 5px;">
+                                    <span style="display: inline-block;">#{point.lesson} пара</span>
+                                    <c:if test="#{webSession.signedIn}">
+                                        <span style="display: inline-block;">
+                                            <input class="inp_#{point.day}_#{point.lesson}" type="checkbox" />
+                                        </span>
+                                    </c:if>
+                                </span>
+                            </div>
+                            <div style="max-height: 80px;  overflow-y: auto; ">
+                                <ul class="users_ul" id="ul_#{point.day}_#{point.lesson}"></ul>
+                            </div>
+                            <!--                        </div>-->
+                        </h:panelGroup>
+
+                    </c:forEach>
+                </h:panelGrid>
+            </div>
+        </div>
+
+
+        <div id="printable" style="width: 100%; display: none; position: fixed; top: 200px; margin: 0 auto; height: 100%;">
+            <center>
+                <span  style="border: 1px solid lightgoldenrodyellow; border-radius: 10px; padding: 0px; background-color: whitesmoke; display: block; width: 500px;">
+
+                    <table style="font-size: 11px;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img id="ava" src="/BaseProjectWeb/avatar" style=" max-width: 200px; margin: 5px; border: 2px dashed firebrick; border-radius: 5px;"  />
+                                    <span onclick="$('#printable').hide('toggle');" class="info_close" style="position: relative; float: right; top: -10px; left: 270px; cursor: pointer;">
+                                        закрыть
+                                    </span>
+                                </td>
+
+                                <td style="vertical-align: middle; padding: 5px; width: 280px;">
+                                    <center>
+                                        <span style="font-weight: bold; font-size: 10px;"> 
+                                            <span class="myData" id="last_name" ></span>
+                                            <span class="myData" id="first_name"></span>
+                                            <span class="myData" id="user_department" style="font-size: 16px;" ></span>
+                                            <span class="myData" id="user_email" ></span>
+                                            <span class="myData" id="user_phone" ></span>
+                                        </span>
+                                    </center>
+
+                                </td>
+
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </span>
+            </center>
+
+        </div>
+
+    </h:body>
+</html>

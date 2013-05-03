@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:h="http://java.sun.com/jsf/html" >
+    <head>
+        <title>All QRs</title>
+    </head>
+    <body>
+        <h:panelGrid columns="2" >
+            <c:forEach items="#{timetableUsersQrBean.sList}" var="su">
+
+                <h:panelGroup  style="border: 1px dashed gray; padding: 0px; background-color: white; display: block; width: 8cm;">
+                    <table style="font-size: 11px;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="/BaseProjectWeb/qr?id=#{su.id}" style="width: 150px;" />
+                                </td>
+
+                                <td style="vertical-align: text-top; padding: 5px;">
+                                    <span style="font-size: 11px;">
+                                        <center>
+                                            www.cardiomood.com
+                                        </center>
+                                    </span>
+                                    <center>
+                                        <span style="font-weight: bold; font-size: 10px;"> 
+                                            <span class="myData" style="display: block; width: 4cm;">
+                                                #{su.lastName}
+                                            </span>
+                                            <span>
+                                                #{su.firstName}
+                                            </span>
+                                            <span class="myData" style="display: block; width: 4cm;">
+                                                #{su.email}
+                                            </span>
+                                        </span>
+                                    </center>
+
+                                    <span style=" font-size: 8px; line-height: 8px; margin-top: 25px;">
+                                        Техподдержка:
+                                        <br/>
+                                        support@cardiomood.com
+                                        <br/>
+                                        +7-985-436-3704 (Сабир)
+                                    </span>
+                                </td>
+
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </h:panelGroup>
+            </c:forEach>
+        </h:panelGrid>
+        
+        <button onclick="window.print()" style="cursor: pointer;" >Печать</button>
+    </body>
+</html>

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <f:event listener="#{webSession.loggedInRedirect()}" type="preRenderView" />
+        <link href="#{request.contextPath}/images/buben.png" rel="shortcut icon" type="image/x-icon" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="utf-8"/>
+        <title>Unique.</title>
+        <meta name="description" content=""/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="David Kohout &amp; Tomáš Lach - www.tomaslach.cz"/>
+        <link rel="shortcut icon" href="http://medleyweb.com/favicon.ico"/>
+        <link rel="apple-touch-icon" href="http://medleyweb.com/apple-touch-icon.png"/>
+
+        <link rel="stylesheet" href="../css2/main.css" />
+        <!--        <link rel="stylesheet" href="http://medleyweb.com/demo/unique-01/css/main.css" media="screen,projection"/>-->
+        <!--        <link rel="stylesheet" href="./css2/print.css" media="print"/> -->
+
+        <!--                <link rel="stylesheet" href="./css2/custom.css"/>-->
+        <link rel="stylesheet" type="text/css" href="../css/gridNavigation.css" />
+
+        <!--        <link rel="stylesheet" href="./css2/reset.css" media="print,projection"/>
+                <link rel="stylesheet" href="./css2/google.css" media="print,projection"/>
+                <link rel="stylesheet" href="./css2/jquery.fancybox-1.3.4.css" media="print,projection"/>-->
+
+        <!--        <script src="../js/jquery.min.js"></script>-->
+        <script src="./js2/jquery.min.js"></script>
+        <script src="./js2/jquery.mousewheel-3.0.4.pack.js"></script>
+        <script src="./js2/jquery.fancybox-1.3.4.pack.js"></script>
+        <script src="./js2/custom.js"></script>
+        <script src="./js/growl.js"></script>
+
+        <script src="./js/jquery.bpopup-0.9.0.min.js"></script>
+
+        <script type="text/javascript" src="../js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="../js/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript" src="../js/jquery.gridnav.js"></script>
+        <script src="../myJs/text_filter.js"></script>
+
+
+        <!--        <script src="./js/bootstrap-modal.js"></script>-->
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" /> 
+
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"/>
+
+        <script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js">
+        
+        </script><script>window["_GOOG_TRANS_EXT_VER"] = "1";</script>
+        <script type="text/javascript" src="#{request.contextPath}/js/jquery.flexislider.js" />
+        <script type="text/javascript">
+            
+            $(function(){
+                
+
+                
+                //                $('#rookie_profi').css('left');
+                
+                $("a.topLink").click(function() {
+                    $("html, body").animate({
+                        scrollTop: $($(this).attr("href")).offset().top + "px"
+                    }, {
+                        duration: 500,
+                        easing: "swing"
+                    });
+                    return false;
+                });
+                
+                $(".prev").css("display","none");
+                $(".next").css("display","none");
+                
+                $('.next')
+                .bind(
+                'click', function(){
+                    $("#score_div").show('togle');
+                    $('#spike').hide();
+                    $('#rookie_profi').hide();
+                });
+                $('.tabspan')
+                .live(
+                'click', function(){
+                    $(".tabspan").attr("class","tabspan");
+                    $(this).addClass("active_span");
+                    num = $(this).children('.num').html();
+                    if (num>3) $('#what_for').show('togle');
+                });
+                
+                $('.alert').live('click',function(){
+                    $(this).hide();
+                });
+                
+                
+                $('#tj_container').gridnav({
+                    type	: {
+                        mode		: 'updown', 	// use def | fade | seqfade | updown | sequpdown | showhide | disperse | rows
+                        speed		: 500,			// for fade, seqfade, updown, sequpdown, showhide, disperse, rows
+                        easing		: '',			// for fade, seqfade, updown, sequpdown, showhide, disperse, rows	
+                        factor		: '',			// for seqfade, sequpdown, rows
+                        reverse		: ''			// for sequpdown
+                    }
+                });
+                
+                $('.metastasislink').live('click',function(){
+                    $('.metastasislink').attr( "data-toggle", "modal" );
+                    //                    $('.metastasislink').attr( "href", "#metastasis_dialog" );
+                    
+                    //                                alert('metastasis clicked');
+                    $('.exercise').hide();
+                    var id = getIdFromLink($(this).attr('class'));
+                    //                                alert('id = ' + id);
+                    $('#metastasis_id_hidden').val(id);
+                    $('#init_metastasis_button').click();
+                                
+                    //                    $('#metastasis_dialog').bPopup();
+                    $('#metastasis_wrapper').bPopup();
+                    
+                });
+                
+            });
+            
+            function initMyTab(){
+                var selected = $('#select_index_input').val();
+                alert(selected);
+            }
+            
+            $(document).click(function(e){
+                if ($(e.target).closest("#authentification_div").length) return;
+                $('#authentification_div').hide('toggle');
+                e.stopPropagation();
+            });
+
+            
+        </script>
+
+
+
+        <style type="text/css">
+            .active_span{
+                color: #81AF30;
+                border-bottom: 1px solid #F26904;
+            }
+            .not_active_span{
+                color: white;
+                border-bottom: 1px solid #032B3E;
+            }
+
+            .tabspan{
+                color: white;
+                display: inline-block; 
+                height: 20px;
+                font-family: "Droid Serif", Arial;
+                cursor: pointer;
+                padding-right: 20px;
+            }
+
+
+
+        </style>
+
+        <style type="text/css">
+            #carousel {position: relative; overflow: hidden;height:180px;}
+            #carousel img {position:absolute;	margin:0; height:155px;;display:none;}
+            #imageloader {position:relative; display:block; width: 100%; margin: 0px auto; text-align: center;}
+            #imageloader img { position:relative; top:70px; z-index:100; width:128px; height:15px; display:inline;}
+        </style>
+
+        <script>
+            $(document).ready(function(){
+                            $('#video_dialog').bPopup();
+                $('.b-modal').bind('click',function(){
+                    $("#playerid").attr("src","");
+                });
+            });
+            
+            function showNotification(){
+                //                alert(s);
+                s = $('#status_param').html();
+                //                alert(s);
+                if (s == '1'){
+                    $.growl('Ответ верный',{type:'ok',position:'topright'});
+                }else{
+                    $.growl('Ответ неверный',{type:'error',position:'topright'});
+                    num = $('.active_span').children('.num').html();
+                    //                    alert(num);
+                    if (-num>-4) {$('#rookie_dialog').bPopup();}
+                    
+                }
+            }
+            
+            function getIdFromLink(linkclasses){
+                var classList = linkclasses.split(/\s+/);
+                var eId = "";
+                for (var i = 0; i &lt; classList.length; i++){
+                    if (classList[i].indexOf('_') &gt; 0){
+                        eId = classList[i].substr(classList[i].indexOf('_') + 1);
+                        return eId;
+                    }
+                }
+                            
+            }
+        </script>
+
+    </h:head>
+    <h:body  style="padding-top: 0px;" >
+        <div
+            style="width: 1300px; margin: 0 auto; 
+            margin-top: 15px;
+            text-align: right;
+            padding-right: 100px;
+            ">
+            <a href="#" style="font-weight: bold; color: #001622;" 
+               title="Вход">Вход</a>
+        </div>
+
+        <div
+            style="width: 1300px; margin: 0 auto; 
+            border-radius: 5px;
+            background: #fff url('../images/img/kate/f1.jpg') repeat-x;
+            /*             border-right: dashed 4px #d6d0c5;*/
+            /*             background-clip: content-box;*/
+            -moz-box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.7) ; /* Для Firefox */
+            -webkit-box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.7) ; /* Для Safari и Chrome */
+            box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.7) ; /* Параметры тени */
+            padding: 0px;
+            margin-top: 15px;
+
+            ">
+            <div id="inset-borders" style="">
+
+                <h:panelGroup id="parameters" style="display: none;">
+                    <span id="status_param">#{guestExerciseBean.history.status}</span>
+                </h:panelGroup>
+
+                <div id="score_div" style=" display: none; 
+                     position: fixed; 
+                     border-bottom-left-radius: 10px; font-size: 14px; 
+                     border-bottom-right-radius: 10px; 
+                     color: white; background-color: grey; opacity: 0.8;
+                     padding: 5px;  height: 25px; z-index: 2000000; 
+                     margin: 0 auto; text-align: center;width: 14%; left: 43%;">
+                    Вы набрали
+                    <h:panelGroup id="totalScorePanel" >#{guestContestBean.totalScore}</h:panelGroup>
+                    очков.
+                </div>
+
+                <!--                <div id="what_for" style=" 
+                /*                     display: none; */
+                /*                     position: fixed; */
+                                     border-bottom-left-radius: 10px; font-size: 18px; 
+                                     font-weight: bold;
+                                     cursor: pointer;
+                                     color: #B21522; background-color: #81AF30; opacity: 0.9;
+                                     padding: 5px;  height: 25px; z-index: 2000000; 
+                /*                     margin: 0 auto; */
+                                     text-align: right;
+                                     margin-left: 1140px;
+                                     width: 150px; right: 0px;
+                                     -webkit-box-shadow:  -2px 2px 2px 2px rgba(44, 44, 44, 1);
+                
+                                     box-shadow:  -1px 1px 1px 1px rgba(44, 44, 44, 1);
+                                     border-left-style: dotted;
+                                     border-bottom-style: solid;
+                                     border-width: 1px;
+                                     text-shadow: 0px 1px 0px grey;
+                /*                     display: inline-block;*/
+                                     border-color: rgba(44, 44, 44, 1);
+                                     "
+                                     onclick="$('.next').click();$(this).hide('togle');$('#score_div').hide('togle');$('#back_to_exercises').show('togle');"
+                                     >
+                                    <span>
+                                        Зачем мне это?
+                                    </span>
+                                </div>-->
+
+                <!--                <div id="back_to_exercises" style=" display: none; 
+                                     position: fixed; 
+                                     border-bottom-left-radius: 10px; font-size: 18px; 
+                                     font-weight: bold;
+                                     cursor: pointer;
+                                     color: #4d6702; background-color: #b8cee4; opacity: 0.9;
+                                     padding: 5px;  height: 25px; z-index: 2000000; 
+                                     margin: 0 auto; text-align: center;
+                                     width: 150px; right: 0px;
+                                     -webkit-box-shadow:  -2px 2px 2px 2px rgba(44, 44, 44, 1);
+                
+                                     box-shadow:  -1px 1px 1px 1px rgba(44, 44, 44, 1);
+                                     border-left-style: dotted;
+                                     border-bottom-style: solid;
+                                     border-width: 1px;
+                                     /*             text-shadow: 0px 1px 0px grey;*/
+                                     border-color: rgba(44, 44, 44, 1);
+                                     "
+                                     onclick="$('.prev').click();$(this).hide('togle');$('#score_div').show('togle');$('#what_for').show('togle')"
+                                     >
+                                    <span>
+                                        К упражнениям
+                                    </span>
+                                </div>-->
+
+
+                <header>
+                    <div class="reflection wrap" style="height: 530px;">
+                        <div id="header" style="height: 90px;"> 
+                            <table style="height: 100%; cursor: pointer; "  onclick="window.location.href='#{request.contextPath}/faces/guest.xhtml'">
+                                <tr>
+                                    <td style="" >
+                                        <span>
+                                            <img src="#{request.contextPath}/images/buben.png" style="padding-right: 10px; width: 60px;vertical-align: middle; display: table-cell;"  />
+                                        </span>
+                                    </td>
+                                    <td style="">
+                                        <h1 style="display: inline-block; line-height: 0px; top: 0px; " class="logo" >The English Patient</h1>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--                            <nav>
+                                                            <ul>
+                                                                <li><a href="#about" class="topLink"  title="About us">О нас</a></li>
+                                                                                            <li><a href="#register" class="topLink" onmouseup="$('#registerInput').focus()" title="Work">Регистрация</a></li>
+                                                                <li><a href="#loginInput" class="topLink" onmouseup="$('#loginInput').focus()" onmousedown="$('#authentification_div').show('toggle');"  title="About Us">Вход</a></li>
+                                                            </ul>          
+                                                        </nav>-->
+
+                        </div> <!-- / #header -->
+
+                        <!--                <hr/>-->
+
+                        <div id="intro" class="hover" style="margin-top: 15px;">
+
+                            <div id="slider">
+                                <ul style="width: 2940px; " class="slider_ul">
+                                    <li style="
+
+
+                                        ">
+                                        <div class="window" id="minigallery" style="display: block; width: 590px; height: 280px; background-image: url('#{request.contextPath}/images/film-strip2.png');">
+                                            <div id="tj_container" class="tj_container" style="width: 590px; left: 10px;">
+                                                <div class="tj_wrapper" >
+                                                    <ul class="tj_gallery" style="left: 10px; top:-15px;"   >
+                                                        <c:forEach items="#{guestContestBean.exercisesList}" var="ex" varStatus="status">
+                                                            <li onclick="$('#select_index_input').val(#{status.count});$('.next').click();" ><a href="#" title="#{ex.name}"><img src="#{request.contextPath}/#{ex.screenshot}" title="#{ex.name}" /></a></li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content" style="color:#71777d; width: 380px; ">
+                                            <!--                                            <img src="./images/bubble3.png" width="200px;" height="100px;" />-->
+                                            <!--                                            <div style="background: url('./images/bubble3.png'); display: block; width: 400px; height: 160px; background-size: 400px 160px; background-repeat: no-repeat;" >
+                                                                                            some text
+                                                                                        </div>-->
+
+                                            <!--                                            <p style="position: absolute; width: 380px; left: 50px; top: 50px; font-size: 16px; line-height: 18px; font-family: Verdana;">
+                                                                                            <span style="display: inline-block; width: 20px;"></span>Здравствуйте! Это мой метод, секретом которого я готов поделиться до того, как Вас попросили зарегистрироваться. Его секрет - в том, что не существует универсальных рецептов, гарантирующих полноценное освоение английского языка. Есть только Вы, Ваши интересы, Ваши чувства и … здравый смысл. Можно, конечно, родиться в стране, где говорят на английском языке. Этот «метод» - родиться и жить в англоязычной стране - гарантирует успех даже в том случае, если Вы вообще не интересуетесь языком.
+                                                                                        </p>-->
+
+                                            <!--
+                                                                                        <table>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <img src="../images/darwin.png" title="art" style="height: 100px;" />
+                                                                                                </td>
+                                                                                                <td style="font-style: italic; color: #71777d; font-family: 'Droid Serif', Arial;">
+                                                                                                    Ignorance more frequently begets confidence than does knowledge.
+                                                                                                    <br/>
+                                                                                                    <div style="font-size: 14px; padding-right: 20px; text-align: right; margin-top: 10px;">Charles Darwin</div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                                                            <h2></h2>
+                                                                                        <h3 style="margin-top:20px; font-size: 1.5em;
+                                                                                            font-weight: bold;">Wanna find out where you are on the path of evolution? </h3>
+                                                                                        <p></p>
+                                                                                        <a href="javascript:void();" style="" class="button" id="tryit" title="Press the button"><span>Press the button</span></a>      
+                                            -->
+
+                                        </div>
+                                    </li>  
+                                    <li style="padding:5px;">
+                                        <table>
+                                            <tr>
+                                                <td style="width: 400px; display: inline-block; padding-left: 20px;">
+
+                                                    <h:panelGroup id="statusPanel">
+                                                        <span class="span8">
+                                                            <div style="display: block;">
+                                                                <span class="span3" style="color: #71777D;">
+                                                                    Попытки:
+                                                                </span>
+                                                                <span class="span1" style="color: #81AF30;" >
+                                                                    #{guestExerciseBean.attemptsAmount}
+                                                                </span>
+
+                                                                <span style="color: white;">|</span>
+
+                                                                <span class="span3" style="color: #71777D;">
+                                                                    Подсказки:
+                                                                </span>
+                                                                <span class="span1"  style="color: #81AF30;">
+                                                                    <h:panelGroup id="hintsAmountPanel">
+                                                                        #{guestExerciseBean.showedHintsAmount}
+                                                                    </h:panelGroup>
+                                                                </span>
+
+                                                                <span style="color: white;">|</span>
+
+                                                                <span class="span3" style="color: #71777D;">
+                                                                    Статус:
+                                                                </span>
+                                                                <span class="span1"  style="color: #81AF30;">
+                                                                    <c:if test="#{guestExerciseBean.history.status == 1}" >
+                                                                        <span style="color: #D95A41; margin-left: 10px;">Завершен</span>
+                                                                    </c:if>
+                                                                    <c:if test="#{guestExerciseBean.history.status != 1}" >
+                                                                        <span style="color: #D95A41; margin-left: 10px;">В процессе</span>
+                                                                    </c:if>
+                                                                </span>
+                                                            </div>
+
+                                                        </span>
+
+                                                    </h:panelGroup>
+                                                </td>
+
+
+                                                <td style="text-align: right; width: 580px;">
+                                                    <div style="display: block; width: 100%; height: 20px; text-align: right;" >
+                                                        <c:forEach items="#{guestContestBean.exercisesList}" var="ex" varStatus="status">
+                                                            <span class="tabspan myTab#{status.count}" style="display: inline-block; height: 20px; padding-right: 5px;" 
+                                                                  onclick="$('.tabspan').attr('class','tabspan'); $(this).addClass('active_span'); $('#select_index_input').val(#{status.count - 1}); $('#tab_selected_button').click();"
+
+                                                                  id="tabspan#{status.count}"
+                                                                  >
+                                                                <span class="num" style="display: none;">#{status.count}</span>
+
+                                                                <h:panelGroup id="menuPanel#{status.count}">
+                                                                    <c:if test="#{contestBean.exerciseFinished(ex.id, null)}">
+                                                                        <span style="color:green;" > ##{status.count}</span>
+                                                                    </c:if>
+                                                                    <c:if test="#{!contestBean.exerciseFinished(ex.id, null)}">
+                                                                        ##{status.count}
+                                                                    </c:if>
+                                                                </h:panelGroup>
+                                                            </span>
+                                                        </c:forEach>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <div style="display: block; width: 980px; height: 300px; ">
+                                            <div class="video" style="height: 330px; padding-top: 5px;">
+                                                <!--                                         498 x 325 aRsbrZDUYwM-->
+                                                <h:panelGroup id="videoPanel">
+                                                    <iframe class="youtube-player" type="text/html" width="498" height="325" src="http://www.youtube.com/embed/#{guestExerciseBean.exercise.description}?rel=0&amp;wmode=opaque&amp;autoplay=1" frameborder="0">
+                                                    </iframe>
+                                                    <!--                                            http://www.youtube.com/watch?v=aRsbrZDUYwM-->
+                                                    <!--                                            <video width="498" height="325" style="padding-top:2px; border-style: dotted; border-width: 1px;" >
+                                                                                                    <source type="video/mp4" src="http://www.w3schools.com/html/mov_bbb.mp4"/>
+                                                                                                    
+                                                                                                </video>-->
+                                                </h:panelGroup>
+
+                                            </div>
+                                            <div class="content" style="margin-top: 20px; ">
+                                                <h3 style="color: #F26904;">
+                                                    <h:panelGroup id="questionPanel">
+                                                        <h:panelGroup rendered="#{guestExerciseBean.exercise ne null}">#{guestExerciseBean.exercise.question}</h:panelGroup>
+                                                    </h:panelGroup>
+                                                    <!--                                            Что сказал диктор после фразы "has been reelected" ? (5 слов)-->
+                                                </h3>
+                                                <h:panelGroup id="hintsPanel">
+                                                    <h:panelGroup id="hints">
+                                                        <p>
+                                                            <span style="display: inline-block; height: 50px; text-shadow: 1px 1px 1px #042332; font-weight: bold;">
+                                                                Подсказка 1 <br/>
+                                                                <h:panelGroup id="hint1"
+                                                                              rendered ="#{guestExerciseBean.exercise != null}"
+                                                                              >
+                                                                    #{guestExerciseBean.firstHint}
+                                                                </h:panelGroup>
+                                                                <h:form style="text-align: right;" prependId="false" id="firstForm">
+                                                                    <p:commandLink process="@this" update=":hintsAmountPanel, :secondForm, :hintsPanel :answerForm" 
+                                                                                   style="padding: 2px; cursor: pointer; text-decoration: none;" 
+                                                                                   actionListener="#{guestExerciseBean.nextHint()}"  
+                                                                                   disabled="#{!guestExerciseBean.firstHintButtonRendered}" 
+                                                                                   value="use it!" styleClass="btn btn-mini"  
+                                                                                   oncomplete="$('#hint1').html(filter($('#hint1').html())); $('#hint2').html(filter($('#hint2').html()));"
+                                                                                   rendered="#{guestExerciseBean.exercise != null}"/>
+                                                                </h:form>
+                                                            </span>
+                                                        </p>
+                                                        <p>  
+
+                                                            <span style="display: inline-block; height: 50px;  text-shadow: 1px 1px 1px #042332; font-weight: bold;">
+                                                                Подсказка 2 <br/>
+                                                                <h:panelGroup   id="hint2"
+                                                                                rendered ="#{guestExerciseBean.exercise != null}"
+                                                                                >
+                                                                    #{guestExerciseBean.secondHint}
+                                                                </h:panelGroup>
+                                                                <h:form style="text-align: right;" prependId="false" id="secondForm">
+                                                                    <p:commandLink process="@this" update=":hintsAmountPanel, :firstForm, :hintsPanel :answerForm"  
+                                                                                   style="padding: 2px; cursor: pointer; text-decoration: none;" 
+                                                                                   actionListener="#{guestExerciseBean.nextHint()}"  
+                                                                                   disabled="#{!guestExerciseBean.secondHintButtonRendered}" 
+                                                                                   value="use it!" styleClass="btn btn-mini" 
+                                                                                   oncomplete="$('#hint1').html(filter($('#hint1').html())); $('#hint2').html(filter($('#hint2').html()));"
+                                                                                   rendered="#{guestExerciseBean.exercise != null}"  />
+                                                                </h:form>
+                                                            </span>
+                                                        </p>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+
+                                                <h:panelGroup id="additionalHints" style="color:#F26904; " >
+                                                    <h:panelGroup rendered="#{guestExerciseBean.exercise != null}" style="font-weight: bold; ">
+                                                        <span style="color: white;">Дополнительные подсказки: </span>
+                                                        <h:panelGroup rendered="#{guestExerciseBean.additionalHintRendered}">
+                                                            #{guestExerciseBean.additionalHint}
+                                                        </h:panelGroup>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+
+
+
+                                            </div>                   
+                                        </div>
+
+                                        <span style="width: 70%; color: #F26904; margin-top: 30px; font-size: 14px; font-weight: bold; text-align: left; display: inline-block; font-family: 'Droid Serif', Arial;">
+                                            <h:panelGroup id="answerButtonPanel">
+                                                <h:form prependId="false" id="answerForm" style="display: inline-block; width: 100%; margin-top: -20px;" >
+                                                    <h:panelGroup id="answerPanel">
+                                                        <h:panelGroup class="note" style="font-size: 15px; color: #945904; margin-right: 20px;" rendered="#{guestExerciseBean.history.status != 1}" >
+                                                            Ваш ответ
+                                                        </h:panelGroup>
+                                                        <span class="input" > 
+                                                            <h:inputText id="yourAnswer" class="text" style="width: 50%;" rendered="#{guestExerciseBean.history.status != 1}" value="#{guestExerciseBean.userAnswer}" />
+                                                        </span>
+                                                        <h:panelGroup style=" text-align: right; display: inline-block;">
+
+                                                            <p:commandButton rendered="#{guestExerciseBean.history.status != 1}" oncomplete=" showNotification();"  styleClass="btn btn-primary"  update=":menuPanel#{contestBean.currentExerciseIndex + 1}  answerPanel, :statusPanel, :additionalHints, :totalScorePanel  :rightAnswer, :parameters"  value="Ответить"  disabled="#{guestExerciseBean.history.status == 1}" actionListener="#{guestExerciseBean.answer()}" />
+                                                            <!--                                                                            <p:commandButton value="Пропустить" styleClass="btn" />-->
+                                                        </h:panelGroup>
+
+                                                    </h:panelGroup>
+                                                </h:form>
+                                            </h:panelGroup>
+                                            <h:panelGroup id="rightAnswer"  >
+                                                <h:panelGroup rendered="#{guestExerciseBean.history.status == 1}">
+                                                    <span  style="font-size: 15px; color: #F26904; margin-right: 20px;">Правильный ответ:</span>
+
+                                                    <span style="color: #81AF30;
+                                                          font-family: 'Open Sans', sans-serif;
+                                                          font-size: 20px;
+                                                          font-weight: 600;
+                                                          line-height: 30px;">
+                                                        #{guestExerciseBean.mainAnswer}
+                                                    </span>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </span>
+                                    </li>
+
+                                    <li style="display: block; height: 280px; width: 900px;">
+                                        <div style="font-size: 24px; color: white; ">
+                                            Здесь будет основной месседж 
+                                        </div>                                  
+                                    </li> 
+                                </ul>
+                            </div> <!-- / #slider -->
+
+
+                            <h:panelGroup id="initPanel" style="display: none;">
+                                <h:form prependId="false">
+                                    <h:inputHidden value="#{guestContestBean.selectedIndex}" id="select_index_input" />
+                                    <h:commandButton id="tab_selected_button" actionListener="#{guestContestBean.switchExercise(guestContestBean.selectedIndex)}">
+                                        <f:ajax  execute="@form" onevent="function(data){if (data.status == 'success') { $('#init_exercise_button').click();} }" />
+                                    </h:commandButton>
+                                </h:form>
+
+
+
+                                <h:form prependId="false">
+                                    <h:commandButton id="init_exercise_button" actionListener="#{guestExerciseBean.initExercise(guestContestBean.currentExercise.id)}" >
+                                        <f:ajax execute="@form" render=":statusPanel :videoPanel :hintsPanel :additionalHints  :rightAnswer :firstForm :secondForm :answerButtonPanel :answerForm :questionPanel"
+                                                onevent="function(data){if (data.status == 'success') $('#hint1').html(filter($('#hint1').html())); $('#hint2').html(filter($('#hint2').html()));}"
+                                                />
+                                    </h:commandButton>
+                                </h:form>
+
+                                <h:form prependId="false">
+                                    <h:commandButton id="updateButton0" >
+                                        <f:ajax execute="@form"  onevent="function(data){if (data.status == 'success') {  $('#updateButton').click();} }" />
+                                    </h:commandButton>
+                                </h:form>
+
+                            </h:panelGroup>
+
+                            <a href="http://medleyweb.com/demo/unique-01/#" class="prev disabled" title="Zpět">Zpět</a>
+                            <a href="http://medleyweb.com/demo/unique-01/#" class="next" title="Další">Další</a>
+
+                        </div> <!-- / #intro -->
+                    </div>
+                </header>
+
+                <div id="rookie_profi" style="position: absolute; top: 170px; margin-left: 25px;
+                     background:  url('../images/rrr2.png') no-repeat; background-size: cover;
+                     display: inline-block; width: 125px; height: 300px; ">
+
+                </div>
+                <div style="width: 100%; text-align: right;" id="spike">
+                    <div style="margin-left:750px;">
+                        <div style="background: url('./images/img/kate/w4.png'); 
+                             display: block;
+                             width: 487px; height:   157px; 
+                             position: absolute;
+                             top: 50px;
+
+                             float: right;
+                             background-size: 487px 157px;
+                             background-repeat: no-repeat;">
+
+                        </div >
+                        <div style="position: absolute; 
+                             width: 450px; 
+                             color: #d6edfb;
+                             color:white;
+                             text-align: left;
+                             top: 250px; 
+                             margin-left: 40px;
+                             /*                         font-weight: 600;*/
+                             font-size: 18px; line-height: 20px; font-family: Verdana;">
+                            <span style="display: inline-block; width: 20px;"></span>Здравствуйте! Это мой метод, секретом которого я готов поделиться до того, как Вас попросили зарегистрироваться. Его секрет - в том, что не существует универсальных рецептов, гарантирующих полноценное освоение английского языка. Есть только Вы, Ваши интересы, Ваши чувства и … здравый смысл. Можно, конечно, родиться в стране, где говорят на английском языке. Этот «метод» - родиться и жить в англоязычной стране - гарантирует успех даже в том случае, если Вы вообще не интересуетесь языком.
+                        </div>
+                    </div>
+                    <div style="margin-left: 200px;">
+                        <div id="what_for" style=" 
+                             position: absolute;
+                             top: 47px;
+/*                             display: inline-block; */
+                             /*                     position: fixed; */
+                             border-bottom-left-radius: 10px; font-size: 18px; 
+                             font-weight: bold;
+                             cursor: pointer;
+                             color: #B21522; background-color: #81AF30; opacity: 0.9;
+                             padding: 5px;  height: 25px; z-index: 2000000; 
+                             /*                     margin: 0 auto; */
+                             /*                     text-align: right;*/
+                             /*                     margin-left: 1140px;*/
+                             width: 150px; 
+                             /*                     right: 0px;*/
+                             -webkit-box-shadow:  -2px 2px 2px 2px rgba(44, 44, 44, 1);
+
+                             box-shadow:  -1px 1px 1px 1px rgba(44, 44, 44, 1);
+                             border-left-style: dotted;
+                             border-bottom-style: solid;
+                             border-width: 1px;
+                             text-shadow: 0px 1px 0px grey;
+                             display: none;
+                             border-color: rgba(44, 44, 44, 1);
+                             "
+                             onclick="$('.next').click();$(this).hide('togle');$('#score_div').hide('togle');$('#back_to_exercises').show('togle');"
+                             >
+                            <span>
+                                Зачем мне это?
+                            </span>
+                        </div>
+
+
+<!--                        <div id="back_to_exercises" style=" display: none; 
+                             position: absolute; 
+                             top: 47px;
+                             border-bottom-left-radius: 10px; font-size: 18px; 
+                             font-weight: bold;
+                             cursor: pointer;
+                             color: #4d6702; background-color: #b8cee4; opacity: 0.9;
+                             padding: 5px;  height: 25px; z-index: 2000000; 
+                             margin: 0 auto; text-align: center;
+                             width: 150px;
+/*                             right: 0px;*/
+                             -webkit-box-shadow:  -2px 2px 2px 2px rgba(44, 44, 44, 1);
+
+                             box-shadow:  -1px 1px 1px 1px rgba(44, 44, 44, 1);
+                             border-left-style: dotted;
+                             border-bottom-style: solid;
+                             border-width: 1px;
+                             /*             text-shadow: 0px 1px 0px grey;*/
+                             border-color: rgba(44, 44, 44, 1);
+                             "
+                             onclick="$('.prev').click();$(this).hide('togle');$('#score_div').show('togle');$('#what_for').show('togle')"
+                             >
+                            <span>
+                                К упражнениям
+                            </span>
+                        </div>-->
+
+                    </div>
+
+                </div>
+
+                <style type="text/css">
+                    .cardi:hover{
+                        opacity: 0.8;
+
+                    }
+                    .cardi{
+                        cursor: pointer;
+                    }
+
+
+                </style>
+
+                <div style="
+                     top: -10px;
+                     width: 100%;
+                     padding-left: 70px; 
+                     padding-right: 70px;
+                     margin-bottom: 50px;
+                     ">
+                    <span 
+                        class="cardi"
+                        style="
+                        background: url('./images/img/kate/12.png'); 
+                        width: 320px;
+                        height: 130px;
+                        /*                          display: inline-table;*/
+                        display: inline-block;
+                        background-size: 390px 190px;
+                        /*                          background-repeat: no-repeat;*/
+                        margin-right: 50px;
+                        padding: 15px;
+                        border-radius: 1px;
+                        /*                          opacity: 0.9;*/
+                        -moz-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Firefox */
+                        -webkit-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Safari и Chrome */
+                        box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Параметры тени */
+                        color: white; font-famil: Verdana ; font-style: normal; font-weight: normal;
+                        ">
+                        <h3 style="">
+                            Информация для пользователей
+                        </h3>
+
+                        <p style="margin-top: 20px;">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        </p>
+                        <!--                        some text-->
+                    </span>
+
+                    <span 
+                        class="cardi"
+                        style="
+                        background: url('./images/img/kate/12.png'); 
+                        width: 320px;
+                        height: 130px;
+                        /*                          display: inline-table;*/
+                        display: inline-block;
+                        background-size: 390px 190px;
+                        /*                          background-repeat: no-repeat;*/
+                        margin-right: 50px;
+                        padding: 15px;
+                        border-radius: 1px;
+                        /*                          opacity: 0.9;*/
+                        -moz-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Firefox */
+                        -webkit-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Safari и Chrome */
+                        box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Параметры тени */
+                        color: white; font-famil: Verdana ; font-style: normal; font-weight: normal;
+                        ">
+                        <h3 style="">
+                            Информация для пользователей
+                        </h3>
+
+                        <p style="margin-top: 20px;">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        </p>
+                        <!--                        some text-->
+                    </span>
+                    <span 
+                        class="cardi"
+                        style="
+                        background: url('./images/img/kate/12.png'); 
+                        width: 320px;
+                        height: 130px;
+                        /*                          display: inline-table;*/
+                        display: inline-block;
+                        background-size: 390px 190px;
+                        /*                          background-repeat: no-repeat;*/
+                        margin-right: 50px;
+                        padding: 15px;
+                        border-radius: 1px;
+                        /*                          opacity: 0.9;*/
+                        -moz-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Firefox */
+                        -webkit-box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Для Safari и Chrome */
+                        box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.7) ; /* Параметры тени */
+                        color: white; font-famil: Verdana ; font-style: normal; font-weight: normal;
+                        ">
+                        <h3 style="">
+                            Информация для пользователей
+                        </h3>
+
+                        <p style="margin-top: 20px;">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        </p>
+                        <!--                        some text-->
+                    </span>
+                </div>
+
+
+
+
+                <!--        <hr/>-->
+                <!--                <div id="imageloader">
+                                    <img src="../images/ajax-loader.gif" />
+                                </div>-->
+                <!--                <div style="margin-top: 50px;"></div>-->
+                <!--                <div id="carousel" style="margin-left: 2px; margin-right: 2px;
+                                     -moz-box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.9); /* Для Firefox */
+                                     -webkit-box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.9); /* Для Safari и Chrome */
+                                     box-shadow: 3px 3px 10px 5px rgba(0,0,0,0.9); /* Параметры тени */
+                                     ">
+                                    <img src="#{request.contextPath}/images/demo/01.jpg" alt="Field" id="field" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/05.jpg" alt="Gnome" id="gnome" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/03.jpg" alt="Pencils" id="pencils" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/04.jpg" alt="Golf" id="golf" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/02.jpg" alt="River" id="river" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/06.jpg" alt="Train" id="train" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/07.jpg" alt="Leaf" id="leaf" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/08.jpg" alt="Dog" id="dog" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/09.jpg" class="film_strip"  />
+                                    <img src="#{request.contextPath}/images/demo/010.jpg" class="film_strip" />
+                                    <img src="#{request.contextPath}/images/demo/011.jpg" class="film_strip" />
+                                </div>-->
+                <!--                <div id="content" style="background-image: url('../images/div_bg.jpg') ">
+                                    <div class="wrap">                
+                                        <div class="separate clearFix" style="">
+                                            <div class="wrap" id="about" style="font-family: 'Droid Serif', Arial; font-style: italic; font-weight: normal; text-align: justify; text-indent: 20px; color: #252525;" >
+                                                <h3 style="color: #4682B4;" class="method" >Метод Лирмака</h3>
+                                                <p style="font-size: 1.15em;" >
+                                                    Здравствуйте! Это мой метод, секретом которого я готов поделиться до того, как Вас попросили зарегистрироваться. Его секрет - в том, что не существует универсальных рецептов, гарантирующих полноценное освоение английского языка. Есть только Вы, Ваши интересы, Ваши чувства и … здравый смысл. Можно, конечно, родиться в стране, где говорят на английском языке. Этот  «метод» - родиться и жить в англоязычной стране - гарантирует успех даже в том случае, если Вы вообще не интересуетесь языком.
+                                                </p>
+                                                <p style="font-size: 1.15em;">
+                                                    Если Вы живете в другой стране, то единственным ключом к сокровищнице чужой культуры является… любопытство.  Все, что будет сказано ниже, относится, как к начинающим учить английский язык с нуля, так и к тем, кто приложил к этому много усилий, но продвинулся недалеко. Уверен, что много полезных открытий сделают для себя и те, кто избрал лингвистику в качестве своей профессии. Если, конечно, Вы не воспримите близко к сердцу то, что написано ниже.
+                                                </p>
+                                                <p style="font-size: 1.15em;">
+                                                    Совет профессионалам:  возможно, что Вам не понравятся мои диагнозы и радикальные советы, но я уверен, что <span style="color: #F26904;">коллекция материалов </span> пригодится Вам для самообразования и для занятий со студентами.
+                                                </p>
+                                                                        <a href="./Unique._files/Unique..html" class="more" title="View more">View more</a>
+                                            </div>
+                
+                                            <div class="col2-3">
+                                                <p class="gallery clearFix">
+                
+                                                </p>
+                                            </div>
+                
+                                        </div>
+                
+                                        <hr/>
+                
+                                                        <hr/> 
+                
+                                        
+                
+                                                        <hr/>
+                
+                
+                                    </div>  / .wrap 
+                                </div>  / #content         -->
+
+                <!--        <hr/>-->
+                <div class="" id="authentification_div" style="display: none;">
+
+
+
+                    <div class="col1-3" id="register">
+                        <h3>Регистрация в системе</h3>
+                        <h:form prependId="false">
+                            <p>
+                                <h:inputText id="registerInput" value="#{authorisationBean.email}" style="width: 98%;" placeholder="email" />
+                            </p>
+                            <p>
+                                <h:inputText value="#{authorisationBean.password}"  style="width: 98%;" placeholder="password" />
+                            </p>
+                            <p>
+                                <h:inputText value="#{authorisationBean.confirmPassword}"  style="width: 98%;" placeholder="confirm password" />
+                            </p>
+                            <p style="text-align: center;">
+                                <h:commandButton actionListener="#{authorisationBean.register}" value="Зарегистрироваться" class="btn">
+                                    <f:ajax execute="@form" render=":registerMessagesPanel" />
+                                </h:commandButton>
+                            </p>
+                        </h:form>
+
+                        <p style="color: red;">
+                            <h:panelGroup id="registerMessagesPanel" class="color: red;">
+                                <h:messages  />
+                            </h:panelGroup>
+                        </p>
+
+                    </div>
+
+                    <div class="col1-3">
+                        <h3>Более <span style="color: #F26904;">10.000</span> роликов по <span style="color: #F26904;">120</span>  тематикам</h3>
+                        <p>
+                            Для доступа к ним Вам всего лишь нужно зарегистрироваться!
+                        </p>
+                    </div>
+
+                    <div class="col1-3">
+                        <h3>Вход в систему</h3>
+                        <h:form prependId="false">
+                            <p>
+                                <h:inputText id="loginInput" value="#{authorisationBean.email}" style="width: 98%;" placeholder="email" />
+                            </p>
+                            <p>
+                                <h:inputText value="#{authorisationBean.password}"  style="width: 98%;" placeholder="password" />
+                            </p>
+                            <p style="text-align: center;">
+                                <h:commandButton actionListener="#{authorisationBean.login}" value="Войти" class="btn">
+                                    <f:ajax execute="@form" render=":loginMessagesPanel" />
+                                </h:commandButton>
+                            </p>
+                        </h:form>
+                        <p style="color: red;">
+                            <h:panelGroup id="loginMessagesPanel" class="color: red;">
+                                <h:messages  />
+                            </h:panelGroup>
+                        </p>
+
+                    </div>
+
+                </div>
+                <footer>
+                    <div id="footer" style="width: 100%;
+                         font-family: Verdana;
+                         color: white;
+                         padding-top: 10px;
+
+                         font-size: 14px;
+                         background: url('./images/img/kate/b1.jpg'); 
+                         /*                             width: 320px;*/
+                         height: 130px;
+                         /*                          display: inline-table;*/
+                         display: inline-block;
+                         /*                             background-repeat: repeat-x;*/
+                         "
+
+                         >
+                        <div style=" margin: 0 auto; width: 1300px; margin-bottom: 50px;">
+                            <span style="display: inline-block; text-shadow: none; margin-left: 140px;" class="span4">
+                                <ul>
+                                    <li style="cursor: pointer;">
+                                        О компании
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Пресса
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Почему EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Наши гарантии
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        EF в мире
+                                    </li>
+
+                                    <li style="cursor: pointer;">
+                                        Другие компании EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        FAQ
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Видео
+                                    </li>
+                                </ul>
+                            </span>
+
+                            <span style="display: inline-block; text-shadow: none;" class="span4">
+                                <ul>
+                                    <li style="cursor: pointer;">
+                                        О компании
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Пресса
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Почему EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Наши гарантии
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        EF в мире
+                                    </li>
+
+                                    <li style="cursor: pointer;">
+                                        Другие компании EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        FAQ
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Видео
+                                    </li>
+                                </ul>
+                            </span>
+
+                            <span style="display: inline-block; text-shadow: none;" class="span4">
+                                <ul>
+                                    <li style="cursor: pointer;">
+                                        О компании
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Пресса
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Почему EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Наши гарантии
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        EF в мире
+                                    </li>
+
+                                    <li style="cursor: pointer;">
+                                        Другие компании EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        FAQ
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Видео
+                                    </li>
+                                </ul>
+                            </span>
+
+
+                            <span style="display: inline-block; text-shadow: none;" class="span3">
+                                <ul>
+                                    <li style="cursor: pointer;">
+                                        О компании
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Пресса
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Почему EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Наши гарантии
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        EF в мире
+                                    </li>
+
+                                    <li style="cursor: pointer;">
+                                        Другие компании EF
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        FAQ
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        Видео
+                                    </li>
+                                </ul>
+                            </span>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+                </footer>
+
+                <div id="metastasis_wrapper" style="display: none; margin: 0 auto; width:1100px; height: 600px; text-align: center; top: 100px;">
+                    <div id="metastasis_dialog" class="modal centered " style="text-align: left; width: 1100px; margin: 0 auto; margin-top: 40px;  ">
+                        <div class="modal-header">
+                            <!--                    <a class="close" onclick="$('#metastasis_dialog').hide()">×</a>-->
+
+                            <h:panelGroup id="modal_header">
+                                <c:if test="#{metastasisBean.currentMetastasis eq null}">
+                                    <h3>Загрузка...</h3>
+                                </c:if>
+
+                                <c:if test="#{metastasisBean.currentMetastasis ne null}">
+                                    <h3>#{metastasisBean.currentMetastasis.title}</h3>
+                                </c:if>
+                            </h:panelGroup>
+                        </div>
+                        <div class="modal-body" style="">
+                            <p>
+
+
+
+                                <h:panelGroup id="metastasis">
+
+                                    <c:if test="#{metastasisBean.currentMetastasis ne null}">
+                                        <h:form style="display: none;" prependId="false">
+                                            <h:inputHidden id="hiddenMeta" value="#{metastasisBean.currentMetastasis.text}" />
+                                        </h:form>
+                                        <span id="metaText">
+                                            #{metastasisBean.currentMetastasis.text}
+                                        </span>
+                                    </c:if>
+                                </h:panelGroup>
+
+
+
+                            </p>
+
+                            <h:form style="display: none;" prependId="false">
+                                <h:inputHidden value="#{metastasisBean.currentMetastasisId}" id="metastasis_id_hidden" />
+                                <h:commandButton actionListener="#{metastasisBean.initMetastasis()}" id="init_metastasis_button">
+                                    <f:ajax render=":metastasis :modal_header" execute="@form" onevent="function(data){if (data.status == 'success') $('#metaText').html(filter($('#hiddenMeta').val())); }" />
+                                </h:commandButton>
+                            </h:form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <!--                <a href="#" class="btn" data-dismiss="modal" onclick="$('#metastasis_dialog').hide()">Close</a>-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--        <div id="rookie_wrapper" style="display: none; margin: 0 auto; width:700px; height: 600px; text-align: center; top: 100px;">-->
+                <div id="rookie_dialog" class="modal centered " style="text-align: left; width: 700px; margin: 0 auto; margin-top: 40px; display: none;  ">
+                    <div class="modal-header">
+                        новичкам
+                    </div>
+                    <div class="modal-body" style="">
+                        <p>
+                            Если вам нужна подсказка, вы, видимо, никогда не учили английский язык. Однако отчаиваться не нужно, тем более что у вас есть огромное преимущество перед теми, кто понимает смысл фраз в тестах 3 и 4: «доктора» не успели испортить вам («пациенту») произношение. Т.е. вы вообще – не «пациент»! Хотите в этом убедиться? Фразу “togetherwearestronger” вы можете перевести сами, просто заменив соответствующие слова на их русские эквиваленты. Когда вы будете выписывать их в тетрадь, обратите внимание на транскрипцию этих слов. Для вас сейчас это чрезвычайно важно – обращать внимание на правильное их произношение. Итак, после многократного прослушивания этой фразы и после того, как вы обратили внимание на звуки, которые для русского уха не совсем привычны, попросите кого-нибудь произнести эти простые три слова. Если вы почувствуете разницу между «тугезэ» ви а стронге» и тем, к чему успели привыкнуть, считайте это своим первым успехом. Попробуйте закрепить этот успех и произнести фразу самостоятельно. Если это получается пока с трудом, то отложите попытки до лучших времен. Они наступят тогда, когда вы прослушаете много разных фраз из разных источников, обращая внимание на звуки. Те, кто произносит «tугезэ», наверняка слово и “strong” произнесут как «стронк». Не судите их строго – те, кто их учил либо сами произносили эти звуки так же, либо не обращали внимание на то, как это делали ученики. Не каждый преподаватель хочет делать работу логопеда. Часто они и сами – «лофофеты».
+                        </p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <!--                <a href="#" class="btn" data-dismiss="modal" onclick="$('#metastasis_dialog').hide()">Close</a>-->
+                    </div>
+                </div>
+
+
+                <div id="video_dialog" class="modal centered " style="text-align: left; width: 670px;  margin: 0 auto; margin-top: 10px; display: none;  ">
+                    <div class="modal-header">
+                        О сервисе
+                    </div>
+                    <div class="modal-body" style="max-height: 800px;">
+                        <iframe width="640" height="480" src="http://www.youtube.com/embed/KO1AaVChhF0?rel=0&amp;wmode=opaque&amp;autoplay=1&amp;enablejsapi=1" type="application/x-shockwave-flash" allowscriptaccess="always" id="playerid" frameborder="0" ></iframe>
+
+                    </div>
+                    <div class="modal-footer">
+                        <!--                <a href="#" class="btn" data-dismiss="modal" onclick="$('#metastasis_dialog').hide()">Close</a>-->
+                        <span style="color: #999; cursor: pointer;" onclick="$('.b-modal').click();" >пропустить</span>
+                    </div>
+                </div>
+
+                <!--        </div>-->
+
+                <div id="fancybox-tmp"></div>
+                <div id="fancybox-loading"><div></div></div>
+                <div id="fancybox-overlay"></div>
+                <div id="fancybox-wrap">
+                    <div id="fancybox-outer">
+                        <div class="fancybox-bg" id="fancybox-bg-n"></div>
+                        <div class="fancybox-bg" id="fancybox-bg-ne"></div>
+                        <div class="fancybox-bg" id="fancybox-bg-e"></div>
+                        <div class="fancybox-bg" id="fancybox-bg-se"></div>
+                        <div class="fancybox-bg" id="fancybox-bg-s"></div>
+                        <div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; z-index: 2147483647; display: none; ">
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:composition template="./templates/lion/template.xhtml">
+
+            <ui:define name="header">
+                <ui:include src="./templates/lion/user/header.xhtml">
+                    <ui:param name="tab_num" value="2" />
+                </ui:include>
+            </ui:define>
+
+            <ui:define name="container">
+                <div class="row">
+                    <span class="span12" style="margin-bottom: 20px; background-color: #EDEDE3; ">
+                        <div id="mytimeline"></div>
+                        
+                    </span>
+
+                    <div class="span3">
+                        <ui:include src="./templates/lion/user/leftNavBar.xhtml"/>
+                    </div>
+                    <div class="span9">
+<!--                        <ui:include src="./templates/lion/user/content.xhtml"></ui:include>-->
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="footer">
+                <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="hiddenBlock">
+
+            </ui:define>
+
+            <ui:define name="scripts">
+
+                <script type="text/javascript">
+                    //<![CDATA[
+                    $(function(){
+                        initTimeline();
+                    });
+                    //]]>
+                </script>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

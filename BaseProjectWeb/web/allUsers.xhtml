@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:repeat value="#{allUsersBean.users}" var="user" >
+            <span style="display: inline-block; width: 300px; margin-bottom: 20px; font-size: 20px; border-bottom: 3px dashed firebrick;">#{user.email}</span> <a href="#{request.contextPath}/qr?id=#{user.id}" >get QR code</a>
+            <br/>
+        </ui:repeat>
+    </body>
+</html>

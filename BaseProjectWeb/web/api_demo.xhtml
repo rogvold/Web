@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ppctu="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/knockout.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+        <title>Test page</title>
+
+        <script type="text/javascript">
+            // <![CDATA[
+            google.load("visualization", "1", {packages:["corechart"]});
+            var r;
+            var secret = 'h7a7RaRtvAVwnMGq5BV6';
+            var token = "";
+            
+            var user = {
+                email: "pogr.yuo@gmail.com"
+                ,password: "02034242"
+                ,firstName: "Sabir"
+                ,lastName: "Shaykhlislamov"
+                ,department: "MIPT"
+                ,about: "Web programmer"
+                ,diagnosis: 'Do not know'
+                ,description: 'I like this service'
+                ,statusMessage: 'I hate this cold spring in Moscow'
+                ,birthDate: '02/02/1993'
+                ,sex: 1
+                ,height: 1.54
+            }
+            
+            var userUpdate = {
+                email: "sabirjun@gmail.com"
+                ,password: "sabirmipt"
+                ,firstName: "Sabir"
+                ,lastName: "Shaykhlislamov"
+                ,department: "MIPT"
+                ,about: "We programmer"
+                ,diagnosis: 'Do no know'
+                ,description: 'This is description change'
+                ,statusMessage: 'I adore summer'
+                ,birthDate: '02/02/1992'
+            }
+            
+                        
+            function myAj(s){
+                $('#urlBox').text(s);
+                $.ajax({
+                    url: s
+                    ,type: 'POST'
+                    ,success: function(res){
+                        r = res;
+                        message = (res.response == undefined) ? res.error : res.response;
+                        $('#responseBox').text(JSON.stringify(r));
+                        //                                drawPlot(r);
+                    }
+                    ,fail: function(res){
+                        alert('fail: ' + res)
+                    }
+                });
+            }
+                    
+            function draw(s){
+                $('#urlBox').text(s);
+                $.ajax({
+                    url: s
+                    ,type: 'POST'
+                    ,success: function(res){
+                        r = res;
+                        message = (res.response == undefined) ? res.error : res.response;
+                        $('#responseBox').text(JSON.stringify(r));
+                        drawPlot(r);
+                    }
+                    ,fail: function(res){
+                        alert('fail: ' + res)
+                    }
+                });
+            }
+            
+            function checkExistence(){
+                var e = 'pogr.yuo@gmail.com';
+                var s = 'resources/SecureAuth/check_existence';
+                var d = 'email='+e;
+                myAj2(s,d);
+            }
+            
+
+            
+
+            
+            //            function info(){
+            //                var s = 'resources/auth/info?secret='+secret+'&email='+user.email+'&password='+user.password;
+            //                myAj(s);
+            //            }
+            
+            function updateInfo(){
+                //                var s = 'resources/auth/update_info?secret='+secret+'&json='+JSON.stringify(userUpdate);
+                //                myAj(s);
+                var s = 'resources/SecureAuth/update_info';
+                var d = 'json='+JSON.stringify(user) + '&token='+token;
+                myAj2(s,d);
+            }
+            
+            function allSessions(){
+                var s = 'resources/SecureSessions/all';
+                var d = 'token='+token;
+                myAj2(s,d);
+            }
+
+            function getTension(){
+                var s = 'resources/SecureIndicators/251/tension';
+                var d='token='+token;
+//                draw(s);
+                myAj2(s,d);
+            }
+
+            function getRates(){
+                var s = 'resources/SecureSessions/rates';
+                var d = 'sessionId=251&token=' + token;
+                myAj2(s,d);
+            }
+            
+            function getToken(){
+                var s = 'resources/token/authorize';
+                $('#urlBox').text(s);
+                
+                $.ajax({
+                    type: "POST"
+                    ,data: "email=" + user.email  + "&password="+ user.password + "&deviceId=1221212"
+                    , url : s
+                    ,success: function(data){
+                        r = data;
+                        $('#responseBox').text(JSON.stringify(r));
+                        if (data.responseCode == 1)
+                            token = data.data.token;
+                        
+                        
+                    }
+                    
+                });
+            }
+            
+            function register(){
+                var s = 'resources/SecureAuth/register';
+                $('#urlBox').text(s);
+                
+                $.ajax({
+                    type: "POST"
+                    ,data: "email=" + user.email  + "&password="+ user.password
+                    , url : s
+                    ,success: function(data){
+                        r = data;
+                        $('#responseBox').text(JSON.stringify(r));
+                    }
+                });
+            }
+            
+            function info(){
+                var s = 'resources/SecureAuth/info'
+                var d = 'token='+token;
+                myAj2(s,d);
+            }
+
+            function check(){
+                var s = 'resources/SecureAuth/check_data';
+                var d = 'email='+user.email+'&password='+user.password;
+                myAj2(s,d);
+            }
+
+            function myAj2(myUrl, jsonData){
+                $('#urlBox').text(myUrl);
+                $('#dataBox').text(jsonData);
+                $.ajax({
+                    type: "POST"
+                    ,data: jsonData
+                    , url : myUrl
+                    ,success: function(data){
+                        r = data;
+                        $('#responseBox').text(JSON.stringify(r));
+                    }
+                });
+            }
+
+            function drawPlot(plot){
+                var data = google.visualization.arrayToDataTable(plot);
+                new google.visualization.LineChart(document.getElementById('visualization')).
+                    draw(data, {curveType: "function",
+                    width: 500, height: 400,
+                    vAxis: {maxValue: 10}
+                }
+            );
+            }
+
+
+            function uploadRates(){
+                now = new Date();
+                var ratesData = {
+//                    email: 'pogr.yuo@gmail.com'
+//                    ,password: '02034242'
+//                    ,
+                    start: now.getTime()
+                    ,rates: [934, 912, 953]
+                    ,create: 1
+                }
+                var s = 'resources/SecureRatesUploading/upload';
+                var d = 'token='+token+'&json='+JSON.stringify(ratesData);
+                myAj2(s,d);
+            }
+            
+            
+            function syncRates(){
+                now = new Date(2013, 0, 25,1,1,1,123); // the 25th of February
+                var ratesData = {
+                    start: now.getTime()
+                    ,rates: [934, 912, 953]
+                }
+                var s = 'resources/SecureRatesUploading/sync';
+                var d = 'token='+token+'&json='+JSON.stringify(ratesData);
+                myAj(s);
+            }
+            //]]>
+        </script>
+
+
+    </h:head>
+    <body>
+        <button onclick="checkExistence();">check existence</button>
+        <button onclick="register();">register</button>
+        <button onclick="info();">info</button>
+        <button onclick="updateInfo();">update info</button>
+        <button onclick="check();">check</button>
+        <button onclick="uploadRates();" >upload rates</button>
+        <button onclick="syncRates();" >sync rates</button>
+        <button onclick="allSessions();" >all sessions</button>
+
+        <button onclick="getTension();" >getTension</button>
+        <button onclick="getRates();" >getRates</button>
+
+
+        <button onclick="getToken();" >getToken</button>
+
+        <h2>url:</h2>
+        <div id="urlBox">
+
+        </div>
+
+        <h2>data:</h2>
+        <div id="dataBox">
+
+        </div>
+
+        <h2>response:</h2>
+        <div id="responseBox" style="display: block; height: 100px; overflow-y: auto; border: grey 1px dotted;">
+
+        </div>
+
+        <h2>charts</h2>
+        <div id="visualization" style="width: 900px; display: block; height: 400px;">
+
+        </div>
+
+    </body>
+</html>

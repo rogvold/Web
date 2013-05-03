@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="generator" content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+        <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <title>CardioMood - personal cabinet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" /><!-- Le styles -->
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/bootstrap.css" rel=
+              "stylesheet" type="text/css" />
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/main.css" rel=
+              "stylesheet" type="text/css" />
+        <link href="http://wbpreview.com/previews/WB0TN0856/library/css/buttons.css" rel=
+              "stylesheet" type="text/css" />
+        <link href="http://wbpreview.com/previews/WB0TN0856/library/plugins/easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" />
+        
+        
+        <link href="./js/pines/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
+        <link href="http://wbotelhos.com/capty/css/jquery.capty.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src=
+                "./Lion%20-%20Bootstrap%20Admin%20Theme_files/jquery.min.js">
+        </script>
+        <script type="text/javascript" src="http://wbotelhos.com/capty/js/jquery.capty.min.js"></script>
+        <script type="text/javascript" src="./js/pines/jquery.pnotify.min.js"></script>
+        <style type="text/css">
+            /*<![CDATA[*/
+            body {
+                padding-top: 60px;
+            }
+            *, ::after, ::before {
+                box-sizing: content-box;
+            }
+
+            hr{
+                border-bottom-color: #DBD2C6 !important;
+            }
+
+            /*]]>*/
+        </style>
+        <link href=
+              "http://wbpreview.com/previews/WB0967058/assets/css/bootstrap-responsive.css" rel=
+              "stylesheet" type="text/css" />
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+                <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+              <![endif]-->
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href=
+              "http://wbpreview.com/previews/WB0967058/assets/ico/favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href=
+              "http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-144-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href=
+              "http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-114-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href=
+              "http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-72-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" href=
+              "http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-57-precomposed.png" />
+        <!-- Google Fonts call. Font Used Open Sans -->
+        <link href="./Lion%20-%20Bootstrap%20Admin%20Theme_files/css" rel="stylesheet" type=
+              "text/css" />
+        <link type="text/css" rel="stylesheet" href=
+              "chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css" />
+        <script type="text/javascript" charset="utf-8" src=
+                "chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js">
+        </script>
+        <script type="text/javascript">
+            //<![CDATA[
+            window["_GOOG_TRANS_EXT_VER"] = "1";
+            //]]>
+        </script>
+        <script type="text/javascript">
+            //<![CDATA[
+        
+            function updateAvatar(avId){
+                $.get("/BaseProjectWeb/resources/UserInfo/update_avatar?id="+avId);
+                $('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());
+                $('#avaProg ').toggle();
+                setTimeout(function(){$('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());}, 1000);
+                $.pnotify({text: 'Avatar is succesfully updated!', history: false, type: 'info', hide: false});
+            }
+            $(function(){
+            
+                $('.capty-caption').css('padding-left','0px');
+            
+                $('#fileupload').fileupload({
+                    dataType: 'json',
+                    done: function(e, data){
+                        d = data;
+                        var avId = data.result.data[0]
+                        updateAvatar(avId);
+                        //                    alert('sd');
+                    },
+                    progressall: function (e, data) {
+                        //                    alert('sdd');
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('.bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                    }
+                    
+                });
+            });
+            
+            //]]>
+        </script>
+    </head>
+
+    <body screen_capture_injected="true">
+        <!-- NAVIGATION MENU -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
+                    <a class="brand" href="./Lion%20-%20Bootstrap%20Admin%20Theme_files/Lion%20-%20Bootstrap%20Admin%20Theme.html">
+                        <img src="./Lion%20-%20Bootstrap%20Admin%20Theme_files/logo-small.png" alt="" />
+                        CardioMood
+                    </a>
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href=
+                                                  "./Lion%20-%20Bootstrap%20Admin%20Theme_files/Lion%20-%20Bootstrap%20Admin%20Theme.html">
+                                    Home</a></li>
+
+                            <li><a href=
+                                   "http://wbpreview.com/previews/WB0967058/charts.html">Charts</a></li>
+
+                            <li><a href="http://wbpreview.com/previews/WB0967058/manager.html">File
+                                    Manager</a></li>
+
+                            <li><a href=
+                                   "http://wbpreview.com/previews/WB0967058/calendar.html">Calendar</a></li>
+
+                            <li><a href="http://wbpreview.com/previews/WB0967058/ui-elements.html">UI
+                                    Elements</a></li>
+
+                            <li><a href=
+                                   "http://wbpreview.com/previews/WB0967058/tables.html">Tables</a></li>
+
+                            <li><a href="http://wbpreview.com/previews/WB0967058/user.html">User</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Example row of columns -->
+
+            <div class="row">
+                <div class="span3">
+                    <div class="dash-unit" style="height: auto; margin-bottom: 20px; ">
+                        <img id="ava" name="#content-target" src="/BaseProjectWeb/avatar" style=
+                             " height: 300px; width: 273px;" alt="Brian Smith" />
+
+                        
+                        <span style="border-right: dotted 1px grey;">
+                            <img src="./images/beating-heart.gif" style="width: 18px; margin-top: -3px;" />
+                            <span class="badge badge-success" style="">86</span>
+                        </span>
+                        <h1 style="display: inline-block;">Shaykhlislamov Sabir <sup style="color: lightgreen;"> online</sup></h1>
+                    </div>
+
+                    <div class="block-unit">
+                        <div class="oneBox">
+                            <a href="user.html" class="tooltip-test" data-placement="top"
+                               data-original-title="Go to the User Profile Page">
+                                <em>Logged as a user</em>
+                            </a>
+                        </div>
+
+                        <div class="oneBox"> 
+                            <p style="font-size: 20px;">
+                                <i class="icon-file"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >MY SESSIONS 
+                                    <sup style="color: green; font-size: 12px;">(active)</sup>
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="oneBox"> 
+                            <p style="font-size: 20px;">
+                                <i class="icon-plus-sign"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >MY DOCTORS</a>
+                            </p>
+                        </div>
+                        <div class="oneBox"> 
+                            <p style="font-size: 20px;">
+                                <i class="icos-user2"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >
+                                    MY FRIENDS 
+                                    <sup style="color: green; font-size: 12px; ">(+4)</sup>
+                                    <!--                                    <span class="badge badge-success" style="">86</span>-->
+                                </a>
+                            </p>
+                        </div>
+
+
+
+                        <div class="oneBox"> 
+                            <p style="font-size: 20px;">
+                                <i class="icos-comments3"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >MY MESSAGES
+                                    <sup style="color: green; font-size: 12px; ">(+3)</sup>
+                                </a>
+                            </p>
+                        </div>
+
+                        <hr/>
+
+                        <div class="oneBox" style="margin-top: 10px;"> 
+                            <p style="font-size: 20px;">
+                                <i class="icos-github2"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >PROFILE</a>
+                            </p>
+                        </div>
+
+                        <div class="oneBox" > 
+                            <p style="font-size: 20px;">
+                                <i class="icon-cog"></i>
+                                <a href="#" style="text-decoration: none; vertical-align: middle;" >SETTINGS</a>
+                            </p>
+                        </div>
+
+
+
+                        <p style="background:#dbd2c6;padding:.5em .75em;color:#444;font-size:12px;">
+                            <h2>
+                                ��������������������������
+                            </h2>
+
+                            <em style="padding: 10px; display: block;">
+                                �������������� ������ ���������� ���������� ���� ����������������������, ��.��. ������������������ 4 ������ ���� �������������������� ����������������
+                            </em>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="span9">
+                    <div class="span3">
+                        <hr />
+
+                        <h4>Current Tension</h4>
+
+                        <div class="knob-wrapper knob-chart with-button" style="margin-bottom: 20px;">
+                            <span class="knob-inner"><span class="percentage easyPieChart" data-percent="85" style="width: 120px; height: 120px; line-height: 120px;">
+                                    <span style="margin-top: -10px; vertical-align: middle;">85%</span></span></span>
+                            <a class="btn btn-large btn-danger" href="#">58,459</a>
+                        </div>
+
+                        <h5>STATUS: <span style="color: lightseagreen;">NORMAL </span> </h5> 
+
+                        <p>Beats/minute: <b style="color:#ff6e01">78</b></p>
+                    </div>
+
+                    <div class="span6" style="margin-left: 0px;">
+                        <hr />
+
+                        <h4>Current Tension</h4>
+
+                        <div id="chartline" style="height: 250px;"></div>
+                    </div>
+
+                    <div class="span9 block-unit" style=
+                         "margin-left: 0px; margin-top: 40px; border-top-style: solid; border-top-width: 8px; border-top-color: #CFCDC1; padding: 5px;">
+                        <h4 style=
+                            " font-family: 'Open Sans', sans-serif; font-weight: lighter; font-size: 18px; line-height: 20px;">
+                            Current session info</h4>
+
+                        <ul>
+                            <li>Duration: <code class="" style="font-size: 14px;">153 minutes</code></li>
+
+                            <li>Min tension: <code class="" style="font-size: 14px;">20
+                                    points</code></li>
+
+                            <li>Max tension: <code class="" style="font-size: 14px;">200
+                                    points</code></li>
+                        </ul>
+
+                        <p>
+                            ���������� ���������� �������������������������� ������������������������������ �������������������� �� �������������� ������������
+                        </p>
+                    </div>
+                </div>
+            </div><!-- /row -->
+        </div><!-- /container -->
+        <br />
+
+
+        <div id="footerwrap">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <p><img src="./Lion%20-%20Bootstrap%20Admin%20Theme_files/logo.png" alt=
+                                "" /></p>
+
+                        <p>Lion Admin Theme - Crafted With Love - Copyright 2012</p>
+                    </div>
+                </div><!-- /row -->
+            </div><!-- /container -->
+        </div><!-- /footerwrap -->
+
+        <div id="content-target">
+            <!--            <span style="color: #F00;">Change avatar</span>-->
+            <!--            <br/>-->
+            <button type="button" class="btn btn-info" onclick="$('input:file').click();" style=
+                    "width: 260px; margin: 0 auto; display: block;">Change avatar</button> <input id=
+                    "fileupload" type="file" name="files[]" style="visibility:hidden; height: 1px;"
+                    data-url="/BaseProjectWeb/upload" onclick=
+                        "$('#avaProg ').toggle(); $('#avaProg .bar').css('width','0%');" />
+
+            <div class="progress progress-striped active" id="avaProg" style=
+                 "margin-top: 0px; display: none;">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        
+        <script type="text/javascript" src=
+                "./Lion%20-%20Bootstrap%20Admin%20Theme_files/dash-charts.js">
+        </script>
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/jquery.noty.js"></script>-->
+        <script type="text/javascript" src=
+                "./Lion%20-%20Bootstrap%20Admin%20Theme_files/topRight.js">
+        </script>
+        <script type="text/javascript" src=
+                "http://wbpreview.com/previews/WB0967058/assets/js/highcharts.js">
+        </script><!-- You can add more layouts if you want -->
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/default.js"></script>-->
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/dash-noty.js"></script>-->
+        <script type="text/javascript" src=
+                "http://wbpreview.com/previews/WB0TN0856/library/plugins/easy-pie-chart/jquery.easy-pie-chart.js">
+        </script><script type="text/javascript" src=
+                         "./Lion%20-%20Bootstrap%20Admin%20Theme_files/admin.js">
+        </script><script type="text/javascript" src=
+                         "http://blueimp.github.io/jQuery-File-Upload/js/vendor/jquery.ui.widget.js">
+        </script><script type="text/javascript" src=
+                         "http://blueimp.github.io/jQuery-File-Upload/js/jquery.iframe-transport.js">
+        </script><script type="text/javascript" src=
+                         "http://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js">
+        </script>
+        
+        <script type="text/javascript">
+            //<![CDATA[
+            var initPieChart = function() {
+                $('.percentage').easyPieChart({
+                    animate: 500,
+                    size:120,
+                    lineWidth:10,
+                    lineCap:'square',
+                    barColor:'#bd362f',
+                    trackColor:'rgba(0,0,0,0.1)',
+                    scaleColor:'rgba(0,0,0,0.3)'
+                });
+            };
+            
+                        
+            function changePercents(percents){ 
+                if (percents * 100 > 80) showNoty("you are very stressed");
+                $('.btn-danger').text(Math.floor(15000*percents) / 100.0);
+                $('.percentage').each(function() {        
+                    var newValue = Math.floor(100*percents);       
+                    $(this).data('easyPieChart').update(newValue);  
+                    $('span', this).text(newValue + '%');      
+                });     
+            }
+            
+            function showNoty(text){  
+                try{
+                    $.pnotify({text: 'you are stressed', history: false });
+                } catch(e){}
+            }
+            function renderGraph(){
+                var heartratewrapper = new Highcharts.Chart({
+                    chart: {
+                        type: 'spline',
+                        lineWidth: 6,
+                        states: {
+                            hover: {
+                                lineWidth: 7
+                            }
+                        },
+                        renderTo: 'chartline',
+                        defaultSeriesType: 'line',
+                        marginRight: 10,
+                        marginBottom: 30,
+                        backgroundColor:'rgba(255, 255, 255, 0.1)',
+                        events: {
+                            load: function() {
+    
+                                // set up the updating of the chart each second
+                                var series = this.series[0];
+                                setInterval(function() {
+                                    var x = (new Date()).getTime(); // current time
+                                    var perc = Math.random();
+                                    changePercents(perc);
+                                    y = (perc * 150) + 20;
+                                    series.addPoint([x, y], true, true);
+                                }, 1000);
+                            }
+                        }
+
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        type: 'datetime'
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        },
+                        plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                                        
+                            }]
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return ''+
+                                this.x +': '+ this.y +' visits';
+                        }
+                    },
+                        
+                    plotOptions: {
+                        line: {
+                            lineWidth: 7,
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                        
+                    legend: {
+                        enabled: false
+                    },
+                    series:  [{
+                            name: 'Random data',
+                            data: (function() {
+                                // generate an array of random data
+                                var data = [],
+                                time = (new Date()).getTime(),
+                                i;
+    
+                                for (i = -19; i <= 0; i++) {
+                                    var perc = Math.random();
+                                    changePercents(perc);
+                                    data.push({
+                                        x: time + i * 1000,
+                                        y: 20 + (perc * 150)
+                                    });
+                                }
+                                return data;
+                            })()
+                        }]
+                });
+                
+
+            }               
+            initPieChart();
+            renderGraph();
+
+            //            $(function(){
+            $('#ava').capty({
+                animation: 'fade',
+                height:   80,
+                opacity:  .6
+            });
+            
+            //]]>
+        </script>
+    </body>
+</html>

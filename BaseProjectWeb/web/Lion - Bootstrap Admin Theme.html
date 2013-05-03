@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://wbpreview.com/previews/WB0967058/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8"/>
+        <title>CardioMood - personal cabinet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Le styles -->
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/bootstrap.css" rel="stylesheet"/>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/main.css" rel="stylesheet"/>
+        <link href="http://wbpreview.com/previews/WB0TN0856/library/css/buttons.css" rel="stylesheet">
+        <link href="http://wbpreview.com/previews/WB0TN0856/library/plugins/easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet"/>
+        <link href="./js/pines/jquery.pnotify.default.css" rel="stylesheet">
+        <link href="http://wbotelhos.com/capty/css/jquery.capty.css" rel="stylesheet">
+
+
+
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/jquery.min.js"></script>
+        <script type="text/javascript" src="http://wbotelhos.com/capty/js/jquery.capty.min.js"></script>
+
+        <script type="text/javascript" src="./js/pines/jquery.pnotify.min.js"></script>
+
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+            }
+            *, ::after, ::before {
+                box-sizing: content-box;
+            }
+
+        </style>
+        <link href="http://wbpreview.com/previews/WB0967058/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+
+
+
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href="http://wbpreview.com/previews/WB0967058/assets/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-144-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-114-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-72-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" href="http://wbpreview.com/previews/WB0967058/assets/ico/apple-touch-icon-57-precomposed.png"/>
+
+        <!-- Google Fonts call. Font Used Open Sans -->
+        <link href="./Lion - Bootstrap Admin Theme_files/css" rel="stylesheet" type="text/css"/>
+
+        <link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script><script>window["_GOOG_TRANS_EXT_VER"] = "1";</script></head>
+
+    <script type="text/javascript">
+        
+        function updateAvatar(avId){
+            $.get("/BaseProjectWeb/resources/UserInfo/update_avatar?id="+avId);
+            $('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());
+            $('#avaProg ').toggle();
+            setTimeout(function(){$('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());}, 1000);
+            $.pnotify({text: 'Avatar is succesfully updated!', history: false, type: 'info', hide: false});
+        }
+        $(function(){
+            
+            $('.capty-caption').css('padding-left','0px');
+            
+            $('#fileupload').fileupload({
+                dataType: 'json',
+                done: function(e, data){
+                    d = data;
+                    var avId = data.result.data[0]
+                    updateAvatar(avId);
+                    //                    alert('sd');
+                },
+                progressall: function (e, data) {
+                    //                    alert('sdd');
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('.bar').css(
+                    'width',
+                    progress + '%'
+                );
+                }
+                    
+            });
+        });
+            
+    </script>
+
+    <body screen_capture_injected="true">
+
+        <!-- NAVIGATION MENU -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="./Lion - Bootstrap Admin Theme_files/Lion - Bootstrap Admin Theme.html"><img src="./Lion - Bootstrap Admin Theme_files/logo-small.png" alt=""> Lion Admin Theme</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="./Lion - Bootstrap Admin Theme_files/Lion - Bootstrap Admin Theme.html"><i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/charts.html"><i class="icon-signal icon-white"></i> Charts</a></li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/manager.html"><i class="icon-folder-open icon-white"></i> File Manager</a></li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/calendar.html"><i class="icon-calendar icon-white"></i> Calendar</a></li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/ui-elements.html"><i class="icon-bookmark icon-white"></i> UI Elements</a></li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/tables.html"><i class="icon-th icon-white"></i> Tables</a></li>
+
+                            <li class="dropdown">
+                                <a href="http://wbpreview.com/previews/WB0967058/index.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-file icon-white"></i> Sample Pages <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/buttons.html"><i class="icon-gift icon-white"></i> Buttons &amp; Icons</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/invoice.html"><i class="icon-pencil icon-white"></i> Invoice</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/forms.html"><i class="icon-align-justify icon-white"></i> Forms</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/gallery.html"><i class="icon-picture icon-white"></i> Gallery</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/grid.html"><i class="icon-align-left icon-white"></i> Grid</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/map.html"><i class="icon-globe icon-white"></i> Map</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/404.html"><i class="icon-warning-sign icon-white"></i> 404 Error</a></li>
+                                    <li><a href="http://wbpreview.com/previews/WB0967058/login.html"><i class="icon-wrench icon-white"></i> Login</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="http://wbpreview.com/previews/WB0967058/user.html"><i class="icon-user icon-white"></i> User</a></li>
+
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="span3">
+                    <div class="dash-unit" style="height: auto;">
+                        <img  id="ava" name="#content-target" src="/BaseProjectWeb/avatar" style=" height: 300px; width: 273px;"  alt="Brian Smith"/>
+                        <h1>BRIAN SMITH</h1>
+                        <!--                        <h4>London, UK.</h4>-->
+                        <h6>Joined April 19, 2009</h6>
+
+                        <p><i class="icon-envelope icon-white"></i> <a href="http://wbpreview.com/previews/WB0967058/index.html#" class="tooltip-test" data-placement="top" data-original-title="New Mails"><span class="badge badge-one">6</span></a> 
+                            - <i class="icon-comment icon-white"></i> <a href="http://wbpreview.com/previews/WB0967058/index.html#" class="tooltip-test" data-placement="top" data-original-title="New Messages"><span class="badge badge-one">2</span></a></p>
+                    </div>
+
+                    <div class="block-unit">
+                        <div class="oneBox"> 
+                            <a href="user.html" class="tooltip-test" data-placement="top" data-original-title="Go to the User Profile Page"><strong>Brian Smith</strong><em>Logged as an administrator</em>
+                            </a>
+                        </div>
+                        <p>You can use this sidebar for multiple purposes. You can show your most important stats or a list of pending task for example.</p>
+                        <hr/>
+
+                        <p style="font-size: 14px; padding-left: 10px;">
+                            <i class="icos-user2"></i>  <a href="#" style="text-decoration: none; vertical-align: middle; " class="tooltip-test" data-placement="top" data-original-title="New Friends">My Friends <span class="badge badge-success">+3</span></a>
+                            <br/>
+                            <i class="icos-plus1"></i>  <a href="#" style="text-decoration: none; vertical-align: middle; " class="tooltip-test" data-placement="top" data-original-title="New Doctors">My Doctors <span class="badge badge-success">2</span></a>
+                            <br/>
+                            <br/>
+                            <i class="icos-comments3"></i>  <a href="#" style="text-decoration: none; vertical-align: middle; " class="tooltip-test" data-placement="top" data-original-title="New Messages">My Messages <span class="badge badge-success">+1</span></a>
+                        </p>
+
+                        <hr/>
+                        <p><strong>Quick Information</strong></p>
+
+                        <p>Battery charge
+                        <div class="progress progress-striped active" style="width: 250px; display: block; margin: 0 auto;">
+                            <div class="bar bar-success" style="width: 60%;"></div>
+                        </div>
+                        </p>
+
+                        <p><i class="icos-meter-fast"></i> Bandiwth Consumption <span class="badge badge-warning">76%</span> </p>
+                        <p><i class="icos-database"></i> Disk Space Used <span class="badge badge-one">35%</span></p>
+                        <p><i class="icos-basket"></i> Sales Last Month <span class="badge badge-success">1981</span> </p>
+                        <p><i class="icos-heart"></i> Earnings Last Month <span class="badge badge-success">$44,550</span></p>
+                        <hr/>
+                        <p><strong>New Update</strong></p>
+                        <div class="oneBox"> <img src="assets/img/pic1.jpg" alt=""> <strong>Roger Taylor</strong> <em>wrote a minute ago.</em></div>
+                        <p style="background:#dbd2c6;padding:.5em .75em;color:#444;font-size:12px;"><em>"You can be anything you want to be, Just turn yourself into anything you think that you could ever be. Be free with your tempo, be free be free. Surrender your ego - be free, be free to yourself."</em></p>
+                        <hr/>
+                        <p><strong>Important Stat</strong></p>
+                        <div id="money"><div class="highcharts-container" id="highcharts-0" style="position: relative; overflow-x: hidden; overflow-y: hidden; width: 200px; height: 186px; text-align: left; line-height: normal; z-index: 0; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif; font-size: 12px; "><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="200" height="186"><defs><clipPath id="highcharts-1"><rect rx="0" ry="0" fill="none" x="0" y="0" width="9999" height="186" stroke-width="0.000001"></rect></clipPath><clipPath id="highcharts-2"><rect fill="none" x="0" y="0" width="200" height="186"></rect></clipPath></defs><rect rx="0" ry="0" fill="none" x="0" y="0" width="200" height="186" stroke-width="0.000001"></rect><g class="highcharts-series-group" zIndex="3"></g><g class="highcharts-point" zIndex="5"><path fill="#62c462" d="M 99.98579379404227 23.25000144671175 A 69.75 69.75 0 0 1 156.23642799136027 134.26168521488853 L 137.4909519942402 120.50779014325902 A 46.5 46.5 0 0 0 99.99052919602818 46.5000009644745 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 99.98579379404227 23.25000144671175 A 69.75 69.75 0 0 1 156.23642799136027 134.26168521488853 L 137.4909519942402 120.50779014325902 A 46.5 46.5 0 0 0 99.99052919602818 46.5000009644745 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-point" zIndex="5"><path fill="#a8ca42" d="M 156.23638672964694 134.26174145129588 A 69.75 69.75 0 0 1 33.48162112219087 113.98494154073909 L 55.65441408146059 106.9899610271594 A 46.5 46.5 0 0 0 137.4909244864313 120.50782763419726 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 156.23638672964694 134.26174145129588 A 69.75 69.75 0 0 1 33.48162112219089 113.98494154073911 L 55.654414081460594 106.98996102715941 A 46.5 46.5 0 0 0 137.4909244864313 120.50782763419726 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-point" zIndex="5"><path fill="#2f9734" d="M 33.481600137282584 113.98487502234971 A 69.75 69.75 0 0 1 31.891902564057816 77.9550817996173 L 54.59460170937188 82.9700545330782 A 46.5 46.5 0 0 0 55.65440009152172 106.98991668156647 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 33.4816001372826 113.98487502234974 A 69.75 69.75 0 0 1 31.891902564057816 77.9550817996173 L 54.59460170937188 82.9700545330782 A 46.5 46.5 0 0 0 55.65440009152174 106.9899166815665 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-point" zIndex="5"><path fill="#edb836" d="M 31.89191760901008 77.95501369152738 A 69.75 69.75 0 0 1 36.46673989092192 64.21480658546433 L 57.64449326061461 73.80987105697622 A 46.5 46.5 0 0 0 54.59461173934005 82.97000912768492 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 31.89191760901008 77.95501369152738 A 69.75 69.75 0 0 1 36.46673989092192 64.21480658546433 L 57.64449326061461 73.80987105697622 A 46.5 46.5 0 0 0 54.59461173934005 82.97000912768492 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-point" zIndex="5"><path fill="#8A9499" d="M 36.466768676147105 64.21474305221861 A 69.75 69.75 0 0 1 39.65786576518793 58.01587022680254 L 59.77191051012528 69.67724681786837 A 46.5 46.5 0 0 0 57.644512450764736 73.80982870147908 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 36.466768676147105 64.21474305221861 A 69.75 69.75 0 0 1 39.65786576518793 58.01587022680254 L 59.77191051012528 69.67724681786837 A 46.5 46.5 0 0 0 57.644512450764736 73.80982870147908 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-point" zIndex="5"><path fill="#6eb042" d="M 39.657900749347874 58.01580988468579 A 69.75 69.75 0 0 1 99.97279886885734 23.25000530395387 L 99.98186591257155 46.50000353596924 A 46.5 46.5 0 0 0 59.77193383289858 69.67720658979053 Z" stroke="#F1F3EB" stroke-width="2" stroke-linejoin="round"></path><path fill="rgb(192,192,192)" d="M 39.657900749347874 58.01580988468579 A 69.75 69.75 0 0 1 99.97279886885734 23.25000530395387 L 99.98186591257155 46.50000353596924 A 46.5 46.5 0 0 0 59.77193383289858 69.67720658979053 Z" isTracker="1365754133033" fill-opacity="0.000001" visibility="visible" style=""></path></g><g class="highcharts-legend" zIndex="7"><rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="7" height="7" stroke-width="1" stroke="#909090" visibility="hidden"></rect><g zIndex="1" clip-path="url(#highcharts-1)"><g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="padding:0;white-space:nowrap;" visibility="hidden"><rect rx="5" ry="5" fill="none" x="0" y="0" width="10" height="10" stroke-width="5" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" transform="translate(1, 1)"></rect><rect rx="5" ry="5" fill="none" x="0" y="0" width="10" height="10" stroke-width="3" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" transform="translate(1, 1)"></rect><rect rx="5" ry="5" fill="none" x="0" y="0" width="10" height="10" stroke-width="1" fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.15" transform="translate(1, 1)"></rect><rect rx="5" ry="5" fill="rgb(255,255,255)" x="0" y="0" width="10" height="10" stroke-width="2" fill-opacity="0.85"></rect><text x="5" y="18" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#333333;fill:#333333;" zIndex="1"></text></g><text x="190" y="181" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:10px;cursor:pointer;color:#909090;fill:#909090;" text-anchor="end" zIndex="8"><tspan x="190">Highcharts.com</tspan></text><g class="highcharts-tracker" zIndex="9"></g></svg></div></div>
+                    </div>
+
+                </div>
+                <div class="span9">
+                    <div class="span3">
+                        <hr/>   
+                        <h4>Current Tension</h4>
+                        <div class="knob-wrapper knob-chart with-button" style="margin-bottom: 20px;" >
+                            <span class="knob-inner">
+                                <span class="percentage easyPieChart" data-percent="85" style="width: 120px; height: 120px; line-height: 120px; ">
+                                    <span style="margin-top: -18px; vertical-align: middle;">85%</span>									
+                                    <canvas width="120" height="120"></canvas></span>								
+                            </span>
+                            <a class="btn btn-large btn-danger" href="#">58,459</a>
+                        </div>
+
+                        <h5>- DETAILS:</h5>
+                        <p><i class="icos-heart" style="vertical-align:baseline"></i> Beats/minute: <b style="color:#ff6e01">78</b></p>
+                    </div>
+                    <div class="span6" style="margin-left: 0px;">
+                        <hr/>
+                        <h4>Curernt Tension</h4>
+                        <div id="chartline" style="height: 250px;"> </div>
+                    </div>
+
+                    <div class="span9 block-unit" style="margin-left: 0px; margin-top: 40px; border-top-style: solid;
+                         border-top-width: 8px;
+                         border-top-color: #CFCDC1;
+                         padding: 5px;">
+                        <h4 style="
+                            font-family: 'Open Sans', sans-serif;
+                            font-weight: lighter;
+                            font-size: 18px;
+                            line-height: 20px;
+                            ">
+                            Current session info
+                        </h4>
+                        <ul>
+                            <li>
+                                Duration: <code class="" style="font-size: 14px;" >153 minutes</code>
+                            </li>
+                            <li>
+                                Min tension: <code class="" style="font-size: 14px;" >20 points</code>
+                            </li>
+                            <li>
+                                Max tension: <code class="" style="font-size: 14px;" >200 points</code>
+                            </li>
+                        </ul>
+                        <p>
+                            John Le Mesurier (1912–83) was an English actor perhaps best remembered for his comedic role as Sergeant Arthur Wilson in the BBC situation comedy Dad's Army between 1968 and 1977. He debuted on stage in 1934, and became one of television's pioneering actors when he appeared in The Marvellous History of St Bernard in 1938. From there, Le Mesurier had a prolific film career and appeared in over 120 films across a range of genres, normally in smaller supporting parts in comedies; his roles often portrayed figures of authority such as army officers, policemen and judges. He took a relaxed approach to acting and described himself as a "jobbing actor", a term he used for the title of his autobiography. On one of the few occasions he played the lead role in his career, he received a British Academy of Film and Television Arts "Best Television Actor" award for his performance in the Dennis Potter television play Traitor. He later said that the parts he played were those of "a decent 
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div><!-- /row -->
+
+
+
+
+        </div> <!-- /container -->
+
+
+        <br/>
+
+        <div id="middlewrap">
+            <br>
+
+            <footer class="clearfix"></footer>
+            <div class="container">
+                <div class="row">
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat01.png" alt=""></p>
+                            <h2>Detailed Information</h2>
+                            <h6>46%</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat02.png" alt=""></p>
+                            <h2>Detailed Information</h2>
+                            <h6>Stable</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat03.png" alt=""/></p>
+                            <h2>Detailed Information</h2>
+                            <h6>75%</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat04.png" alt=""/></p>
+                            <h2>Detailed Information</h2>
+                            <h6>82 ms.</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat05.png" alt=""/></p>
+                            <h2>Detailed Information</h2>
+                            <h6>Good</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+                    <div class="span2">
+                        <div class="dash2-unit">
+                            <h1>Important Site Stat</h1>
+                            <br>
+                            <p style="text-align:center"><img src="./Lion - Bootstrap Admin Theme_files/stat06.png" alt=""/></p>
+                            <h2>Detailed Information</h2>
+                            <h6>Low</h6>
+                            <br>
+                            <p>More...</p>
+                        </div><!-- /dash2-unit -->
+                    </div><!-- /span2 -->
+
+                </div><!-- /row -->
+            </div><!-- /container -->
+        </div><!-- /middlewrap -->
+        <div id="footerwrap">
+            <footer class="clearfix"></footer>
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <p><img src="./Lion - Bootstrap Admin Theme_files/logo.png" alt=""/></p>
+                        <p>Lion Admin Theme - Crafted With Love - Copyright 2012</p>
+                    </div>
+
+                </div><!-- /row -->
+            </div><!-- /container -->		
+        </div><!-- /footerwrap -->
+
+        <div id="content-target">
+            <!--            <span style="color: #F00;">Change avatar</span>-->
+            <!--            <br/>-->
+
+            <button type="button" class="btn btn-info" onclick="$('input:file').click();" style="width: 260px; margin: 0 auto; display: block;" >Change avatar</button>
+                <input id="fileupload" type="file" name="files[]" style="visibility:hidden; height: 1px;" data-url="/BaseProjectWeb/upload" onclick="$('#avaProg ').toggle(); $('#avaProg .bar').css('width','0%'); " />
+            <div class="progress progress-striped active" id="avaProg" style="margin-top: 0px; display: none; ">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-transition.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-alert.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-modal.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-dropdown.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-tooltip.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-button.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-collapse.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/bootstrap-typeahead.js"></script>
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/highcharts.js"></script>-->
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/dash-charts.js"></script>
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/jquery.noty.js"></script>-->
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/topRight.js"></script>
+        <script type="text/javascript" src="http://wbpreview.com/previews/WB0967058/assets/js/highcharts.js"></script>
+        <!-- You can add more layouts if you want -->
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/default.js"></script>-->
+        <!--        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/dash-noty.js"></script>-->
+        <script type="text/javascript" src="http://wbpreview.com/previews/WB0TN0856/library/plugins/easy-pie-chart/jquery.easy-pie-chart.js"></script>
+        <script type="text/javascript" src="./Lion - Bootstrap Admin Theme_files/admin.js"></script>
+        <script type="text/javascript" src="http://blueimp.github.io/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="http://blueimp.github.io/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="http://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+
+
+        <script type="text/javascript">
+            var initPieChart = function() {
+                $('.percentage').easyPieChart({
+                    animate: 500,
+                    size:120,
+                    lineWidth:10,
+                    lineCap:'square',
+                    barColor:'#bd362f',
+                    trackColor:'rgba(0,0,0,0.1)',
+                    scaleColor:'rgba(0,0,0,0.3)'
+                });
+            };
+            
+                        
+            function changePercents(percents){ 
+                if (percents * 100 > 80) showNoty("you are very stressed");
+                $('.btn-danger').text(Math.floor(15000*percents) / 100.0);
+                $('.percentage').each(function() {        
+                    var newValue = Math.floor(100*percents);       
+                    $(this).data('easyPieChart').update(newValue);  
+                    $('span', this).text(newValue + '%');      
+                });     
+            }
+            
+            function showNoty(text){  
+                try{
+                    $.pnotify({text: 'you are stressed', history: false });
+                } catch(e){}
+            }
+            function renderGraph(){
+                var heartratewrapper = new Highcharts.Chart({
+                    chart: {
+                        type: 'spline',
+                        lineWidth: 6,
+                        states: {
+                            hover: {
+                                lineWidth: 7
+                            }
+                        },
+                        renderTo: 'chartline',
+                        defaultSeriesType: 'line',
+                        marginRight: 10,
+                        marginBottom: 30,
+                        backgroundColor:'rgba(255, 255, 255, 0.1)',
+                        events: {
+                            load: function() {
+    
+                                // set up the updating of the chart each second
+                                var series = this.series[0];
+                                setInterval(function() {
+                                    var x = (new Date()).getTime(); // current time
+                                    var perc = Math.random();
+                                    changePercents(perc);
+                                    y = (perc * 150) + 20;
+                                    series.addPoint([x, y], true, true);
+                                }, 1000);
+                            }
+                        }
+
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        type: 'datetime'
+                        //                        categories: ['9am','10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 
+                        //                            '6pm', '7pm', '8pm', '9pm']
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        },
+                        plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+					
+                            }]
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return ''+
+                                this.x +': '+ this.y +' visits';
+                        }
+                    },
+			
+                    plotOptions: {
+                        line: {
+                            lineWidth: 7,
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+			
+                    legend: {
+                        enabled: false
+                    },
+                    series:  [{
+                            name: 'Random data',
+                            data: (function() {
+                                // generate an array of random data
+                                var data = [],
+                                time = (new Date()).getTime(),
+                                i;
+    
+                                for (i = -19; i <= 0; i++) {
+                                    var perc = Math.random();
+                                    changePercents(perc);
+                                    data.push({
+                                        x: time + i * 1000,
+                                        y: 20 + (perc * 150)
+                                    });
+                                }
+                                return data;
+                            })()
+                        }]
+                });
+                
+
+            }               
+            initPieChart();
+            renderGraph();
+
+            //            $(function(){
+            $('#ava').capty({
+                animation: 'fade',
+                height:   80,
+                opacity:  .6
+                //                    cWrapper:  'capty-tile',
+                //                    prefix:    '<span style="color: #35BB87">Luigui</span>'
+            });
+
+            //            $(function() {
+
+            //            });
+            
+
+
+
+
+            
+        </script>
+        <!--        <button onclick="changePercents()">
+                    change
+                </button>-->
+
+        <!--        <ul id="noty_topRight_layout_container" class="i-am-new" style="top: 20px; right: 20px; position: fixed; width: 310px; height: auto; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; list-style-type: none; z-index: 10000000; ">
+                    <li style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAoCAYAAAAPOoFWAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPZJREFUeNq81tsOgjAMANB2ov7/7ypaN7IlIwi9rGuT8QSc9EIDAsAznxvY4pXPKr05RUE5MEVB+TyWfCEl9LZApYopCmo9C4FKSMtYoI8Bwv79aQJU4l6hXXCZrQbokJEksxHo9KMOgc6w1atHXM8K9DVC7FQnJ0i8iK3QooGgbnyKgMDygBWyYFZoqx4qS27KqLZJjA1D0jK6QJcYEQEiWv9PGkTsbqxQ8oT+ZtZB6AkdsJnQDnMoHXHLGKOgDYuCWmYhEERCI5gaamW0bnHdA3k2ltlIN+2qKRyCND0bhqSYCyTB3CAOc4WusBEIpkeBuPgJMAAX8Hs1NfqHRgAAAABJRU5ErkJggg==); background-attachment: scroll; background-origin: initial; background-clip: initial; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image: initial; box-shadow: rgba(0, 0, 0, 0.0976563) 0px 2px 4px; background-color: rgb(244, 244, 91); border-top-color: rgb(204, 204, 204); border-right-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); color: rgb(85, 78, 68); width: 310px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; overflow-x: hidden; overflow-y: hidden; background-position: 0% 0%; background-repeat: repeat no-repeat; "><div class="noty_bar" id="noty_606243546295377000">
+                            <div class="noty_message" style="line-height: 16px; padding-top: 8px; padding-right: 10px; padding-bottom: 9px; padding-left: 10px; width: auto; position: relative; font-size: 13px; text-align: left; "><span class="noty_text"><img src="./Lion - Bootstrap Admin Theme_files/avatar.jpg"> <strong>Brian Smith</strong> <br> Hi! Welcome. This is LION, the new admin panel created for WrapBootstrap. Please take a look and enjoy.</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+
+
+
+
+        <!--
+                <div id="sbi_camera_button" class="sbi_search" style="left: 0px; top: 0px; position: absolute; width: 29px; height: 27px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-width: initial; border-color: initial; border-image: initial; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; z-index: 2147483647; display: none; ">
+        
+                </div>-->
+
+    </body>
+</html>

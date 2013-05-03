@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:composition template="./templates/lion/template.xhtml">
+
+            <ui:define name="header">
+                <ui:include src="./templates/lion/user/header.xhtml">
+                    <ui:param name="tab_num" value="1" />
+                </ui:include>
+            </ui:define>
+
+            <ui:define name="container">
+                <div class="row">
+                    <div class="span3">
+                        <ui:include src="./templates/lion/user/homeLeftBar.xhtml"/>
+                    </div>
+                    <div class="span9">
+                        <ui:include src="./templates/lion/user/content.xhtml"></ui:include>
+                    </div>
+                </div>
+            </ui:define>
+            
+            <ui:define name="footer">
+                <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="hiddenBlock">
+                <button type="button" class="btn btn-info" onclick="$('input:file').click();" style=
+                        "width: 260px; margin: 0 auto; display: block;">Change avatar</button> 
+                <input id="fileupload" type="file" name="files[]" style="visibility:hidden; height: 1px;"
+                        data-url="/BaseProjectWeb/upload" onclick=
+                            "$('#avaProg ').toggle(); $('#avaProg .bar').css('width','0%');" />
+
+                <div class="progress progress-striped active" id="avaProg" style=
+                     "margin-top: 0px; display: none;">
+                    <div class="bar" style="width: 0%;"></div>
+                </div>
+            </ui:define>
+
+            <ui:define name="scripts">
+                <script type="text/javascript">
+                    //<![CDATA[
+        
+                    function updateAvatar(avId){
+                        $.get("/BaseProjectWeb/resources/UserInfo/update_avatar?id="+avId);
+                        $('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());
+                        $('#avaProg ').toggle();
+                        setTimeout(function(){$('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());}, 1000);
+                        $.pnotify({text: 'Avatar is succesfully updated!', history: false, type: 'info', hide: false});
+                    }
+                    $(function(){
+            
+                        $('.capty-caption').css('padding-left','0px');
+            
+                        $('#fileupload').fileupload({
+                            dataType: 'json',
+                            done: function(e, data){
+                                d = data;
+                                var avId = data.result.data[0];
+                                updateAvatar(avId);
+                                //                    alert('sd');
+                            },
+                            progressall: function (e, data) {
+                                //                    alert('sdd');
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('.bar').css(
+                                'width',
+                                progress + '%'
+                            );
+                            }
+                    
+                        });
+                    });
+            
+                    //]]>
+                </script>
+
+                <script type="text/javascript">
+                    //<![CDATA[
+                    var initPieChart = function() {
+                        $('.percentage').easyPieChart({
+                            animate: 500,
+                            size:120,
+                            lineWidth:10,
+                            lineCap:'square',
+                            barColor:'#bd362f',
+                            trackColor:'rgba(0,0,0,0.1)',
+                            scaleColor:'rgba(0,0,0,0.3)'
+                        });
+                    };
+            
+                        
+                    function changePercents(percents){ 
+                        if (percents * 100 > 90) showNoty("you are very stressed");
+                        $('.btn-danger').text(Math.floor(15000*percents) / 100.0);
+                        $('.percentage').each(function() {        
+                            var newValue = Math.floor(100*percents);       
+                            $(this).data('easyPieChart').update(newValue);  
+                            $('span', this).text(newValue + '%');      
+                        });     
+                    }
+            
+                    function showNoty(text){  
+                        try{
+                            $.pnotify({text: 'you are stressed', history: false });
+                        } catch(e){}
+                    }
+                    function renderGraph(){
+                        var heartratewrapper = new Highcharts.Chart({
+                            chart: {
+                                type: 'spline',
+                                lineWidth: 6,
+                                states: {
+                                    hover: {
+                                        lineWidth: 7
+                                    }
+                                },
+                                renderTo: 'chartline',
+                                defaultSeriesType: 'line',
+                                marginRight: 10,
+                                marginBottom: 30,
+                                backgroundColor:'rgba(255, 255, 255, 0.1)',
+                                events: {
+                                    load: function() {
+    
+                                        // set up the updating of the chart each second
+                                        var series = this.series[0];
+                                        setInterval(function() {
+                                            var x = (new Date()).getTime(); // current time
+                                            var perc = Math.random();
+                                            changePercents(perc);
+                                            y = (perc * 150) + 20;
+                                            series.addPoint([x, y], true, true);
+                                        }, 3000);
+                                    }
+                                }
+
+                            },
+                            title: {
+                                text: null
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            xAxis: {
+                                type: 'datetime'
+                            },
+                            yAxis: {
+                                title: {
+                                    text: null
+                                },
+                                plotLines: [{
+                                        value: 0,
+                                        width: 1,
+                                        color: '#808080'
+                                        
+                                    }]
+                            },
+                            tooltip: {
+                                formatter: function() {
+                                    return ''+
+                                        this.x +': '+ this.y +' visits';
+                                }
+                            },
+                        
+                            plotOptions: {
+                                line: {
+                                    lineWidth: 7,
+                                    marker: {
+                                        enabled: false
+                                    }
+                                }
+                            },
+                        
+                            legend: {
+                                enabled: false
+                            },
+                            series:  [{
+                                    name: 'Random data',
+                                    data: (function() {
+                                        // generate an array of random data
+                                        var data = [],
+                                        time = (new Date()).getTime(),
+                                        i;
+    
+                                        for (i = -29; i <= 0; i++) {
+                                            var perc = Math.random();
+                                            changePercents(perc);
+                                            data.push({
+                                                x: time + i * 10000,
+                                                y: 20 + (perc * 150)
+                                            });
+                                        }
+                                        return data;
+                                    })()
+                                }]
+                        });
+                
+
+                    }               
+                    initPieChart();
+                    renderGraph();
+
+                    //            $(function(){
+                    $('#ava').capty({
+                        animation: 'fade',
+                        height:   80,
+                        opacity:  .6
+                    });
+            
+                    //]]>
+                </script>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>
