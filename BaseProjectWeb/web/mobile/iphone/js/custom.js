@@ -1,5 +1,9 @@
 var pointsAmount = 0;
-var pointsAmountInWindow = 10;
+var DEFAULT_POINTS_AMOUNT = 20;
+var pointsAmountInWindow = DEFAULT_POINTS_AMOUNT;
+
+
+var tensionInitialized = false;
 
 function initPieChart() {
     $('.percentage').easyPieChart({
@@ -16,7 +20,10 @@ function initPieChart() {
 function initTensionPlot(k){
     if (k!=undefined){
         pointsAmountInWindow = k;
+    }else{
+        pointsAmountInWindow = DEFAULT_POINTS_AMOUNT;
     }
+    
     hChart = new Highcharts.Chart({
         chart: {
             type: 'spline',
@@ -77,7 +84,7 @@ function initTensionPlot(k){
             data: []
         }]
     });
-               
+    tensionInitialized = true;
 } 
             
 function setTensionPercents(p){
@@ -88,6 +95,9 @@ function setTensionPercents(p){
 }
             
 function addPoint(x, y){
+    if (!tensionInitialized){
+        initTensionPlot();
+    }
     var xx = x;
     var yy = y;
     pointsAmount++;
@@ -123,3 +133,15 @@ function addTestPoint(){
     addPoint(x, y);
 }
 
+function setPulse(pulse){
+    $('#pulse').text(pulse);
+}
+
+function hrDataUpdated(data) {
+    setPulse(data.rate);
+    var t = data.timestamp;
+    for (i in data.intervals){
+        addPoint(t, data.intervals[i]);
+        t+=data.intervals[i];
+    }
+}

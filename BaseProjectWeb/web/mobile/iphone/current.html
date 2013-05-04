@@ -19,17 +19,26 @@
 
         <script type="text/javascript">
             $(function(){
+                var data = {
+                    rate: 123,
+                    intervals: [234,456,121,344,341],
+                    timestamp: 21234234234
+                }
+                hrDataUpdated(data);
+                
                 initPieChart(); // инициализация круглого графика
-                initTensionPlot(20);// инициализация графика. 20 - максимальное количество точек на графике
                 setTensionPercents(56); // ставим круглому графику значение 56 процентов
                 setStressStateText("relaxation after stress"); // Выставляем текущее состояние (State: text)
                 setDurationText("34 m. 55 s."); // Текст напротив Duration:
                 setRecommendationText(' Lorem ipsum dolor sit amet'); // текст рекомендаций
             });
+            
+
+            
         </script>
 
     </head>
-    <body style="height: 100%;">
+    <body>
 
         <div class="iphone">
             <!--            <div class="net">
@@ -51,7 +60,7 @@
                         </a>
                     </div>
                     <div class="topRightSection">
-                        <div class="pulseSection">
+                        <div class="pulseSection" id="pulse">
                             55
                         </div>
                     </div>
@@ -65,8 +74,7 @@
                 </div>
                 <div class="bottomSection" >
                     <ul>
-                        <!-- onclick="addTestPoint();" - добавлено для тестов.ыыр убрать в продакшене-->
-                        <li onclick="addTestPoint();">State: <span id="stress_state"> </span></li> 
+                        <li>State: <span id="stress_state"> </span></li> 
                         <li>Duration: <span id="duration_text" > </span></li>
                     </ul>
                     <span id="recommendation_text"></span>
