@@ -45,7 +45,7 @@
 }
 
 .topSection{
-    height: 200px;
+    height: 160px;
     width: 100%;
     display: block;
     border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
@@ -70,7 +70,7 @@
 .middleSection{
     display: block;
     width: 100%;
-    height: 260px;
+    height: 185px;
 }
 
 .bottomSection{
@@ -80,9 +80,9 @@
     background-color: transparent;
     padding: 10px; 
     box-sizing: border-box;
-    font-size: 24px; 
+    font-size: 16px; 
     text-align: justify; 
-    line-height: 28px;
+    line-height: 18px;
 }
 
 .bottomSection ul li{
@@ -93,7 +93,7 @@
     position: relative; 
     overflow: hidden; 
     width: 100%;
-    height: 250px; 
+    height: 180px; 
     text-align: left;
     line-height: normal;
     z-index: 0; 
@@ -102,7 +102,10 @@
 }
 
 .easyPieChart>span{
-    font-size: 32px !important;
+    font-size: 20px !important;
+/*    margin-left: -20px !important;*/
+    margin-top: -30px !important;
+    line-height: 100px !important;
 }
 
 #duration_text{
@@ -141,7 +144,24 @@ body{
     height: 100% !important;
     padding: 0px !important;
     margin: 0px !important;
-    background-image: url('http://wbpreview.com/previews/WB0967058/assets/img/sep-half.png');
+    background-image: url('../images/sep-half.png');
     display: block; 
     background-color: #E4E4DA; 
+}
+
+.knob-wrapper.knob-chart{
+    height: 60px;
+    width: 60px;
+}
+
+.easyPieChart canvas {
+    position: absolute;
+    left: -5px !important;
+    right: -10px;
+    top: -4px !important;
+    bottom: -10px;
+}
+
+.bottomSection ul li{
+    margin-bottom: 0px;
 }

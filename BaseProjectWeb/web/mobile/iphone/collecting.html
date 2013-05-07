@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Current session</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <link href="./css/buttons.css" rel="stylesheet" />
+        <link href="./css/base.css" rel="stylesheet" />
+        <link href="./css/pie.charts.css" rel="stylesheet" />
+        <link href="./css/bootstrap.css" rel="stylesheet" />
+
+        <link href="./css/custom.css" rel="stylesheet" />
+
+        <script src="./js/jquery.min.js" type="text/javascript"></script>
+        <script src="./js/pie-chart.js" type="text/javascript"></script>
+        <script src="./js/highcharts.js" type="text/javascript"></script>
+
+        <script src="./js/custom.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            $(function(){
+                var data = {
+                    rate: 123,
+                    intervals: [234,456,121,344,341],
+                    timestamp: 21234234234
+                }
+                hrDataUpdated(data);
+                
+                initPieChart(); // инициализация круглого графика
+                setTensionPercents(55); // ставим круглому графику значение 56 процентов
+                setStressStateText("relaxation after stress"); // Выставляем текущее состояние (State: text)
+                setDurationText("34 m. 55 s."); // Текст напротив Duration:
+                setRecommendationText(' it amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'); // текст рекомендаций
+            });
+            
+
+            
+        </script>
+
+    </head>
+    <body>
+
+        <div class="iphone">
+            <!--                        <div class="net">
+                                        default 
+                                    </div>
+                                    <div class="topBar">
+                                        nav
+                                    </div>-->
+            <div class="container">
+                <div class="topSection">
+                    <div class="topLeftSection">
+                        <a class="knob-wrapper knob-chart knob-success"  href="#">
+                            <span class="knob-inner">
+                                <span class="percentage easyPieChart" data-percent="0" >
+                                    <span>0%</span>									
+                                    <canvas width="80" height="80"></canvas>
+                                </span>
+                                <small>Tension</small>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="topRightSection">
+                        <div class="pulseSection" id="pulse">
+                            55
+                        </div>
+                    </div>
+                </div>
+                <div class="middleSection">
+                    <div id="chartline" >
+                        <div class="highcharts-container" id="highcharts"  >
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bottomSection" >
+                    <ul>
+                        <li><b>State:</b> <span id="stress_state"> </span></li> 
+                        <li><b>Duration:</b> <span id="duration_text" > </span></li>
+                    </ul>
+                    <span id="recommendation_text"></span>
+                </div>
+            </div>
+            <!--            <div class="bottomBar" onclick="addTestPoint();">
+                            tabs
+                        </div>-->
+        </div>
+    </body>
+</html>

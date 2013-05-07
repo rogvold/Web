@@ -8,7 +8,7 @@ var tensionInitialized = false;
 function initPieChart() {
     $('.percentage').easyPieChart({
         animate: 500,
-        size:120,
+        size:70,
         lineWidth:10,
         lineCap:'square',
         barColor:'#bd362f',
@@ -90,7 +90,7 @@ function initTensionPlot(k){
 function setTensionPercents(p){
     $('.percentage').each(function(){
         $(this).data('easyPieChart').update(p);  
-        $('span', this).text(p + '%');      
+        $('span', this).text(p + '');      
     });     
 }
             
