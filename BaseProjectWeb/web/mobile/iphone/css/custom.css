@@ -1,5 +1,10 @@
+html{
+    -webkit-tap-highlight-color: rgba(0,0,0,0); 
+    -webkit-user-select: none;
+}
+
 .iphone{
-    /*    width: 640px; */
+    width: 640px; 
     width: 100%; 
     height: 100% !important;
     display: block; 
@@ -59,6 +64,15 @@
     box-sizing: border-box;
 }
 
+.topCenteredSection{
+    width: 60%;
+    height: 100%;
+    margin: 0 auto;
+    display: block;
+    box-sizing: border-box;
+}
+
+
 .topRightSection{
     width: 50%;
     height: 100%;
@@ -101,9 +115,9 @@
     font-size: 12px;
 }
 
-.easyPieChart>span{
+.easyPieChart>span.littlePieSpan{
     font-size: 20px !important;
-/*    margin-left: -20px !important;*/
+    /*    margin-left: -20px !important;*/
     margin-top: -30px !important;
     line-height: 100px !important;
 }
@@ -149,12 +163,12 @@ body{
     background-color: #E4E4DA; 
 }
 
-.knob-wrapper.knob-chart{
+.littlePie.knob-wrapper.knob-chart{
     height: 60px;
     width: 60px;
 }
 
-.easyPieChart canvas {
+.littlePie .easyPieChart canvas {
     position: absolute;
     left: -5px !important;
     right: -10px;
@@ -164,4 +178,9 @@ body{
 
 .bottomSection ul li{
     margin-bottom: 0px;
+}
+
+.collectingPercentSpan{
+    margin-left: -24px;
+    font-size: 30px !important;
 }

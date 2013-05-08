@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Current session</title>
+        <title>Data collecting</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <link href="./css/buttons.css" rel="stylesheet" />
@@ -19,21 +19,8 @@
 
         <script type="text/javascript">
             $(function(){
-                var data = {
-                    rate: 123,
-                    intervals: [234,456,121,344,341],
-                    timestamp: 21234234234
-                }
-                hrDataUpdated(data);
-                
-                initPieChart(); // инициализация круглого графика
-                setTensionPercents(55); // ставим круглому графику значение 56 процентов
-                setStressStateText("relaxation after stress"); // Выставляем текущее состояние (State: text)
-                setDurationText("34 m. 55 s."); // Текст напротив Duration:
-                setRecommendationText(' it amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'); // текст рекомендаций
+                startCollectingTempAnimation();
             });
-            
-
             
         </script>
 
@@ -49,36 +36,28 @@
                                     </div>-->
             <div class="container">
                 <div class="topSection">
-                    <div class="topLeftSection">
-                        <a class="knob-wrapper knob-chart knob-success"  href="#">
+                    <div class="topCenteredSection">
+                        <a class="knob-wrapper knob-chart knob-success "  href="#">
                             <span class="knob-inner">
                                 <span class="percentage easyPieChart" data-percent="0" >
-                                    <span>0%</span>									
-                                    <canvas width="80" height="80"></canvas>
+                                    <span class="collectingPercentSpan">0%</span>									
+                                    <canvas width="120" height="120"></canvas>
                                 </span>
-                                <small>Tension</small>
                             </span>
                         </a>
                     </div>
-                    <div class="topRightSection">
-                        <div class="pulseSection" id="pulse">
-                            55
-                        </div>
-                    </div>
                 </div>
+
+
                 <div class="middleSection">
                     <div id="chartline" >
-                        <div class="highcharts-container" id="highcharts"  >
-
-                        </div>
+                        <div class="highcharts-container" id="highcharts"  > </div>
+                        <!--                        костыль для скроллинга в айфоне. -->
+                        <div id="scroll_spike" style="height: 200px; display: block; margin-top: -180px; background-color: transparent; width: 100%; position: absolute;" > </div>
                     </div>
                 </div>
-                <div class="bottomSection" >
-                    <ul>
-                        <li><b>State:</b> <span id="stress_state"> </span></li> 
-                        <li><b>Duration:</b> <span id="duration_text" > </span></li>
-                    </ul>
-                    <span id="recommendation_text"></span>
+                <div class="bottomSection" style="padding-top: 0px;" >
+                    <span id="collectingText"></span>
                 </div>
             </div>
             <!--            <div class="bottomBar" onclick="addTestPoint();">
