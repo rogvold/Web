@@ -30,7 +30,7 @@ public class SessionUtils {
     }
 
     public static Long getCurrentUserIdThrowingException(HttpServletRequest req) throws CardioException {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(true);
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             throw new CardioException("You are not logged in", ResponseConstants.USER_IS_NOT_LOGGED_IN);
