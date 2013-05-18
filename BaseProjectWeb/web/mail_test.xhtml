@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <title>TODO supply a title</title>
+        <script type="text/javascript">
+            simpleMessage = {
+                text: "test text",
+                theme: "test theme",
+                timestamp: (new Date()).getTime(),
+                recipient: "sha-sabir@yandex.ru",
+                alertLevel: 1
+            }
+            
+            function sendMail(){
+                var data2 = {
+                    json: simpleMessage
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/BaseProjectWeb/resources/email/alert",
+                    data: data2,
+                    success: function(data){
+                        d = data;
+                        alert('message has been sent');
+                    }
+                });
+            }
+        </script>
+    </head>
+
+    <style type="text/css">
+        .leftLabel{
+            display: inline-block;
+            width: 200px;
+        }
+    </style>
+
+    <body>
+        <div>
+            <!--            <span class="leftLabel">recipient: </span> <input type="text" id="recipient"  />
+                        <span class="leftLabel">theme: </span> <input type="text" id="theme"  />
+                        <span class="leftLabel">recipient: </span> <input type="text" id="recipient"  />
+                        <span class="leftLabel">recipient: </span> <input type="text" id="recipient"  />-->
+
+        </div>
+
+        <span class="leftLabel" onclick="sendMail();" >test</span>
+    </body>
+</html>
