@@ -96,8 +96,8 @@ function initPlot(k, name){
             renderTo: 'highcharts',
             defaultSeriesType: 'line',
             marginRight: 10,
-            marginLeft: 30,
-            marginBottom: 30,
+            marginLeft: 45,
+            marginBottom: 45,
             backgroundColor:'rgba(255, 255, 255, 0.01)'
         },
         title: {
@@ -198,7 +198,7 @@ function setRecommendationText(text){
             
 function addTestPoint(){
     var x = (new Date()).getTime();
-    var y = Math.floor(100 + 100*Math.random());
+    var y = Math.floor(1000 + 100*Math.random());
     addPoint(x, y);
 }
 
