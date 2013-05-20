@@ -40,9 +40,9 @@ function startCollectingTempAnimation(){
     initCollectingPieChart();
     initPlot(undefined, 'RR-intervals');
     collectingTime = 0;
-    collectingSetInterval = setInterval(function(){
-        collectingOnTimerFunction();
-    }, 1000);
+//    collectingSetInterval = setInterval(function(){
+//        collectingOnTimerFunction();
+//    }, 1000);
 }
 
 function initCollectingPieChart() {
@@ -139,13 +139,13 @@ function initPlot(k, name){
         },
         series:  [{
             marker: {
-                radius: 3
+                radius: 1
             },
             data: []
         }]
     });
     tensionInitialized = true;
-} 
+}
   
   
   
@@ -161,6 +161,7 @@ function setPieChartPercents(p, s){
 
 function setTensionPercents(p, s){
     setPieChartPercents(p, s);   
+    updateCollectingText(p);
 }
             
 function addPoint(x, y){
