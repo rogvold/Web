@@ -40,9 +40,9 @@ function startCollectingTempAnimation(){
     initCollectingPieChart();
     initPlot(undefined, 'RR-intervals');
     collectingTime = 0;
-//    collectingSetInterval = setInterval(function(){
-//        collectingOnTimerFunction();
-//    }, 1000);
+    collectingSetInterval = setInterval(function(){
+        collectingOnTimerFunction();
+    }, 1000);
 }
 
 function initCollectingPieChart() {
@@ -139,7 +139,7 @@ function initPlot(k, name){
         },
         series:  [{
             marker: {
-                radius: 1
+                enabled: false
             },
             data: []
         }]
