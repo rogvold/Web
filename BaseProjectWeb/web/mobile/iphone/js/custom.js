@@ -107,7 +107,10 @@ function initPlot(k, name){
             text: null
         },
         xAxis: {
-            type: 'datetime'
+            type: 'datetime',
+            labels:{
+                enabled: false
+            }
         },
         yAxis: {
             title: {
