@@ -16,7 +16,7 @@ import ru.cardio.json.entity.SimpleRatesData;
 public interface CardioSessionManagerLocal {
 
     public List<Rate> getRatesInCardioSession(Long sessionId, int amount) throws CardioException;
-    
+
     public List<Integer> getRatesInCardioSession(Long sessionId, boolean filterEnabled) throws CardioException;
 
     public List<Rate> getMyRatesInCardioSession(Long sessionId, int amount, Long reuquestOwnerId) throws CardioException;
@@ -31,8 +31,14 @@ public interface CardioSessionManagerLocal {
 
     public List<Long> getUserCardioSessionsId(Long userId);
 
-    public List<CardioSession> getUserCardioSessions(Long userId);
-    
+    public List<CardioSession> getUserCardioSessions(Long userId) throws CardioException;
+
+    public List<CardioSession> getUserCardioSessionsInIdRange(Long userId, Long leftId, Long rightId) throws CardioException;
+
+    public List<CardioSession> getUserCardioSessionsBeforeId(Long userId, Long borderId, Integer amount) throws CardioException;
+
+    public CardioSession getLastCardioSession(Long userId) throws CardioException;
+
     public List<CardioSession> getUserCardioSesisons(String email) throws CardioException;
 
     public void addRatesCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException;
@@ -48,7 +54,7 @@ public interface CardioSessionManagerLocal {
     public void addRates(Long userId, List<Integer> ratesList, Date startDate, boolean createSession, String password) throws CardioException;
 
     public void addRates(String email, List<Integer> ratesList, Date startDate, boolean createSession, String password) throws CardioException;
-    
+
     public void addRates(SimpleRatesData srd) throws CardioException;
 
     public int getSessionRatesAmountById(Long sessionId) throws CardioException;
@@ -64,21 +70,18 @@ public interface CardioSessionManagerLocal {
     public boolean deleteSession(Long sessionId);
 
     public boolean userHasActiveSession(Long userId);
-    
+
     public Double getCurrentPulse(Long sessionId) throws CardioException;
-    
+
     public void syncRates(Long userId, List<Integer> ratesList, Date startDate) throws CardioException;
-    
+
     public void syncRates(Long userId, List<Integer> ratesList, Date startDate, String password) throws CardioException;
-    
+
     public void syncRates(String email, List<Integer> ratesList, Date startDate, String password) throws CardioException;
-    
+
     public void syncRates(SimpleRatesData srd) throws CardioException;
-    
+
     public void checkRights(String email, String password, Long sessionId) throws CardioException;
-    
+
     public void checkRights(Long userId, Long sessionId) throws CardioException;
-    
-    
-    
 }

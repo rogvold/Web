@@ -400,15 +400,37 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
     }
 
     @Override
-    public List<CardioSession> getUserCardioSessions(Long userId) {
+    public List<CardioSession> getUserCardioSessions(Long userId) throws CardioException {
         try {
             Query q = em.createQuery("select c from CardioSession c where c.userId=:id order by c.startDate desc").setParameter("id", userId);
             return q.getResultList();
         } catch (Exception e) {
             System.out.println("getUserCardioSessions(usrId  = " + userId + ") : exc = " + e.toString());
-            return null;
+            throw new CardioException(e.getMessage());
         }
+    }
 
+    @Override
+    public List<CardioSession> getUserCardioSessionsInIdRange(Long userId, Long leftId, Long rightId) throws CardioException {
+        try {
+            leftId = (leftId == null) ? Long.MIN_VALUE : leftId;
+            rightId = (rightId == null) ? Long.MAX_VALUE : rightId;
+            Query q = em.createQuery("select c from CardioSession c where c.userId=:id and c.id > :leftId and c.id < :rightId order by c.startDate desc").setParameter("id", userId).setParameter("leftId", leftId).setParameter("rightId", rightId);
+            return q.getResultList();
+        } catch (Exception e) {
+            System.out.println("getUserCardioSessions(usrId  = " + userId + ") : exc = " + e.toString());
+            throw new CardioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<CardioSession> getUserCardioSessionsBeforeId(Long userId, Long borderId, Integer amount) throws CardioException {
+        List<CardioSession> list = getUserCardioSessionsInIdRange(userId, Long.MIN_VALUE, borderId);
+        if (amount == null) {
+            return list;
+        }
+        Integer end = (amount > list.size()) ? list.size() : amount;
+        return list.subList(0, end);
     }
 
     @Override
@@ -524,5 +546,22 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
             throw new CardioException("user with email = " + email + " does not exist");
         }
         return getUserCardioSessions(u.getId());
+    }
+
+    @Override
+    public CardioSession getLastCardioSession(Long userId) throws CardioException {
+        if (userId == null) {
+            throw new CardioException("getLastCardioSession: userId is not specified");
+        }
+        try {
+            Query q = em.createQuery("select cs FROM CardioSession cs  WHERE cs.userId = :userId order by cs.id desc").setParameter("userId", userId);
+            List<CardioSession> slist = q.getResultList();
+            if ((slist == null) || (slist.isEmpty())) {
+                return null;
+            }
+            return slist.get(0);
+        } catch (Exception e) {
+            throw new CardioException(e.getMessage());
+        }
     }
 }

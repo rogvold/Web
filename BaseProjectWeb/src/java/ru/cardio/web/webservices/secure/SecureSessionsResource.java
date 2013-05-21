@@ -65,6 +65,43 @@ public class SecureSessionsResource {
 
     @POST
     @Produces("application/json")
+    @Path("range")
+    public String getRangeSessions(@FormParam("token") String token, @FormParam("id") Long borderId, @FormParam("amount") Integer amount) {
+        try {
+            TokenUtils.checkToken(tokenMan, token);
+            Long userId = tokenMan.getUserIdByToken(token);
+            System.out.println("try to get range sessions for user id = " + userId + "; borderId=" + borderId + ", amount=" + amount);
+            List<CardioSession> list = csMan.getUserCardioSessionsBeforeId(userId, borderId, amount);
+            List<SessionInfo> slist = new ArrayList();
+            for (CardioSession cs : list) {
+                slist.add(new SessionInfo(cs.getId(), cs.getStartDate().getTime(), cs.getEndDate().getTime()));
+            }
+            JsonResponse<List<SessionInfo>> jr = new JsonResponse<List<SessionInfo>>(ResponseConstants.OK, null, slist);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException ex) {
+            return SecureCardioExceptionWrapper.wrapException(ex);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("last_session_info")
+    public String getRangeSessions(@FormParam("token") String token) {
+        try {
+            TokenUtils.checkToken(tokenMan, token);
+            Long userId = tokenMan.getUserIdByToken(token);
+            System.out.println("trying to get last cardio session for useId = " + userId);
+            CardioSession cs = csMan.getLastCardioSession(userId);
+            SessionInfo si = new SessionInfo(cs.getId(), cs.getStartDate().getTime(), cs.getEndDate().getTime());
+            JsonResponse<SessionInfo> jr = new JsonResponse<SessionInfo>(ResponseConstants.OK, null, si);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException ex) {
+            return SecureCardioExceptionWrapper.wrapException(ex);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
     @Path("rates")
     public String getSessionRates(@FormParam("token") String token, @FormParam("sessionId") Long sessionId) {
         try {
