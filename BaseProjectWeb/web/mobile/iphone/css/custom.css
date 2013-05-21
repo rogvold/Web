@@ -118,6 +118,26 @@ html{
     font-size: 12px;
 }
 
+#skaterogramma{
+    position: relative; 
+    overflow: hidden; 
+    width: 100%;
+    height: 280px; 
+    text-align: left;
+    line-height: normal;
+    z-index: 0; 
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px;
+}
+
+#pieSpectrum{
+    display: block; 
+    width: 100%; 
+    height: 200px; 
+    margin-bottom: 10px; 
+
+}
+
 .easyPieChart>span.littlePieSpan{
     font-size: 20px !important;
     /*    margin-left: -20px !important;*/
@@ -131,6 +151,11 @@ html{
 
 #stress_state{
     color: darkcyan;
+}
+
+.bottomSection ul li span{
+    color: darkcyan;
+
 }
 
 .easyPieChart{
@@ -195,10 +220,43 @@ body{
 }
 
 .topRightSection small{
-    font-size: 20px;
+    position: absolute;
+    font-size: 16px;
+    display: block;
+    top: 85px;
+    width: 48%;
+    text-align: center;
 }
 
 .pulseLabel{
     font-size: 20px !important;
     color: firebrick !important;
+    position: absolute;
+    top: 135px;
+    text-align: center;
+    width: 48%;
+    text-shadow: 1px 1px 0 #232323;
+}
+
+.spectrumPieChartLabel{
+    width: 100%;
+    text-align: center;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.showIndicatorsLink{
+    list-style-type: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.hiddenIndicator{
+/*    display: none;*/
+}
+
+.bottomSection > ul{
+    list-style-type: none;
+    margin-left: 2px;
 }

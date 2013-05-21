@@ -15,12 +15,15 @@ var collectingTexts = [
 ];
 
 var tensionInitialized = false;
+var skaterogrammaInitialized = false;
+var pieProgressInitialized = false;
 
 function getCurrentCollectingText(texts, p){
     return texts[ Math.floor(texts.length * p)];
 }
 
 function updateCollectingText(p){
+    if (p == undefined) return;
     $('#collectingText').text(getCurrentCollectingText(collectingTexts, p));
 }
 
@@ -57,7 +60,7 @@ function initCollectingPieChart() {
     });
 };
 
-function initPieChart() {
+function initPieProgressChart() {
     $('.percentage').easyPieChart({
         animate: 500,
         size:70,
@@ -67,6 +70,7 @@ function initPieChart() {
         trackColor:'rgba(0,0,0,0.1)',
         scaleColor:'rgba(0,0,0,0.3)'
     });
+    pieProgressInitialized = true;
 };
             
 function initTensionPlot(k){
@@ -122,12 +126,6 @@ function initPlot(k, name){
                 color: '#808080'
             }]
         },
-        tooltip: {
-            formatter: function() {
-                return ''+
-                new Date(this.x) +': '+ this.y +'';
-            }
-        },
         plotOptions: {
             line: {
                 lineWidth: 3,
@@ -150,12 +148,62 @@ function initPlot(k, name){
     tensionInitialized = true;
 }
   
-  
+function initSkaterogrammaPlot(name){
+    if (name == undefined){
+        name = '';
+    }
+    
+    skaterogrammaChart = new Highcharts.Chart({
+        chart: {
+            lineWidth: 0,
+            renderTo: 'skaterogramma',
+            marginRight: 10,
+            marginLeft: 45,
+            marginBottom: 45,
+            backgroundColor:'rgba(255, 255, 255, 0.01)'
+        },
+        title: {
+            text: name
+        },
+        subtitle: {
+            text: null
+        },
+        xAxis: {
+            labels:{
+                enabled: true
+            }
+        },
+        yAxis: {
+            title: {
+                text: null
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+			
+        legend: {
+            enabled: false
+        },
+        series:  [{
+            lineWidth : 0,
+            marker : {
+                enabled : true,
+                radius : 3
+            },
+            data: []
+        }]
+    });
+    skaterogrammaInitialized = true;
+} 
   
 function setPieChartPercents(p, s){
     if (s == undefined){
         s = '';
     }
+    if (!pieProgressInitialized) initPieProgressChart();
     $('.percentage').each(function(){
         $(this).data('easyPieChart').update(p);  
         $('span', this).text(p + s);      
@@ -164,7 +212,6 @@ function setPieChartPercents(p, s){
 
 function setTensionPercents(p, s){
     setPieChartPercents(p, s);   
-    updateCollectingText(p);
 }
             
 function addPoint(x, y){
@@ -188,17 +235,7 @@ function addPoints(array){
     }
 }
             
-function setStressStateText(text){
-    $('#stress_state').text(text);
-}
-            
-function setDurationText(text){
-    $('#duration_text').text(text);
-}
-            
-function setRecommendationText(text){
-    $('#recommendation_text').text(text);
-}
+
             
 function addTestPoint(){
     var x = (new Date()).getTime();
@@ -206,9 +243,6 @@ function addTestPoint(){
     addPoint(x, y);
 }
 
-function setPulse(pulse){
-    $('#pulse').text(pulse);
-}
 
 function hrDataUpdated(data) {
     setPulse(data.rate);
@@ -217,4 +251,112 @@ function hrDataUpdated(data) {
         addPoint(t, data.intervals[i]);
         t+=data.intervals[i];
     }
+}
+
+
+function updateSpectrumChart(hf, lf, vlf, ulf){
+    var data = [];
+    data = [{
+        label: "HF", 
+        data: hf
+    }, {
+        label: "LF", 
+        data: lf
+    }, {
+        label: "VLF", 
+        data: vlf
+    }, {
+        label: "ULF", 
+        data: ulf
+    } ];
+
+    $.plot($("#pieSpectrum"), data, 
+    {
+        series: {
+            pie: { 
+                show: true,
+                radius: 1,
+                label: {
+                    show: true,
+                    radius: 2/3,
+                    formatter: function(label, series){
+                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                    },
+                    background: { 
+                        opacity: 0.8
+                    //                        color: '#000'
+                    }
+                },
+                combine: {
+                    color: '#999',
+                    threshold: 0.1
+                }
+            }
+        },
+        legend: {
+            show: false
+        }
+    });
+}
+
+function toggleIndicators(){
+    $('.hiddenIndicator').toggle();
+    var vis = false;
+    if ($('.hiddenIndicator').is(':visible')){
+        $('.showIndicatorsLink li').text('Hide indicators');
+    }else{
+        $('.showIndicatorsLink li').text('Show indicators');
+    }
+}
+
+function showHiddenIndicators(){
+    $('.hiddenIndicator').show();
+    $('.showIndicatorsLink').hide();
+}
+
+function addSkaterogrammaPoint(x, y){
+    if (!skaterogrammaInitialized){
+        initSkaterogrammaPlot();
+    }
+    console.log('adding point to skaterogramma: x = ' + x + " ; y = " + y);
+    skaterogrammaChart.series[0].addPoint([x, y]);
+}
+
+function addSkaterogrammaPoints(array){
+    for (i in array){
+        addSkaterogrammaPoint(array[i][0], array[i][1]);
+    }
+}
+
+function setPulse(pulse){
+    $('#pulse').text(pulse);
+}
+
+
+function setVariationRange(value){
+    $('#variation_range_text').text(value);
+}
+function setMean(value){
+    $('#mean_text').text(value);
+}
+function setModeAmplitude(value){
+    $('#mode_amplitude_text').text(value);
+}
+function setStandardDeviation(value){
+    $('#standart_deviation_text').text(value);
+}
+function setCentralizationIndex(value){
+    $('#centralization_index_text').text(value);
+}
+
+function setStressState(text){
+    $('#stress_state').text(text);
+}
+            
+function setDuration(text){
+    $('#duration_text').text(text);
+}
+            
+function setRecommendation(text){
+    $('#recommendation_text').text(text);
 }

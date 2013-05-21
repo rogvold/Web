@@ -15,6 +15,10 @@
         <script src="./js/pie-chart.js" type="text/javascript"></script>
         <script src="./js/highcharts.js" type="text/javascript"></script>
 
+
+        <script src="./js/jquery.flot.js"></script>
+        <script src="./js/jquery.flot.pie.js"></script>
+
         <script src="./js/custom.js" type="text/javascript"></script>
 
         <script type="text/javascript">
@@ -26,11 +30,22 @@
                 }
                 hrDataUpdated(data);
                 
-                initPieChart(); // инициализация круглого графика
                 setTensionPercents(56); // ставим круглому графику значение 56 процентов
-                setStressStateText("relaxation after stress"); // Выставляем текущее состояние (State: text)
-                setDurationText("34 m. 55 s."); // Текст напротив Duration:
-                setRecommendationText(' it amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'); // текст рекомендаций
+                setStressState("relaxation after stress"); // Выставляем текущее состояние (State: text)
+                setDuration("34 m. 55 s."); // Текст напротив Duration
+                setRecommendation(' it amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ameor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'); // текст рекомендаций
+            
+                setPulse(102);
+                setVariationRange(122);
+                setMean(876);
+                setModeAmplitude(44);
+                setStandardDeviation(53);
+                setCentralizationIndex(2.41);
+            
+                updateSpectrumChart(10, 20, 30, 20);
+                addSkaterogrammaPoint(242, 534);
+                addSkaterogrammaPoint(342, 352);
+                
             });
             
         </script>
@@ -39,12 +54,6 @@
     <body>
 
         <div class="iphone">
-            <!--                        <div class="net">
-                                        default 
-                                    </div>
-                                    <div class="topBar">
-                                        nav
-                                    </div>-->
             <div class="container">
                 <div class="topSection">
                     <div class="topLeftSection">
@@ -69,21 +78,37 @@
                 <div class="middleSection">
                     <div id="chartline" >
                         <div class="highcharts-container" id="highcharts"  > </div>
-                        <!--                        костыль для скроллинга в айфоне. -->
-                        <div id="scroll_spike" style="height: 200px; display: block; margin-top: -180px; background-color: transparent; width: 100%; position: absolute;" > </div>
+                        <!--                        кастыль для скроллинга в айфоне. -->
+                        <div class="scroll_spike" style="height: 200px; display: block; margin-top: -180px; background-color: transparent; width: 100%; position: absolute;" > </div>
                     </div>
                 </div>
                 <div class="bottomSection" >
                     <ul>
                         <li><b>State:</b> <span id="stress_state"> </span></li> 
                         <li><b>Duration:</b> <span id="duration_text" > </span></li>
+                        <li class="hiddenIndicator"><b>Variation range:</b> <span id="variation_range_text" ></span></li>
+                        <li class="hiddenIndicator"><b>Mean:</b> <span id="mean_text" ></span></li>
+                        <li class="hiddenIndicator"><b>Mode amplitude:</b> <span id="mode_amplitude_text" ></span></li>
+                        <li class="hiddenIndicator"><b>Standard deviation:</b> <span id="standart_deviation_text" ></span></li>
+                        <li class="hiddenIndicator"><b>Centralization index:</b> <span id="centralization_index_text" ></span></li>
                     </ul>
-                    <span id="recommendation_text"></span>
+                    <div class="hiddenIndicator">
+                        <div class="spectrumPieChartLabel" style="">Spectrum indicators</div>
+                        <span id="pieSpectrum"></span>
+
+                        <div class="spectrumPieChartLabel" style="">Skaterogramma</div>
+                        <div>
+                            <div class="highcharts-container" id="skaterogramma"  > </div>
+                            <!--                        кастыль для скроллинга в айфоне. -->
+                            <div class="scroll_spike" style="height: 200px; display: block; margin-top: -300px; background-color: transparent; width: 100%; position: absolute;" > </div>
+                        </div>
+                    </div>
+
+                    <div class="spectrumPieChartLabel" style="">Recommendation</div>
+                    <span id="recommendation_text" ></span>
+
                 </div>
             </div>
-            <!--            <div class="bottomBar" onclick="addTestPoint();">
-                            tabs
-                        </div>-->
         </div>
     </body>
 </html>
