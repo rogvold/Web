@@ -86,7 +86,7 @@ public class SecureSessionsResource {
     @POST
     @Produces("application/json")
     @Path("last_session_info")
-    public String getRangeSessions(@FormParam("token") String token) {
+    public String getLastSessionInfo(@FormParam("token") String token) {
         try {
             TokenUtils.checkToken(tokenMan, token);
             Long userId = tokenMan.getUserIdByToken(token);
