@@ -27,11 +27,10 @@ public class CardioSessionBean implements Serializable {
     private Long selectedCardioSessionId;
     private List<CardioSession> userCardioSessions;
     private Long deletionSessionId;
-
     private CardioSessionHelper cardioHelper = new CardioSessionHelper();
-    
+
     @PostConstruct
-    private void init() {
+    private void init() throws CardioException {
         this.userCardioSessionsIds = sm.getUserCardioSessionsId(SessionUtils.getUserId());
         this.userCardioSessions = sm.getUserCardioSessions(SessionUtils.getUserId());
         this.selectedCardioSessionId = sm.getCurrentCardioSessionId(SessionUtils.getUserId());
@@ -105,12 +104,12 @@ public class CardioSessionBean implements Serializable {
             return 0;
         }
     }
-    
-    public String timelineJsonBySessionId(Long sessionId) throws CardioException{
-       return cardioHelper.getTimelineJson(sm.getCardioSessionById(sessionId));
+
+    public String timelineJsonBySessionId(Long sessionId) throws CardioException {
+        return cardioHelper.getTimelineJson(sm.getCardioSessionById(sessionId));
     }
-    
-    public String getAllSessionsTimelineJson(){
+
+    public String getAllSessionsTimelineJson() {
         return cardioHelper.getTimelineJsonFromSessionList(userCardioSessions);
     }
 
@@ -137,9 +136,8 @@ public class CardioSessionBean implements Serializable {
             this.userCardioSessions.remove(del);
         }
     }
-    
-    public boolean hasActiveSession(Long userId){
+
+    public boolean hasActiveSession(Long userId) {
         return sm.userHasActiveSession(userId);
     }
-    
 }

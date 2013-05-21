@@ -40,5 +40,4 @@ public class SessionInfo extends JsonEntityAbstract {
         this.start = start;
     }
         
-    
 }
