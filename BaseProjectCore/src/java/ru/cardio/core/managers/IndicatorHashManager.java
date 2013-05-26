@@ -15,6 +15,7 @@ import ru.cardio.exceptions.CardioException;
 import ru.cardio.graphics.MyPlot;
 import ru.cardio.graphics.MyPoint;
 import ru.cardio.indicators.AbstractIndicatorsService;
+import ru.cardio.indicators.HRVIndicatorsService;
 
 /**
  *
@@ -53,15 +54,34 @@ public class IndicatorHashManager implements IndicatorHashManagerLocal {
         double[][] arr = new double[plot.getPoints().size()][2];
         int i = 0;
         for (MyPoint point : plot.getPoints()) {
+            System.out.println("adding point " + point.getX() + " / " + point.getY());
             arr[i][0] = point.getX();
             arr[i][1] = point.getY();
             i++;
         }
+        System.out.println("get2dArray: arr=" + arr);
         return arr;
     }
 
+    private String getMy2dArray(MyPlot plot) {
+//        double[][] arr = new double[plot.getPoints().size()][2];
+        String s = "[[" + plot.getPoints().get(0).getX() + "," + plot.getPoints().get(0).getY() + "]";
+
+        for (int i = 0; i < plot.getPoints().size(); i++) {
+            System.out.println("adding point " + plot.getPoints().get(i).getX() + " / " + plot.getPoints().get(i).getY());
+            s += ",[" + plot.getPoints().get(i).getX() + "," + plot.getPoints().get(i).getY() + "]";
+        }
+        s += "]";
+
+//        System.out.println("get2dArray: arr=" + arr);
+        return s;
+    }
+
     private void recalculateParametersJsonList(Long sessionId, AbstractIndicatorsService a, String indicatorName) throws Exception {
-        MyPlot plot = indMan.getPlotOfParameters(sessionId, a, indicatorName, Long.parseLong(cMan.getConstantValueByName(Constant.STEP_DURATION_NAME)));
+        MyPlot plot = indMan.getPlotOfParameters(sessionId, a, indicatorName, 1000 * Long.parseLong(cMan.getConstantValueByName(Constant.STEP_DURATION_NAME) ));
+
+//        for (MyPoint)
+
         IndicatorHash ih = getIndicatorHashBySessionId(sessionId);
         Gson gson = new Gson();
         System.out.println("recalculateParametersJsonList : ih = " + ih);
@@ -75,7 +95,11 @@ public class IndicatorHashManager implements IndicatorHashManagerLocal {
         ih.setStatus(IndicatorHash.STATUS_CALCULATED);
         ih.setStep(Long.parseLong(cMan.getConstantValueByName(Constant.STEP_DURATION_NAME)));
         ih.setIndicatorWindow(Long.parseLong(cMan.getConstantValueByName(Constant.WINDOW_DURATION_NAME)));
-        ih.setIndicatorsData(gson.toJson(get2dArray(plot)));
+
+        double[][] dummy = new double[0][0];
+
+
+        ih.setIndicatorsData(getMy2dArray(plot));
         ih.setCardioSessionId(sessionId);
 
         em.merge(ih);
@@ -87,7 +111,7 @@ public class IndicatorHashManager implements IndicatorHashManagerLocal {
             try {
                 recalculateParametersJsonList(sessionId, a, indicatorName);
             } catch (Exception ex) {
-                throw new CardioException("Cannot calculate tension index for this session.");
+                throw new CardioException("Cannot calculate tension index for this session. sessionId = " + sessionId);
             }
         }
         IndicatorHash ih = getIndicatorHashBySessionId(sessionId);
@@ -99,5 +123,14 @@ public class IndicatorHashManager implements IndicatorHashManagerLocal {
         Query q = em.createQuery("select h from IndicatorHash h where h.cardioSessionId = :sId").setParameter("sId", sessionId);
         List<IndicatorHash> list = q.getResultList();
         return (list == null || list.isEmpty()) ? null : list.get(0);
+    }
+
+    @Override
+    public float[][] getParameterPlotArray(Long sessionId, AbstractIndicatorsService a, String indicatorName, boolean recalculate) throws CardioException {
+        String jsonArray = getCalculatedParameterJsonPlot(sessionId, new HRVIndicatorsService(), "IN", false);
+        float[][] dummy = new float[0][0];
+        float[][] newArray;
+        Gson gson = new Gson();
+        return gson.fromJson(jsonArray, dummy.getClass()); // indian code(((
     }
 }

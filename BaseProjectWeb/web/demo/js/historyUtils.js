@@ -30,6 +30,7 @@ function drawRRPlot(divId, start, rates, title){
                     }
                 }
             }
+
         },
         title: {
             text: title
@@ -103,34 +104,7 @@ function drawRRPlot(divId, start, rates, title){
             }
         }
     });
-}
-
-
-function drawTensionPlot(divId, points, title){
-    var options = {
-        series: {
-            shadowSize: 0, 
-            color : '#CF3300'
-        },
-        yaxis: {
-            color: '#92d5ea'
-        },
-        xaxis: {
-            mode: "time", 
-            color: '#92d5ea'
-        },
-        grid: {
-            borderWidth: 0
-        } 
-    };
-    
-    plot2 = $.plot($("#"+divId),
-        [   {
-            data: points, 
-            lines: {
-                show:true
-            }
-        } ], options);
+                
 }
 
 function generateRandomRates(){
@@ -141,55 +115,4 @@ function generateRandomRates(){
     }
     //    alert('generated');
     return rates;
-}
-
-function getStressComment(tension){
-    if (tension > 300) return 'very high';
-    if (tension > 150) return 'high';
-    return 'normal';
-}
-
-function getStressClass(tension){
-    if (tension > 300) return 'very_high_stress';
-    if (tension > 150) return 'high_stress';
-    return 'normal_stress';
-}
-
-function drawSessionInfo(){
-    var max = $('.selectedBar .maxBar').text();
-    var min = $('.selectedBar .minBar').text();
-    var avr = $('.selectedBar .avrBar').text()
-    $('.history_page_info').hide();
-    $('#info_max_stress').text(max);
-    $('#info_min_stress').text(min);
-    $('#info_avr_stress').text(avr);
-    
-    $('#info_max_stress').next().text(getStressComment(max));
-    $('#info_min_stress').next().text(getStressComment(min));
-    $('#info_avr_stress').next().text(getStressComment(avr));
-    
-    $('#info_max_stress').next().attr('class',(getStressClass(max)));
-    $('#info_min_stress').next().attr('class',getStressClass(min));
-    $('#info_avr_stress').next().attr('class',getStressClass(avr));
-}
-
-function drawSessionInfo(bar){
-    var max = $('.selectedBar .maxBar').text();
-    var min = $('.selectedBar .minBar').text();
-    var avr = $('.selectedBar .avrBar').text()
-    $('.history_page_info').hide();
-    
-    $('#info_stress_time_percents').text(bar.stressTimePercents*100 + '%');
-    
-    $('#info_max_stress').text(bar.max);
-    $('#info_min_stress').text(bar.min);
-    $('#info_avr_stress').text(bar.avr);
-    
-    $('#info_max_stress').next().text(getStressComment(bar.max));
-    $('#info_min_stress').next().text(getStressComment(bar.min));
-    $('#info_avr_stress').next().text(getStressComment(bar.avr));
-    
-    $('#info_max_stress').next().attr('class',(getStressClass(bar.max)));
-    $('#info_min_stress').next().attr('class',getStressClass(bar.min));
-    $('#info_avr_stress').next().attr('class',getStressClass(bar.avr));
 }

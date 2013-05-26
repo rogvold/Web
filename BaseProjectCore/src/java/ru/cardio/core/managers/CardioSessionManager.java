@@ -27,7 +27,7 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
 
     public static final String DELIMETER = ";";
     public static final int SESSION_TIMEOUT = 120000;
-    public static final boolean SESSION_TIMEOUT_MODE = true;
+    public static final boolean SESSION_TIMEOUT_MODE = false;
     public static final boolean SESSION_CREATION_FLAG_MODE = false;
     public static final boolean BAEVSKY_FILTER_ENABLED = true;
     @PersistenceContext(unitName = "BaseProjectCorePU")
@@ -186,7 +186,7 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
     }
 
     @Override
-    public void addRatesCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException {
+    public Long addRatesCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException {
         checkIfsessionWithThisStartDateExists(startDate);
         CardioSession cs = new CardioSession();
         cs.setStartDate(startDate);
@@ -207,7 +207,8 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
         cs.setRates(s);
         cs.setUserId(userId);
         cs.setStatus(CardioSession.STATUS_CURRENT);
-        em.persist(cs);
+        cs = em.merge(cs);
+        return cs.getId();
     }
 
     private void addRatesNotCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException {
@@ -300,21 +301,23 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
             addRatesCreatingNewSession(userId, ratesList, startDate);
             return;
         }
-
-        if (currentCs.getEndDate().getTime() > startDate.getTime()) {
-            System.out.println("Current endDate > startDate. Please check your clock.");
-            return;
-        }
-
-        boolean shouldCreateNewSession = createSession;
-
-        if (SESSION_TIMEOUT_MODE && startDate.getTime() - currentCs.getEndDate().getTime() > SESSION_TIMEOUT) {
-            shouldCreateNewSession = true;
-        }
+//
+//        if (currentCs.getEndDate().getTime() > startDate.getTime()) {
+//            System.out.println("Current endDate > startDate. Please check your clock.");
+//            return;
+//        }
+//
+//        boolean shouldCreateNewSession = createSession;
+//
+//        if (SESSION_TIMEOUT_MODE && startDate.getTime() - currentCs.getEndDate().getTime() > SESSION_TIMEOUT) {
+//            shouldCreateNewSession = true;
+//        }
 
 
         if (createSession) {
-            currentCs.setStatus(CardioSession.STATUS_OLD);
+            if (currentCs != null) {
+                currentCs.setStatus(CardioSession.STATUS_OLD);
+            }
             em.merge(currentCs);
             addRatesCreatingNewSession(userId, ratesList, startDate);
         } else { // adding rates and updating endTime
@@ -334,6 +337,47 @@ public class CardioSessionManager implements CardioSessionManagerLocal {
             currentCs.setEndDate(newEnd);
             currentCs.setRates(currentCs.getRates() + ";" + s);
             em.merge(currentCs);
+        }
+    }
+
+    @Override
+    public Long addRatesReturningSessionId(Long userId, List<Integer> ratesList, Date startDate, boolean createSession) throws CardioException {
+        if ((ratesList == null) || (ratesList.isEmpty())) {
+            return null;
+        }
+        CardioSession lastCs = getLastCardioSession(userId);
+        User user = userMan.getUserById(userId);
+        user.setLastDataRecievedDate(new Date());
+        em.merge(user);
+        if (createSession) {
+            if (lastCs != null) {
+                lastCs.setStatus(CardioSession.STATUS_OLD);
+                em.merge(lastCs);
+            }
+            return addRatesCreatingNewSession(userId, ratesList, startDate);
+        } else { // adding rates and updating endTime
+
+            if (lastCs == null) {
+                return addRatesCreatingNewSession(userId, ratesList, startDate);
+            } else {
+                long time = lastCs.getEndDate().getTime();
+                String s = "";
+                for (int i = 0; i < ratesList.size() - 1; i++) {
+                    time += ratesList.get(i);
+                    s += ratesList.get(i) + ";";
+                }
+
+                time += ratesList.get(ratesList.size() - 1);
+                s += ratesList.get(ratesList.size() - 1);
+
+                Date newEnd = new Date();
+                newEnd.setTime(time);
+                lastCs.setEndDate(newEnd);
+                lastCs.setRates(lastCs.getRates() + ";" + s);
+                lastCs = em.merge(lastCs);
+                return lastCs.getId();
+            }
+
         }
     }
 

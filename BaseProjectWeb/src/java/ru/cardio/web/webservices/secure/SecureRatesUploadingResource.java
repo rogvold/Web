@@ -48,7 +48,6 @@ public class SecureRatesUploadingResource {
         try {
             TokenUtils.checkToken(tokenMan, token);
             SimpleRatesData sdr = SimpleRatesData.fromJson(json);
-//            cardMan.addRates(sdr);
             cardMan.addRates(tokenMan.getUserIdByToken(token), sdr.getRates(), sdr.getStart(), (sdr.getCreate() == 1) ? true : false);
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
             return SecureResponseWrapper.getJsonResponse(jr);
@@ -90,6 +89,21 @@ public class SecureRatesUploadingResource {
             sdr.setCreate(0);
             cardMan.syncRates(sdr);
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Path("upload_rates")
+    @Produces("application/json")
+    public String uploadRatesReturningId(@FormParam("token") String token, @FormParam("json") String json) {
+        try {
+            TokenUtils.checkToken(tokenMan, token);
+            SimpleRatesData sdr = SimpleRatesData.fromJson(json);
+            Long id = cardMan.addRatesReturningSessionId(tokenMan.getUserIdByToken(token), sdr.getRates(), sdr.getStart(), (sdr.getCreate() == 1) ? true : false);
+            JsonResponse<Long> jr = new JsonResponse<Long>(ResponseConstants.OK, null, id);
             return SecureResponseWrapper.getJsonResponse(jr);
         } catch (CardioException e) {
             return SecureCardioExceptionWrapper.wrapException(e);

@@ -46,10 +46,10 @@ function getNextScale(scale){
 }
 
 function getPrevScale(scale){
-    //    if (scale === ScaleEnum.YEAR){
-    //        console.log('currentScale = ' + scale.name + ' ; so previous scale is ' + ScaleEnum.OVERALL.name);
-    //        return ScaleEnum.OVERALL;
-    //    }
+    if (scale === ScaleEnum.YEAR){
+        console.log('currentScale = ' + scale.name + ' ; so previous scale is ' + ScaleEnum.OVERALL.name);
+        return ScaleEnum.OVERALL;
+    }
     if (scale === ScaleEnum.MONTH){
         console.log('currentScale = ' + scale.name + ' ; so previous scale is ' + ScaleEnum.YEAR.name);
         return ScaleEnum.YEAR;
@@ -62,8 +62,7 @@ function getPrevScale(scale){
         console.log('currentScale = ' + scale.name + ' ; so previous scale is ' + ScaleEnum.DAY.name);
         return ScaleEnum.DAY;
     }
-    //    return ScaleEnum.OVERALL;
-    return ScaleEnum.YEAR;
+    return ScaleEnum.OVERALL;
     
 }
 
@@ -91,18 +90,10 @@ function generateRandomSessions(){
 
 function SessionsPool(sessions){
     this.sessions = sessions;
+    
         
-    this.loadSessions = function(callback){
-        //        this.sessions = generateRandomSessions();
-        $.ajax({
-            type: "GET",
-            url: "/BaseProjectWeb/resources/internal_sessions/all",
-            success: function(data){
-                console.log(data);
-                this.sessions = data.data;
-                callback(data.data);
-            }
-        });
+    this.loadSessions = function(){
+        this.sessions = generateRandomSessions();
     };
     
     this.getSessionsInRange = function(start, end){
@@ -145,22 +136,6 @@ function SessionsPool(sessions){
         return Math.floor(w / sum) ;
     };
     
-    this.getTensionTimePercentsInSessionArray = function(sess){
-        var w = 0.0;
-        var totalTime = 0.0;
-        var tensionTime = 0.0;
-        for (i in sess){
-            totalTime += (sess[i].end - sess[i].start);
-            tensionTime += (sess[i].end - sess[i].start) * sess[i].stressTimePercents;
-            w += sess[i].avrTension * (sess[i].end - sess[i].start);
-        }
-        console.log('tension time = ' + tensionTime);
-        console.log('total time = ' + totalTime);
-        
-        return Math.floor( 100.0 * tensionTime / totalTime) / 100.0;
-    };
-    
-    
     this.getSessionBar = function(start, end){
         var bar = new MySessionBar();
 
@@ -168,7 +143,6 @@ function SessionsPool(sessions){
         bar.max = this.getMaxTensionInSessionArray(sess);
         bar.min = this.getMinTensionInSessionArray(sess);
         bar.avr = this.getAvrTensionInSessionArray(sess);
-        bar.stressTimePercents = this.getTensionTimePercentsInSessionArray(sess);
         
 
         bar.start = start; 
@@ -177,7 +151,7 @@ function SessionsPool(sessions){
     };
     
     this.getPrettySessionBar = function(start, end){
-        var bar = new MySessionBar(); 
+        var bar = new MySessionBar();
 
         var sess = this.getSessionsInRange(start, end);
         bar.max = this.getMaxTensionInSessionArray(sess);
@@ -205,22 +179,17 @@ function SessionsPool(sessions){
 
     
     this.getYearMyInterval = function(start){
-        //        var yStart = moment(start).startOf("year").startOf('second');
-        //        var yEnd = moment(start).endOf("year");
-        var yStart = moment(this.sessions[0].start).startOf("month").startOf('second');
-        var yEnd = moment(this.sessions[this.sessions.length - 1].end).endOf("month");
-        var monthsBetween = Math.floor(moment.duration(yEnd - yStart).asMonths()) + 1;
-        //    alert(monthsBetween);
-    
-    
+        var yStart = moment(start).startOf("year").startOf('second');
+        var yEnd = moment(start).endOf("year");
+        
         var myInterval = new MyTimeInterval();
         myInterval.start = yStart.valueOf();
         myInterval.end = yEnd.valueOf();
         myInterval.scale = ScaleEnum.YEAR;
         myInterval.name = yEnd.format("YYYY");
-
+        
         var barsArray = new Array();
-        for (var i = 0; i < monthsBetween; i++){
+        for (var i = 0; i < 12; i++){
             var m = yStart.clone();
             m.add('months', i).startOf("second");
             var bar = this.getSessionBar(m.valueOf(), m.endOf('month').valueOf());
@@ -228,7 +197,7 @@ function SessionsPool(sessions){
             bar.scale = ScaleEnum.MONTH;
             barsArray.push(bar);
         }
-
+        
         myInterval.bars = barsArray;
         return myInterval;
     };
@@ -283,7 +252,6 @@ function SessionsPool(sessions){
             bar.max = sess[i].maxTension;
             bar.min = sess[i].minTension;
             bar.avr = sess[i].avrTension;
-            bar.stressTimePercents = sess[i].stressTimePercents;
             bar.sessionId = sess[i].id;
             
             bar.scale = ScaleEnum.SESSION;
@@ -368,31 +336,9 @@ function SessionPlot(session){
         this.session.end = t;
     };
     
-    //    this.obtainSessionRates = function(){
-    //        $.ajax({
-    //            type: 'GET',
-    //            url: '/BaseProjectWeb/resources/internal_sessions/tension?sessionId='+session.id,
-    //            success: function(data){
-    //                ddd = data;
-    //                this.session.tensionPoints = data.data;
-    //                drawSessionPlot();
-    //            }
-    //        });
-    //    }
-    
     this.drawSessionPlot = function(divId){
         var title = moment(this.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(this.session.end).format("MMMM Do YYYY, HH:mm:ss");
-        $.ajax({
-            type: 'GET',
-            url: '/BaseProjectWeb/resources/internal_sessions/tension?sessionId='+session.id,
-            success: function(data){
-                ddd = data;
-                //                this.session.tensionPoints = data.data;
-                drawTensionPlot(divId, data.data, 'Tension plot');
-                $('.infAbout').text(moment(data.data[0][0] + 0).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(data.data[data.data.length - 1][0] + 0).format("MMMM Do YYYY, HH:mm:ss"));
-//                drawSessionInfo();
-            }
-        });
+        drawRRPlot(divId, this.session.start, this.session.rates, title);
     }
 }
 

@@ -33,7 +33,7 @@ div.timeline-axis-text-major {
 div.timeline-event {
     color: #1A1A1A;
     border-color: #97B0F8;
-    background-color: #D5DDF6;
+/*    background-color: #D5DDF6;*/
     display: inline-block;
 }
 

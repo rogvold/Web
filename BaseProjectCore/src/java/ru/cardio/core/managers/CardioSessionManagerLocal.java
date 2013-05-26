@@ -41,7 +41,7 @@ public interface CardioSessionManagerLocal {
 
     public List<CardioSession> getUserCardioSesisons(String email) throws CardioException;
 
-    public void addRatesCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException;
+    public Long addRatesCreatingNewSession(Long userId, List<Integer> ratesIdList, Date startDate) throws CardioException;
 
     public CardioSession getCurrentCardioSession(Long userId);
 
@@ -56,6 +56,8 @@ public interface CardioSessionManagerLocal {
     public void addRates(String email, List<Integer> ratesList, Date startDate, boolean createSession, String password) throws CardioException;
 
     public void addRates(SimpleRatesData srd) throws CardioException;
+
+    public Long addRatesReturningSessionId(Long userId, List<Integer> ratesList, Date startDate, boolean createSession) throws CardioException;
 
     public int getSessionRatesAmountById(Long sessionId) throws CardioException;
 

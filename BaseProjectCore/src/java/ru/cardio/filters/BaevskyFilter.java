@@ -2,6 +2,7 @@ package ru.cardio.filters;
 
 import java.util.ArrayList;
 import java.util.List;
+import ru.cardio.exceptions.CardioException;
 import ru.cardio.indicators.StatisticsIndicatorsService;
 
 /**
@@ -62,6 +63,9 @@ public class BaevskyFilter implements FilterInterfaces {
                 list.add(rates.get(i));
             }
         }
+        if (rates.isEmpty() || list.isEmpty()) {
+            return list;
+        }
         //check the last one 
         if (rates.get(rates.size() - 1) > BOTTOM_DOUBLING * list.get(list.size() - 1)) {
             list.add(rates.get(rates.size() - 1) / 2);
@@ -92,9 +96,9 @@ public class BaevskyFilter implements FilterInterfaces {
         sis.setIntervals(rates);
         double m = sis.getRRNN();
         double sigma = sis.getSDNN();
-        
+
 //        System.out.println("m = " + " ; sigma = " + sigma);
-        
+
         rates.add(0, getAverage(rates)); // do not forget the first element!
 
         for (int i = 1; i < rates.size() - 1; i++) {
@@ -113,10 +117,14 @@ public class BaevskyFilter implements FilterInterfaces {
     }
 
     @Override
-    public List<Integer> filterRates(List<Integer> rates) {
-        rates = processPVCs(rates);
-        rates = processDoublings(rates);
-        rates = processBlowouts(rates);
+    public List<Integer> filterRates(List<Integer> rates) throws CardioException {
+        try {
+            rates = processPVCs(rates);
+            rates = processDoublings(rates);
+            rates = processBlowouts(rates);
+        } catch (Exception e) {
+            throw new CardioException(e.getMessage());
+        }
         return rates;
     }
 }

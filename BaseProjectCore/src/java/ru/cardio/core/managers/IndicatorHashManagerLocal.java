@@ -17,4 +17,5 @@ public interface IndicatorHashManagerLocal {
     
     public String getCalculatedParameterJsonPlot(Long sessionId, AbstractIndicatorsService a, String indicatorName, boolean recalculate) throws CardioException;
     
+    public float[][] getParameterPlotArray(Long sessionId, AbstractIndicatorsService a, String indicatorName, boolean recalculate) throws CardioException;
 }

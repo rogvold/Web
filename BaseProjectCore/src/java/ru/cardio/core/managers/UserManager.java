@@ -440,9 +440,9 @@ public class UserManager implements UserManagerLocal {
 
     @Override
     public void updateInfo(SimpleUser su) throws CardioException {
-        if (!checkEmailAndPassword(su.getEmail(), su.getPassword())) {
-            throw new CardioException("incorrect pair email/password");
-        }
+//        if (!checkEmailAndPassword(su.getEmail(), su.getPassword())) {
+//            throw new CardioException("incorrect pair email/password");
+//        }
         User u = getUserByEmail(su.getEmail());
 
         u.setFirstName(su.getFirstName());

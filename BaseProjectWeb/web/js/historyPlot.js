@@ -12,17 +12,37 @@ function initTimeline(){
     console.log('initTimeline');
     selectedStart = new Date( (new Date().getTime() - 1000*3600*24*30*12));
     
-    currentScale = ScaleEnum.OVERALL;
+    currentScale = ScaleEnum.YEAR;
     sp = new SessionsPool();
-    sp.loadSessions();
-    draw();
+    sp.loadSessions(function(sess){
+        sp.sessions = sess;
+        draw();
+    });
+//    draw();
 }
+
+$('.sessionBar').live('click', function(){
+    //    alert($(this).attr('id'));
+    $('#currSess').show();
+    $('#sessionInfo').show();
+    
+    
+    var se = new SimpleSession();
+    se.id = $(this).attr('id');
+    se.start = (new Date()).getTime();
+    var sip = new SessionPlot(se);
+    sip.drawSessionPlot('currSess');
+    $('.sessionBar').removeClass('selectedBar');
+    $(this).addClass("selectedBar");
+//    $('.infAbout').text(moment(sip.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(sip.session.end).format("MMMM Do YYYY, HH:mm:ss"));
+});
 
 function onBarSelect(){
     $('.selectedIntervalInfo').text(moment(myInterv.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(selectedEnd).format("MMMM Do YYYY, HH:mm:ss"));
 }
             
 function onselect(event){
+    //    alert('onselect occured');
     md = event;
     var row = undefined;
     var sel = timeline.getSelection();
@@ -31,7 +51,7 @@ function onselect(event){
             var row = sel[0].row;
         }
     }
-
+    //    alert('row = ' + row);
     if (row != undefined) {
         var content = gdata.getValue(row, 0);
                     
@@ -43,6 +63,8 @@ function onselect(event){
 }
             
 function draw(){
+    //    alert('draw is launched');
+    console.log('draw is launched');
     if (selectedStart == undefined){
         selectedStart = (new Date()).getTime();
     }
@@ -52,6 +74,9 @@ function draw(){
         selectedEnd = new Date(myInterv.end);
         onBarSelect();
         drawHistoryVisualization(myInterv);
+        if (myInterv.bars.length == 1){
+            $('.myBar').click();
+        }
     }catch(err){
         
     }
@@ -59,31 +84,52 @@ function draw(){
 }
             
 function zoomOut(){
+    if (currentScale == ScaleEnum.SESSION){
+        currentScale = getPrevScale(currentScale);
+    }
     currentScale = getPrevScale(currentScale);
     draw();
 }
             
 function zoomIn(){
-    if (currentScale == ScaleEnum.SESSION) {
-        console.log('currentScale is SESSION');
-        return;
-    }
     currentScale = getNextScale(currentScale);
+    //    alert('next is ' + currentScale.name);
     draw();
 }
 
+
 function refresh(){
-    currentScale = ScaleEnum.OVERALL;
+    currentScale = ScaleEnum.YEAR;
+    $('#currSess').hide();
+    $('#sessionInfo').hide();
+    $('.history_page_info').show();
     draw();
 }
 
 function generateBar(val, cssClass){
-    var style = 'height:' + 2 * val + 'px;';
+    var textMinHeight = 20;
+    if (cssClass == 'minBar'){
+        textMinHeight = 10;
+    }
+    if (cssClass == 'avrBar'){
+        textMinHeight = 20;
+    }
+    if (cssClass == 'maxBar'){
+        textMinHeight = 30;
+    }
+    
+    var style = 'height:' +  (val * alfa + textMinHeight) + 'px;';
     return '<div class="bar '+cssClass+'" style="' + style + '" >' + val + '</div>';
+//    return '<div class="bar '+cssClass+'" style="' + style + '" >' + '' + '</div>';
 }            
             
             
 function drawHistoryVisualization(myInterval) {
+    //    alert('drawHistoryVisualization');
+    if (currentScale == ScaleEnum.DAY){
+    //        alert('day drawing');
+    }
+
     if (currentScale != ScaleEnum.SESSION){
         gdata = new google.visualization.DataTable();
         gdata.addColumn('datetime', 'start');
@@ -93,6 +139,16 @@ function drawHistoryVisualization(myInterval) {
     // Create and populate a data table.
     var data = [];
                 
+    var globMax = -1;
+    for (var i = 0; i < myInterval.bars.length; i++) {
+        if (myInterval.bars[i].max > globMax){
+            globMax = myInterval.bars[i].max;
+        }
+    }
+    //    
+    alfa = 180.0/globMax;
+    currentEnd = (new Date()).getTime();
+             
     for (var i = 0; i < myInterval.bars.length; i++) {
         var bar = myInterval.bars[i];
 
@@ -101,8 +157,25 @@ function drawHistoryVisualization(myInterval) {
         var maxim = generateBar(bar.max, 'maxBar');
         var average = generateBar(bar.avr, 'avrBar');
         var minim = generateBar(bar.min, 'minBar');
-                    
-        var dataDiv = '<div class="myBar myTooltip"  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </ul> " >'+ maxim+average+minim +'</div>'
+        
+        console.log('minim = ' + bar.min);
+        var dataDiv = '';
+        var sId = '';
+        var cClass = '';
+        
+        if (!isNaN(bar.min)){
+//            console.log(bar);
+            drawSessionInfo(bar);
+            if (currentScale == ScaleEnum.DAY){
+                sId = ' id = \''+ bar.sessionId+'\' ';
+                cClass = 'sessionBar';
+            }
+            dataDiv = '<div class="myBar myTooltip ' + cClass + '"' + sId + '  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </li> <li>You were stressed '+bar.stressTimePercents*100+'% of time </li> </ul> " >'+ maxim+average+minim +'</div>'
+        //            dataDiv = '<div class="myBar myTooltip"  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </ul> " >'+ average +'</div>'
+        }else{
+            continue;
+        }
+        currentEnd = end;
         
         var item = {
             'group': '',
@@ -112,13 +185,17 @@ function drawHistoryVisualization(myInterval) {
         };
         gdata.addRow([item.start, item.end, item.content]);
         data.push(item);
-//        d = new Date(end);
+    //        d = new Date(end);
     }
 
     // specify options
+    var border = (currentEnd.getTime() - myInterval.start) * 0.02;
     var options = {
-        "min": new Date(myInterval.start - 1000*1800),
-        "max": new Date(myInterval.end + 1000*1800),
+        'zoomable': false,
+        'start': new Date(myInterval.start - border),
+        'end': new Date(currentEnd.getTime() + border),
+        "min": new Date(myInterval.start - border),
+        "max": new Date(currentEnd.getTime() + border),
         "width":  "100%",
         "height": "300px",
         "style": "box"
@@ -129,5 +206,11 @@ function drawHistoryVisualization(myInterval) {
     google.visualization.events.addListener(timeline, 'select', onselect);
     // Draw our timeline with the created data and options
     timeline.draw(data, options);
+    
+    $('.timeline-event.timeline-event-range .timeline-event-content .myBar .bar').each(function(){
+        if ($(this).parent().parent().width() < 30){
+            $(this).text('');
+        }
+    });
 }
 

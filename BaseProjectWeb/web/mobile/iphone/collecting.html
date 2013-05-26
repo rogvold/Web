@@ -3,6 +3,54 @@
     <head>
         <title>Data collecting</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+
+        <div id="loading_div">
+            <span style="">
+                <img src="./images/loading.gif" />
+            </span>
+        </div>
+
+
+        <div class="iphone">
+            <div class="container">
+                <div class="topSection">
+                    <div class="topLeftSection">
+                        <a class="knob-wrapper knob-chart knob-success littlePie"  href="#">
+                            <span class="knob-inner">
+                                <span class="percentage easyPieChart" data-percent="0" >
+                                    <span>
+                                        <span class="littlePieSpan collectingPieText"> </span>
+                                    </span>
+                                    <canvas width="80" height="80"></canvas>
+                                </span>
+                                <small>Time left</small>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="topRightSection">
+                        <div class="pulseSection" id="pulse">
+                            100
+                        </div>
+                        <small>bpm</small>
+                        <div class="pulseLabel">Pulse</div>
+                    </div>
+                </div>
+
+
+                <div class="middleSection">
+                    <div id="chartline" >
+                        <div class="highcharts-container" id="highcharts"  > </div>
+                        <!--                        костыль для скроллинга в айфоне. -->
+                        <div id="scroll_spike" style="height: 200px; display: block; margin-top: -180px; background-color: transparent; width: 100%; position: absolute;" > </div>
+                    </div>
+                </div>
+                <!--                <div class="bottomSection" style="padding-top: 0px;" >
+                                    <span id="collectingText"></span>
+                                </div>-->
+            </div>
+        </div>
 
         <link href="./css/buttons.css" rel="stylesheet" />
         <link href="./css/base.css" rel="stylesheet" />
@@ -20,41 +68,20 @@
         <script type="text/javascript">
             $(function(){
                 startCollectingTempAnimation();
-                setPieChartPercents('2:22');
+                initPieProgressChart();
+                
+//                setPieChartText('2:22');
+//                var data = {
+//                    rate: 123,
+//                    intervals: [1000, 5000, 3000, 1000, 5000],
+//                    timestamp: 21234234234
+//                }
+//                hrDataUpdated(data);
+//                setPulse(22);
+                $('#loading_div').hide();
             });
             
         </script>
 
-    </head>
-    <body>
-
-        <div class="iphone">
-            <div class="container">
-                <div class="topSection">
-                    <div class="topCenteredSection">
-                        <a class="knob-wrapper knob-chart knob-success "  href="#">
-                            <span class="knob-inner">
-                                <span class="percentage easyPieChart" data-percent="0" >
-                                    <span class="collectingPercentSpan">0%</span>									
-                                    <canvas width="120" height="120"></canvas>
-                                </span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-
-
-                <div class="middleSection">
-                    <div id="chartline" >
-                        <div class="highcharts-container" id="highcharts"  > </div>
-                        <!--                        костыль для скроллинга в айфоне. -->
-                        <div id="scroll_spike" style="height: 200px; display: block; margin-top: -180px; background-color: transparent; width: 100%; position: absolute;" > </div>
-                    </div>
-                </div>
-                <div class="bottomSection" style="padding-top: 0px;" >
-                    <span id="collectingText"></span>
-                </div>
-            </div>
-        </div>
     </body>
 </html>

@@ -5,7 +5,7 @@ html{
 
 .iphone{
     width: 640px; 
-    width: 100%; 
+    width: 98%; 
     /*    height: 100% !important;*/
     background-image: url('../images/sep-half.png');
     background-color: #E4E4DA;
@@ -121,7 +121,7 @@ html{
 #skaterogramma{
     position: relative; 
     overflow: hidden; 
-    width: 100%;
+    width: 95%;
     height: 280px; 
     text-align: left;
     line-height: normal;
@@ -139,10 +139,29 @@ html{
 }
 
 .easyPieChart>span.littlePieSpan{
-    font-size: 20px !important;
+    font-size: 20px ;
     /*    margin-left: -20px !important;*/
     margin-top: -30px !important;
-    line-height: 100px !important;
+    /*    line-height: 100px !important;*/
+    vertical-align: text-top !important;
+    width: 60px;
+    margin-left: -10px !important;
+    text-align: center;
+}
+
+/*.easyPieChart span.littlePieSpan{
+    font-size: 20px ;
+        margin-left: -10px !important;
+    margin-top: -30px !important;
+        line-height: 100px !important;
+
+    width: 60px;
+    margin-left: -10px !important;
+    text-align: center;
+}*/
+
+.easyPieChart>span.collectingPieText{
+    font-size: 17px !important ;
 }
 
 #duration_text{
@@ -173,6 +192,8 @@ html{
 .knob-inner small{
     font-size: 20px !important; 
     color: firebrick !important;
+    width: 85px;
+    margin-left: -10px;
 }
 
 .pulseSection{
@@ -189,7 +210,8 @@ body{
     /*    background-image: url('../images/sep-half.png');*/
     display: block; 
     /*    background-color: #E4E4DA; */
-
+    background-image: url('../images/sep-half.png');
+    background-color: #E4E4DA;
     border-bottom: 1px solid rgb(218, 218, 218);;
 }
 
@@ -216,7 +238,9 @@ body{
 }
 
 .knob-inner .percentage span{
-    margin-left: -20px !important;
+    margin-left: -10px;
+    font-size: 18px;
+    vertical-align: middle;
 }
 
 .topRightSection small{
@@ -253,10 +277,33 @@ body{
 }
 
 .hiddenIndicator{
-/*    display: none;*/
+    /*    display: none;*/
 }
 
 .bottomSection > ul{
     list-style-type: none;
     margin-left: 2px;
+}
+
+#loading_div{
+    background-image: url('../images/sep-half.png');
+    background-color: #E4E4DA;
+    z-index: 10000; 
+    width: 100%; 
+    position: fixed; 
+    display: block; 
+    height: 100%; 
+    background-color: whitesmoke;
+}
+
+#loading_div span img{
+    display: block;
+    margin: 0 auto;
+}
+
+#loading_div span{
+    display: block; 
+    width: 100%;
+    position: absolute;
+    top: 200px;
 }

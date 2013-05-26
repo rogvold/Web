@@ -31,7 +31,7 @@ function collectingOnTimerFunction(){
     var p = 1.0 * collectingTime / collectingTempMaxTime;
     addTestPoint();
     updateCollectingText(p);
-    setPieChartPercents(Math.floor(100*p), '%');
+    setPieChartText(Math.floor(100*p), '%');
     collectingTime++;
     if (p == 1.0){
         clearInterval(collectingSetInterval);
@@ -51,7 +51,7 @@ function startCollectingTempAnimation(){
 function initCollectingPieChart() {
     $('.percentage').easyPieChart({
         animate: 500,
-        size:120,
+        size:70,
         lineWidth:10,
         lineCap:'square',
         barColor:'#bd362f',
@@ -101,7 +101,7 @@ function initPlot(k, name){
             defaultSeriesType: 'line',
             marginRight: 10,
             marginLeft: 45,
-            marginBottom: 45,
+            marginBottom: 15,
             backgroundColor:'rgba(255, 255, 255, 0.01)'
         },
         title: {
@@ -199,19 +199,30 @@ function initSkaterogrammaPlot(name){
     skaterogrammaInitialized = true;
 } 
   
-function setPieChartPercents(p, s){
+function setPieChartProgressPercents(p, s){
     if (s == undefined){
         s = '';
     }
     if (!pieProgressInitialized) initPieProgressChart();
     $('.percentage').each(function(){
         $(this).data('easyPieChart').update(p);  
+    //$('span', this).text(p + s);      
+    });     
+}
+
+function setPieChartText(p, s){
+    if (s == undefined){
+        s = '';
+    }
+    if (!pieProgressInitialized) initPieProgressChart();
+    $('.percentage').each(function(){
+        // $(this).data('easyPieChart').update(p);  
         $('span', this).text(p + s);      
     });     
 }
 
 function setTensionPercents(p, s){
-    setPieChartPercents(p, s);   
+    setPieChartText(p, s);   
 }
             
 function addPoint(x, y){
@@ -228,6 +239,10 @@ function addPoint(x, y){
         hChart.series[0].addPoint([xx, yy]);
     }
 }
+
+function addTensionPoint(x, y){
+    addPoint(x,y);
+}
             
 function addPoints(array){
     for (i in array){
@@ -243,13 +258,25 @@ function addTestPoint(){
     addPoint(x, y);
 }
 
+function addDelayedPoint(x, y, d){
+    console.log('adding delayed point: x = ' + x + "; y = " + y + " ; d = " + d);
+    setTimeout(function(){
+        addPoint(x, y);
+    }, d);
+}
 
 function hrDataUpdated(data) {
     setPulse(data.rate);
     var t = data.timestamp;
     for (i in data.intervals){
+        //        if (i == 0){
+        //            addPoint(t, data.intervals[i]);
+        //            t+=data.intervals[i];
+        //            continue;
+        //        }
         addPoint(t, data.intervals[i]);
         t+=data.intervals[i];
+    //        addDelayedPoint(t - data.intervals[i] , data.intervals[i], t - data.timestamp);
     }
 }
 

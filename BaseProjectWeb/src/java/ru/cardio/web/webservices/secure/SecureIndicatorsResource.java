@@ -16,6 +16,7 @@ import ru.cardio.json.additionals.ResponseConstants;
 import ru.cardio.web.json.utils.SecureCardioExceptionWrapper;
 import ru.cardio.web.json.utils.SecureResponseWrapper;
 import com.google.gson.Gson;
+
 /**
  * REST Web Service
  *
@@ -47,12 +48,7 @@ public class SecureIndicatorsResource {
         try {
             TokenUtils.checkToken(tokenMan, token);
             csMan.checkRights(tokenMan.getUserIdByToken(token), sessionId);
-            String jsonArray = hashMan.getCalculatedParameterJsonPlot(sessionId, new HRVIndicatorsService(), "IN", false);
-            float[][] dummy = new float[0][0];  // The same type as your "newMap"
-            float[][] newArray;
-            Gson gson = new Gson();
-            newArray = gson.fromJson(jsonArray, dummy.getClass());
-
+            float[][] newArray = hashMan.getParameterPlotArray(sessionId, new HRVIndicatorsService(), "IN", false);
             JsonResponse<float[][]> jr = new JsonResponse<float[][]>(ResponseConstants.OK, null, newArray);
             return SecureResponseWrapper.getJsonResponse(jr);
         } catch (CardioException e) {

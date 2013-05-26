@@ -8,6 +8,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>CardioMood</title>
 
+        <f:event listener="#{webSession.loginRedirect()}" type="preRenderView" />
+
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!--        css-->
@@ -22,6 +25,7 @@
         <link href="#{request.contextPath}/templates/lion/css/buttons.css" rel="stylesheet" />
         <link href="#{request.contextPath}/timeline/timeline.css" rel="stylesheet" type="text/css"  />
         <link href="#{request.contextPath}/templates/lion/css/tooltipster.css" rel="stylesheet" type="text/css"  />
+        <link href="#{request.contextPath}/components/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css"  />
 
 
         <!--        javascript        -->
@@ -33,14 +37,18 @@
         <script src="#{request.contextPath}/templates/lion/js/jquery.fileupload.js" type="text/javascript" />
         <script src="#{request.contextPath}/templates/lion/js/jquery.iframe-transport.js" type="text/javascript" />
         <script src="#{request.contextPath}/templates/lion/js/jquery.pnotify.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/templates/lion/js/jquery.flot.js" type="text/javascript" />
 
         <script src="http://www.google.com/jsapi" type="text/javascript"></script>
         <script src="#{request.contextPath}/timeline/timeline.js" type="text/javascript"></script>
         <script src="#{request.contextPath}/js/moment.min.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/bootstrap.js" type="text/javascript" />
+        <script src="#{request.contextPath}/components/bootstrap-editable/js/bootstrap-editable.js" type="text/javascript" />
         <script src="#{request.contextPath}/js/history.js" type="text/javascript" />
         <script src="#{request.contextPath}/js/jquery.tooltipster.min.js" type="text/javascript" />
         <script src="#{request.contextPath}/js/historyUtils.js" type="text/javascript" />
         <script src="#{request.contextPath}/js/historyPlot.js" type="text/javascript" />
+        <script src="#{request.contextPath}/js/cardioUtils.js" type="text/javascript" />
 
     </h:head>
     <h:body style="background-image: url('http://wbpreview.com/previews/WB0967058/assets/img/sep-half.png')">

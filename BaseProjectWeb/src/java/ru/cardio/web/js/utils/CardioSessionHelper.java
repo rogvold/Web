@@ -1,5 +1,6 @@
 package ru.cardio.web.js.utils;
 
+import ru.cardio.core.utils.SimpleSession;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
     <head>
         <title>TODO supply a title</title>
+
     </head>
     <body>
         <ui:composition template="./templates/lion/template.xhtml">
@@ -16,11 +17,13 @@
             <ui:define name="container">
                 <div class="row">
                     <span class="span12" style="margin-bottom: 0px; ">
+
+                        <h1 class="timeline_h">My stress history</h1>
                         <div id="mytimeline"></div>
 
                         <span style=" display: block;">
-                            Selected interval:
-                            <span id="selectedIntervalInfo" class="selectedIntervalInfo" style="font-weight: bolder;" > Overall </span>
+                            <!--                            Selected interval:-->
+                            <span id="selectedIntervalInfo" class="selectedIntervalInfo" style="font-weight: bolder; display: none;" > Overall </span>
 
                             <span style="float:right;">
                                 <button onclick="refresh();" class="btn" style=""> <i class="icon-refresh" ></i></button>
@@ -28,32 +31,38 @@
                             </span>
                         </span>
 
-                        <div style="display: none; height: 200px; background-color: transparent; margin-top: 30px;" id="currSess">
-
-                        </div>
-
-                        <div style="display: none; height: 200px; background-color: transparent; margin-top: 30px;" id="randomRR">
-
-                        </div>
-
+                        <div style="display: none; height: 200px; background-color: transparent; margin-top: 30px;" id="currSess"></div>
                     </span>
-                    <div class="span3">
-                        <ui:include src="./templates/lion/user/leftNavBar.xhtml"/>
-                    </div>
+                    <!--                    <div class="span3">
+                                            <ui:include src="./templates/lion/user/leftNavBar.xhtml"/>
+                                        </div>-->
+
                     <div class="span9">
-                        <div class="row" style="margin:auto" id="sessionInfo">
-                            <h4>Information about session   <span style="color: #FF6E01;" class="infAbout" > May 26th 2012, 00:00:00 - May 26th 2012, 09:44:32</span> </h4>
+                        <p class="history_page_info">
+                            On this page you can track your tension.
+                        </p>
+                        <div class="row" style="margin:auto; display: none;" id="sessionInfo">
+                            <h4> <span style="color: #FF6E01;" class="infAbout" > May 26th 2012, 00:00:00 - May 26th 2012, 09:44:32</span> </h4>
 
-                            <p><i>
-                                    It was very stressful day for you. You had especially high stress index at <b>14:55</b> during your <b>working</b>. 
-                                    You should go to bed earlier ( at <b>22.30</b> ) to fill up energy for tomorrow.
-                                </i>
-                            </p>
+                            <!--                            <p><i>
+                                                                It was very stressful day for you. You had especially high stress index at <b>14:55</b> during your <b>working</b>. 
+                                                                You should go to bed earlier ( at <b>22.30</b> ) to fill up energy for tomorrow.
+                                                            </i>
+                                                        </p>-->
 
-                            <h5>Indicators</h5>
-                            <p>* Maximum Stress Index: <span style="color: darkred;"> 350 </span> | <i style="color: darkred;" >This is very high for you</i></p>
-                            <p>* Maximum Stress Index: <span style="color: darkgreen;"> 70 </span> | <i style="color: darkgreen;" >This is normal for you</i></p>
-                            <p>* During the measurement you were stressed <span style="color: darkred;" >67%</span> of time</p>
+                            <!--                            <h5>Indicators</h5>-->
+                            <span class="span5">
+                                <p>* Maximum Stress Index: <span id="info_max_stress"> 350 </span> | <i >This is very high for you</i></p>
+                                <p>* Minimum Stress Index: <span id="info_min_stress"> 70 </span> | <i >This is normal for you</i></p>
+                                <p>* Average Stress Index: <span id="info_avr_stress"> 70 </span> | <i >This is normal for you</i></p>
+                                <p>* During the measurement you were stressed <span style="color: darkred;" id="info_stress_time_percents" >67%</span> of time</p>
+                            </span>
+
+                            <span class="span5">
+                                <p>* Maximum Stress Index: 
+                                    <a href="#" id="session_description" data-type="text" data-pk="1" data-original-title="Update session details"> </a>
+                                </p>
+                            </span>
 
                         </div>
                     </div>
@@ -73,50 +82,6 @@
                 <script type="text/javascript">
                     //<![CDATA[
                     
-                    function drawChart(){
-                        var chart = new Highcharts.Chart({
-                            chart: {
-                                type: 'spline',
-                                marginRight: 3,
-                                marginBottom: 25,
-                                renderTo: 'currSess',
-                                backgroundColor:'rgba(255, 255, 255, 0.1)'
-                            },
-                            title: {
-                                text: '01.01.2013 14:33 - 01.01.2013 14:55',
-                                x: -20 //center
-                            },
-                            subtitle: {
-                                text: '',
-                                x: -20
-                            },
-                            xAxis: {
-                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Temperature (°C)'
-                                },
-                                plotLines: [{
-                                        value: 0,
-                                        width: 1,
-                                        color: '#808080'
-                                    }]
-                            },
-                            tooltip: {
-                                valueSuffix: '°C'
-                            },
-                            legend: {
-                                enabled: false
-                            },
-                            series: [ {
-                                    name: 'Random data',
-                                    data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                                }]
-                        });
-                    }
-                    
                     $(function(){
                         initTimeline();
                         $('.myTooltip').tooltipster();
@@ -124,19 +89,6 @@
                         $('.myTooltip').live({
                             mouseenter: function(){
                                 $(this).tooltipster();
-                            }
-                        });
-                        $('.myBar').live('click', function(){
-                            
-                            $('#randomRR').show();
-                            if (currentScale == ScaleEnum.SESSION){
-                                var se = new SimpleSession();
-                                se.start = (new Date()).getTime();
-                                var sip = new SessionPlot(se);
-                                sip.generateRandomSession();
-                                sip.drawSessionPlot('randomRR');
-                                $('.infAbout').text(moment(sip.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(sip.session.end).format("MMMM Do YYYY, HH:mm:ss"));
-//                                alert();
                             }
                         });
                     });
