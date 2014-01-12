@@ -38,6 +38,8 @@ public interface UserManagerLocal {
     public void updateInfo(Long userId, String fName, String lName, String dep, String newStatusMessage);
 
     public void updateInfo(SimpleUser su) throws CardioException;
+    
+    public void updateInfo(Long userId, SimpleUser su);
 
     public SimpleUser getSimpleInfo(String email, String password) throws CardioException;
 
@@ -89,4 +91,8 @@ public interface UserManagerLocal {
     public Long getUserAvatar(Long userId);
 
     public void updateAvatar(Long userId, Long avatarId) throws CardioException;
+    
+    public boolean isActive(Long userId) throws CardioException;
+    
+    public Integer getUserInfoVersion(Long userId) throws CardioException;
 }

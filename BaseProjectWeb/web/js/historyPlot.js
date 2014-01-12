@@ -4,11 +4,18 @@ var timeline;
 var gdata;
 google.load("visualization", "1");
 function initTimeline(){
+    
+    $('.myBar').live('touchend', function(){
+        //        alert('touchend');
+        $(this).click();
+    });
+    
     gdata = new google.visualization.DataTable();
     gdata.addColumn('datetime', 'start');
     gdata.addColumn('datetime', 'end');
     gdata.addColumn('string', 'content');
-                
+               
+    prepareDescriptionInplace();             
     console.log('initTimeline');
     selectedStart = new Date( (new Date().getTime() - 1000*3600*24*30*12));
     
@@ -17,28 +24,44 @@ function initTimeline(){
     sp.loadSessions(function(sess){
         sp.sessions = sess;
         draw();
+        scaleToSession();
+        disablePreloader();
     });
 //    draw();
 }
 
+function prepareDescriptionInplace(){
+    $('#session_description').editable({
+        type: 'textarea'
+    });
+    $('#session_description').on('save',  function(e, params){
+        updateSessionDescription(selectedSession.id, params.newValue);
+    });
+}
+
 $('.sessionBar').live('click', function(){
     //    alert($(this).attr('id'));
-    $('#currSess').show();
+    
+    enablePreloader();
+    //    $('#currSess').show();
+    
+    
     $('#sessionInfo').show();
     
     
-    var se = new SimpleSession();
-    se.id = $(this).attr('id');
-    se.start = (new Date()).getTime();
-    var sip = new SessionPlot(se);
+    selectedSession = new SimpleSession();
+    selectedSession.id = $(this).attr('id');
+    selectedSession.start = (new Date()).getTime();
+    var sip = new SessionPlot(selectedSession);
     sip.drawSessionPlot('currSess');
     $('.sessionBar').removeClass('selectedBar');
     $(this).addClass("selectedBar");
+    drawSessionDescription(selectedSession.id);
 //    $('.infAbout').text(moment(sip.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(sip.session.end).format("MMMM Do YYYY, HH:mm:ss"));
 });
 
 function onBarSelect(){
-    $('.selectedIntervalInfo').text(moment(myInterv.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(selectedEnd).format("MMMM Do YYYY, HH:mm:ss"));
+//    $('.selectedIntervalInfo').text(moment(myInterv.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(selectedEnd).format("MMMM Do YYYY, HH:mm:ss"));
 }
             
 function onselect(event){
@@ -119,7 +142,7 @@ function generateBar(val, cssClass){
     }
     
     var style = 'height:' +  (val * alfa + textMinHeight) + 'px;';
-    return '<div class="bar '+cssClass+'" style="' + style + '" >' + val + '</div>';
+    return '<div class="bar '+cssClass+'" style="' + style + '" ><span>' + val + '</span></div>';
 //    return '<div class="bar '+cssClass+'" style="' + style + '" >' + '' + '</div>';
 }            
             
@@ -157,6 +180,8 @@ function drawHistoryVisualization(myInterval) {
         var maxim = generateBar(bar.max, 'maxBar');
         var average = generateBar(bar.avr, 'avrBar');
         var minim = generateBar(bar.min, 'minBar');
+        //        var tensTP = generateBar(bar.stressTimePercents, 'tensTP');
+        var tensTP = '<span style="display: none;" class="tensTP">' + bar.stressTimePercents * 100 + '</span>'
         
         console.log('minim = ' + bar.min);
         var dataDiv = '';
@@ -164,13 +189,13 @@ function drawHistoryVisualization(myInterval) {
         var cClass = '';
         
         if (!isNaN(bar.min)){
-//            console.log(bar);
-            drawSessionInfo(bar);
+            //            console.log(bar);
+            //            drawSessionInfo(bar);
             if (currentScale == ScaleEnum.DAY){
                 sId = ' id = \''+ bar.sessionId+'\' ';
                 cClass = 'sessionBar';
             }
-            dataDiv = '<div class="myBar myTooltip ' + cClass + '"' + sId + '  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </li> <li>You were stressed '+bar.stressTimePercents*100+'% of time </li> </ul> " >'+ maxim+average+minim +'</div>'
+            dataDiv = '<div class="myBar myTooltip ' + cClass + '"' + sId + '  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </li> <li>You were stressed '+ Math.floor(10000.0 * bar.stressTimePercents)/100.0 +'% of time </li> </ul> " >'+ maxim+average+minim + tensTP +'</div>'
         //            dataDiv = '<div class="myBar myTooltip"  title=" <ul  style=\'color: lightyellow;\'><li>Maximal tension = '+bar.max+' </li> <li>Minimal tension = '+bar.min+' </li> <li>Average tension = '+bar.avr+' </li> </ul> " >'+ average +'</div>'
         }else{
             continue;
@@ -209,8 +234,44 @@ function drawHistoryVisualization(myInterval) {
     
     $('.timeline-event.timeline-event-range .timeline-event-content .myBar .bar').each(function(){
         if ($(this).parent().parent().width() < 30){
-            $(this).text('');
+            $(this).children('span').hide();
         }
     });
+    
 }
 
+
+function getSessionById(sessionId){
+    if (sessionId == undefined){
+        return undefined;
+    }
+    for (var i in sp.sessions){
+        if (sp.sessions[i].id == sessionId){
+            return sp.sessions[i];
+        }
+    }
+}
+
+function gup( name ){
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+    var regexS = "[\\?&]"+name+"=([^&#]*)";  
+    var regex = new RegExp( regexS );  
+    var results = regex.exec( window.location.href ); 
+    if( results == null )    return "";  
+    else    return results[1];
+}
+
+function scaleToSession(){
+    var sessionId = gup('sessionId');
+    if (sessionId == undefined){
+        return;
+    }
+    var session = getSessionById(sessionId);
+    if (session == undefined){
+        return;
+    }
+    currentScale = ScaleEnum.DAY;
+    myInterv = sp.getMyInterval(session.start, currentScale);
+    drawHistoryVisualization(myInterv);
+    $('#'+sessionId).click();
+}

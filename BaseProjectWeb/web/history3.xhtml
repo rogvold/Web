@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+
+    </head>
+    <body>
+        <ui:composition template="./templates/lion/template.xhtml">
+
+            <ui:define name="header">
+                <ui:include src="./templates/lion/user/header.xhtml">
+                    <ui:param name="tab_num" value="2" />
+                </ui:include>
+            </ui:define>
+
+            <ui:define name="container">
+                <div class="row">
+                    <span class="span12" style="margin-bottom: 0px; ">
+
+                        <h1 class="timeline_h">My stress history</h1>
+                        <div id="mytimeline"></div>
+
+                        <span style=" display: block;">
+                            <!--                            Selected interval:-->
+                            <span id="selectedIntervalInfo" class="selectedIntervalInfo" style="font-weight: bolder; display: none;" > Overall </span>
+
+                            <span style="float:right;">
+                                <button onclick="refresh();" class="btn" style=""> <i class="icon-refresh" ></i></button>
+                                <button onclick="zoomOut();" style="" class="btn" ><i class="icon-zoom-out" ></i></button>
+                            </span>
+                        </span>
+
+                        <div style="display: none; height: 200px; background-color: transparent; margin-top: 30px;" id="currSess"></div>
+                    </span>
+                    <!--                    <div class="span3">
+                                            <ui:include src="./templates/lion/user/leftNavBar.xhtml"/>
+                                        </div>-->
+
+                    <div class="span9">
+                        <p class="history_page_info">
+                            On this page you can track your tension.
+                        </p>
+                        <div class="row" style="margin:auto; display: none;" id="sessionInfo">
+                            <h4> <span style="color: #FF6E01;" class="infAbout" > May 26th 2012, 00:00:00 - May 26th 2012, 09:44:32</span> </h4>
+
+                            <!--                            <p><i>
+                                                                It was very stressful day for you. You had especially high stress index at <b>14:55</b> during your <b>working</b>. 
+                                                                You should go to bed earlier ( at <b>22.30</b> ) to fill up energy for tomorrow.
+                                                            </i>
+                                                        </p>-->
+
+                            <!--                            <h5>Indicators</h5>-->
+                            <span class="span4" style="display: inline-block;">
+                                <p>* Maximum Stress Index: <span id="info_max_stress"> 350 </span> | <i >This is very high for you</i></p>
+                                <p>* Minimum Stress Index: <span id="info_min_stress"> 70 </span> | <i >This is normal for you</i></p>
+                                <p>* Average Stress Index: <span id="info_avr_stress"> 70 </span> | <i >This is normal for you</i></p>
+                                <p>* During the measurement you were stressed <span style="color: darkred;" id="info_stress_time_percents" >67%</span> of time</p>
+                            </span>
+
+                            <span class="span4">
+                                <p>
+                                    Description:
+                                    <a href="#" id="session_description" data-type="textarea" data-pk="1" data-original-title="Update session details"> </a>
+                                </p>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="footer">
+                <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="hiddenBlock">
+
+            </ui:define>
+
+            <ui:define name="scripts">
+
+                <script type="text/javascript">
+                    //<![CDATA[
+                    
+                    $(function(){
+                        initTimeline();
+                        $('.myTooltip').tooltipster();
+                        
+                        $('.myTooltip').live({
+                            mouseenter: function(){
+                                $(this).tooltipster();
+                            }
+                        });
+                    });
+                    //]]>
+                </script>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

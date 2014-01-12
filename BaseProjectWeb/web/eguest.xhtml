@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="guest/css/responsive.css"/>
         <link rel="stylesheet" href="guest/css/custom.css"/>
         <link rel="stylesheet" href="guest/css/jquery.pnotify.default.css"/>
+        <link rel="stylesheet" href="guest/css/bootstro.css"/>
         <!--JS Section-->
         <!-- include the Tools -->
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
@@ -23,6 +24,9 @@
         <script src="guest/touch.js" type="text/javascript"></script>
         <script src="guest/js/trans.js" type="text/javascript"></script>
         <script src="guest/js/swipe.js" type="text/javascript"></script>
+        <script src="guest/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="guest/js/bootstrap-popover.js" type="text/javascript"></script>
+        <script src="guest/js/bootstro.js" type="text/javascript"></script>
 
         <script src="guest/js/smartresize.js" type="text/javascript"></script>
         <!--        <script src="guest/js/slider.js" type="text/javascript"></script>-->
@@ -133,7 +137,7 @@
             <div class="content">
                 <div id="howorks" class="howWorks" style="background: transparent url('guest/howworks_hd2.png') top center no-repeat;">
 
-                    <span style="width: 350px; display: inline-block; margin: 0px;" title="User connects a sensor and client app gathers heart rate data" id="firstHow" class="myTooltip">
+                    <span style="width: 350px; display: inline-block; margin: 0px;" data-bootstro-placement="bottom" data-bootstro-step="0" data-bootstro-content="Because bootstrap rocks. Life before bootstrap was sooo miserable" data-bootstro-title="Hello, I am a normal BOOTSTRAP popover" title="User connects a sensor and client app gathers heart rate data" id="firstHow" class="myTooltip">
                         <img src="guest/first.png" style="width: 100%;" />
                     </span>
                     <span style="width: 200px; display: inline-block;margin: 0px;"  >
@@ -210,6 +214,16 @@
             </div>
         </footer>
         <script src="guest/js/smooth_scroll.js" type="text/javascript"></script>
+
+
+        <script>
+            
+            $(function(){
+//                alert('ololo');
+                bootstro.start();
+            });
+            
+        </script>
 
     </h:body>
 </html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="./js/jquery.min.js" />
+        <!--        <script src="./js/highstock/highstock.js" />
+                <script src="./js/highstock/highstock.js" />-->
+        <script src="./js/jquery.flot.js" />
+        <script src="./js/jquery.flot.selection.js" />
+        <script src="./js/jquery.flot.pie.js" />
+        <script src="./js/plotUtils.js" />
+        <script src="./js/jquery.flot.threshold.js"></script>
+        <script src="./js/jquery.flot.threshold.plugin.js"></script>
+
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+        <script type="text/javascript">
+            //<![CDATA[
+            
+            pointsAmount = 1000;
+            window_width = 2 * 60 * 1000;
+            step = 20 * 1000;
+
+            
+            $(function() {
+                data = generatePoints();
+                evaluation = generateEvaluation(data);
+                tensionPlot = drawTension('tension', getTensionPointsFromEvaluation(evaluation), true, 0);
+                
+                miniPlot = drawPlot('flot', data);
+                plot = drawPlot('flot2', getPointsInRange(data, 0, window_width), true, 0);
+                
+                prevEvi = -1;
+                $( "#slider" ).slider({
+                    value: 0,
+                    //                    min: 0,
+                    max: 1000,
+                    
+                    //                    step: 
+                    //                    ,
+                    slide: function( event, ui ) {
+                        var f = getPlotStart(data) +  (ui.value/ 1000)*getTotalDuration(data);
+                        var t = f + window_width;
+                        if (t > getTotalDuration(data)){
+                            return false;
+                        }
+                        var evi = getCurrentEvaluationIndex(evaluation, t);
+                        var inRange = getPointsInRange(data, f, t);
+                        if (evi != undefined && evi != prevEvi){
+                            var e = evaluation[evi];
+                            drawPie('pie', e.hf, e.lf, e.vlf, e.ulf);
+                            scatterPlot = drawScatter('scatter', getSkattergram(inRange));
+                            drawDiffHistogramm('dif', inRange);
+                            setSelection(tensionPlot, evaluation[Math.max(0,evi-1)].timestamp, evaluation[evi].timestamp);
+                            prevEvi = evi;
+                        }
+                        setSelection(miniPlot, f, t);
+                        plot = drawPlot('flot2', inRange, true, 0);
+                        
+                        
+                    }
+                });
+                $('.ui-slider-handle').width($('#slider').width() * window_width / getTotalDuration(data));
+                setSelection(miniPlot, getPlotStart(data), getPlotStart(data) + window_width);
+                var f = getPlotStart(data);
+                var t = f + window_width;
+                var inRange = getPointsInRange(data, f, t);
+                var e = evaluation[0];
+                drawPie('pie', e.hf, e.lf, e.vlf, e.ulf);
+                scatterPlot = drawScatter('scatter', getSkattergram(inRange));
+                drawDiffHistogramm('dif', inRange);
+                
+            });
+                
+            
+                 
+            //]]>
+            
+        </script>
+
+    </head>
+    <body>
+        <div>
+            <div id="flot2" style="height: 300px; width: 1000px"></div>
+            <div id="flot" style="height: 100px; width: 1000px"></div>
+            <div id="slider" style="width: 960px; height: 10px; margin-left: 40px;"></div>
+        </div>
+
+        <div style="width: 1000px; margin-top: 20px;">
+            <div style=" margin: 0 auto; width: 800px; display: block; border: 1px dashed firebrick; padding: 5px; border-radius: 10px;">
+                <span style="display: inline-block; width: 250px; height: 250px; margin-right: 20px;" id="pie" ></span>
+                <span style="display: inline-block; width: 250px; height: 250px; margin-right: 20px;" id="scatter" ></span>
+                <span style="display: inline-block; width: 250px; height: 250px;" id="dif" ></span>
+            </div>
+        </div>
+
+        <div id="tension" style="height: 300px; width: 1000px"></div>
+
+
+    </body>
+</html>

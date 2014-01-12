@@ -13,8 +13,8 @@ import java.util.List;
 public class Histogram {
     private List<HistogramInterval> intervals = new LinkedList<HistogramInterval>();
 
-    private static final int lowBorder = 400;
-    private static final int highBorder = 1300;
+    private static final int lowBorder = 200;
+    private static final int highBorder = 1500;
 
     private int step;
 

@@ -381,16 +381,32 @@ function SessionPlot(session){
     //    }
     
     this.drawSessionPlot = function(divId){
-        var title = moment(this.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(this.session.end).format("MMMM Do YYYY, HH:mm:ss");
+        console.log('draw session plot occured');
+        //        var title = moment(this.session.start).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(this.session.end).format("MMMM Do YYYY, HH:mm:ss");
+        $('#plotsPanel').show();
+        loadHistoryPlots(session.id);
+        //        $('.infAbout').text(moment(data.data[0][0] + 0).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(data.data[data.data.length - 1][0] + 0).format("MMMM Do YYYY, HH:mm:ss"));
+        //        drawSessionInfo();
+
         $.ajax({
             type: 'GET',
-            url: '/BaseProjectWeb/resources/internal_sessions/tension?sessionId='+session.id,
+            url: '/BaseProjectWeb/resources/internal_sessions/tension_array?sessionId='+session.id,
             success: function(data){
                 ddd = data;
+                console.log('disabling preloader...');
+                disablePreloader();
                 //                this.session.tensionPoints = data.data;
-                drawTensionPlot(divId, data.data, 'Tension plot');
+                //                drawTensionPlot(divId, data.data, 'Tension plot');
+                    
+                //                $('#plotsPanel').show();
+                //                loadHistoryPlots(session.id);
+                    
                 $('.infAbout').text(moment(data.data[0][0] + 0).format("MMMM Do YYYY, HH:mm:ss") + ' - ' + moment(data.data[data.data.length - 1][0] + 0).format("MMMM Do YYYY, HH:mm:ss"));
-//                drawSessionInfo();
+                drawSessionInfo();
+            },
+            error: function(){
+                disablePreloader();
+
             }
         });
     }

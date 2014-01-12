@@ -6,51 +6,85 @@
     </head>
     <body>
         <ui:composition xmlns="http://www.w3.org/1999/xhtml">
-            <div class="span3">
-                <hr />
+            <span id="noDataText">
+                You haven't collected any data with sensor.
+            </span>
+            <span id="currentSessionContent" style="display: none;" >
+                <div class="span3">
+                    <hr />
 
-                <h4>Current Tension</h4>
+                    <h4>Current Tension</h4>
 
-                <div class="knob-wrapper knob-chart with-button" style="margin-bottom: 20px;">
-                    <span class="knob-inner"><span class="percentage easyPieChart" data-percent="85" style="width: 120px; height: 120px; line-height: 120px;">
-                            <span style="margin-top: -10px; vertical-align: middle;">85%</span></span></span>
-                    <a class="btn btn-large btn-danger" href="#">58,459</a>
+                    <div class="knob-wrapper knob-chart with-button" style="margin-bottom: 20px;">
+                        <span class="knob-inner"><span class="percentage easyPieChart" data-percent="0" style="width: 120px; height: 120px; line-height: 120px;">
+                                <span style="margin-top: -10px; vertical-align: middle;">0%</span></span></span>
+                        <a class="btn btn-large btn-danger" id="lastTensionBtn" href="#">58,459</a>
+                    </div>
+
+                    <h5>STATUS: <span style="color: lightseagreen; text-transform: capitalize;" id="tensionStatus" >NORMAL </span> </h5> 
+
+                    <p>Beats/minute: <b id="bpm_span" style="color:#ff6e01; font-size: 23px;">N/A</b></p>
                 </div>
 
-                <h5>STATUS: <span style="color: lightseagreen;">NORMAL </span> </h5> 
+                <div class="span6" style="margin-left: 0px;">
+                    <hr />
 
-                <p>Beats/minute: <b style="color:#ff6e01">78</b></p>
-            </div>
+                    <h4>Tension for last minutes</h4>
 
-            <div class="span6" style="margin-left: 0px;">
-                <hr />
+                    <div id="chartline" style="height: 250px;"></div>
+                </div>
 
-                <h4>Your tension for last 3 minutes</h4>
+                <div class="span9 block-unit" style=
+                     "margin-left: 0px; margin-top: 40px; border-top-style: solid; border-top-width: 8px; border-top-color: #CFCDC1; padding: 5px;">
+                    <h4 style=
+                        " font-family: 'Open Sans', sans-serif; font-weight: lighter; font-size: 18px; line-height: 20px;">
+                        Current session info
+                        <span style="float: right; font-size: 13px; padding-right: 12px;">
+                            <a href="#" onclick="$('#details').toggle('slow');" >toggle details</a>
+                        </span>
+                    </h4>
 
-                <div id="chartline" style="height: 250px;"></div>
-            </div>
+                    <ul>
+                        <li style="line-height: 26px;">Start date: <code class="" style="font-size: 14px;" id="startDate" ></code></li>
+                        <li style="line-height: 26px;" >Duration: <code class="" style="font-size: 14px;" id="dura" >0 s.</code></li>
 
-            <div class="span9 block-unit" style=
-                 "margin-left: 0px; margin-top: 40px; border-top-style: solid; border-top-width: 8px; border-top-color: #CFCDC1; padding: 5px;">
-                <h4 style=
-                    " font-family: 'Open Sans', sans-serif; font-weight: lighter; font-size: 18px; line-height: 20px;">
-                    Current session info</h4>
+                        <li style="line-height: 26px;" id="stressResumeLi" >Summary: <code class="" style="font-size: 14px;" id="stressResume" ></code></li>
 
-                <ul>
-                    <li>Duration: <code class="" style="font-size: 14px;">153 minutes</code></li>
+                        <li style="line-height: 26px;" id="stressResumeLi" >
+                            Session description:
+                            <a href="#" id="session_description" dacha-type="textarea" dacha-pk="1" dacha-original-title="Update session details"> </a>
+                        </li>
+                        
+                        <li style="line-height: 26px;">
+                            <a href="#" style="color: rgb(51, 51, 51);" id="historyLink" >Track this session on a history page</a>
+                        </li>
+                        
+                    </ul>
+                    <div id="details" style="display: block;" >
+                        <div style="margin-top: 20px; margin-top: 20px;
+                             background-color: #EDEDE3;
+                             border-radius: 5px;">
+                            <!--                        <div id="flot2" style="height: 300px; width: 100%;"></div>-->
+                            RR-intervals for las 2 minutes
+                            <div id="flot" style="height: 300px; width: 95%;"></div>
+                            <!--                        <div id="slider" style="width: calc(100% - 30px); height: 10px; margin-left: 30px;"></div>-->
+                        </div>
 
-                    <li>Min tension: <code class="" style="font-size: 14px;">20
-                            points</code></li>
+                        <div style="width: 100%; margin-top: 20px;">
+                            <div style=" margin: 0 auto; display: block; padding: 5px; border-radius: 10px; ">
+                                
+                                <span style="display: inline-block;  height: 225px; margin: 0px;"  class="span3"  id="pie" ></span>
+                                <span style="display: inline-block;  height: 225px; margin: 0px;"  class="span3" id="scatter" ></span>
+                                <span style="display: inline-block;  height: 225px; margin: 0px;" id="dif"  class="span3" ></span>
+                            
+                            </div>
+                        </div>
+                        <div id="tension" style="height: 300px; margin-left: 0px; " class="span9"></div>
+                    </div>
 
-                    <li>Max tension: <code class="" style="font-size: 14px;">200
-                            points</code></li>
-                </ul>
+                </div>
 
-                <p>
-                   Here will be automatically generated information about session
-<!--                   Здесь будет автоматически сгенерированная информация о текущей сессии-->
-                </p>
-            </div>
+            </span>
         </ui:composition>
     </body>
 </html>

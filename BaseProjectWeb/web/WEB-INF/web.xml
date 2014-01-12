@@ -65,6 +65,10 @@
         <servlet-name>QRCodeServlet</servlet-name>
         <servlet-class>ru.cardio.servlets.QRCodeServlet</servlet-class>
     </servlet>
+<!--    <servlet>
+        <servlet-name>AvatarUploadServlet</servlet-name>
+        <servlet-class>ru.cardio.servlets.AvatarUploadServlet</servlet-class>
+    </servlet>-->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -113,6 +117,10 @@
         <servlet-name>QRCodeServlet</servlet-name>
         <url-pattern>/qr</url-pattern>
     </servlet-mapping>
+<!--    <servlet-mapping>
+        <servlet-name>AvatarUploadServlet</servlet-name>
+        <url-pattern>/upload_avatar</url-pattern>
+    </servlet-mapping>-->
     <session-config>
         <session-timeout>
             30
@@ -155,4 +163,9 @@
         <filter-name>MultipartRequestFilter</filter-name>
         <url-pattern>/upload</url-pattern>
     </filter-mapping>
+<!--    <filter-mapping>
+        
+        <filter-name>MultipartRequestFilter</filter-name>
+        <url-pattern>/upload_avatar</url-pattern>
+    </filter-mapping>-->
 </web-app>

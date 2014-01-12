@@ -77,8 +77,13 @@ public class UserHelper {
         return s;
     }
 
-    public static SimpleUser getSimpleUserFromJson(String json) {
-        return gson.fromJson(json, SimpleUser.class);
+    public static SimpleUser getSimpleUserFromJson(String json) throws CardioException {
+        System.out.println("getSimpleUserFromJson: json = " + json);
+        try {
+            return gson.fromJson(json, SimpleUser.class);
+        } catch (Exception e) {
+            throw new CardioException(e.getMessage());
+        }
     }
 
     public static UserCard getUserCardFromSimpleUser(SimpleUser su) throws CardioException {
@@ -88,7 +93,6 @@ public class UserHelper {
         UserCard uc = new UserCard(su.getFirstName(), su.getLastName(), su.getDescription(), su.getDiagnosis(), su.getAbout());
         return uc;
     }
-    
 
     /**
      * specifing just FIRSNAME, LASTNAME, DESCRIPTION, DIAGNOSIS, ABOUT

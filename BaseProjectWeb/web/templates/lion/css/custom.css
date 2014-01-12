@@ -157,3 +157,72 @@ h1.timeline_h{
     font-size: 20px;
     color: rgb(51, 51, 51);
 }
+
+.timeline-event.timeline-event-range.timeline-event-selected{
+    border-color: transparent !important;
+    background-color: transparent !important;
+}
+
+/*.content-target.hiddenBlock{
+    display: none !important;
+}*/
+
+.form-unit{
+    min-height: 450px;
+    height: auto ;
+}
+
+#avatarUploadDialog{
+    padding: 10px;
+    padding-top: 1px;
+    display: none;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: 900px;
+    text-align: justify;
+}
+
+#prPhoto {
+    display: block;
+    max-height: 250px;
+    margin: 0 auto;
+}
+
+.jcrop-holder{
+    display: inline-block;
+    border: dashed 2px lightgray;
+}
+
+#preloader {
+    position: fixed;
+    z-index: 2500;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 999999;
+}
+
+#status {
+    position: fixed;
+    z-index: 999999;
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-image: url(../images/status.gif);
+    background-size: 80px 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: -125px 0 0 -125px;
+}
+
+#status p {
+    top: 60%;
+}
+
+p.center-text {
+    text-align:center;
+}

@@ -65,10 +65,11 @@ public class User implements Serializable {
         @JoinColumn(name = "attachment_id")
     })
     private Set<Attachment> attachments;
-
     private Long avatarId;
-    
-    
+    private Long beatsAmount;
+    private Integer userInfoUpdateCount;
+//    private Long sessionsUpdateCount;
+
     public Set<Attachment> getAttachments() {
         return attachments;
     }
@@ -98,6 +99,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public Integer getUserInfoUpdateCount() {
+        return userInfoUpdateCount;
+    }
+
+    public void setUserInfoUpdateCount(Integer userInfoUpdateCount) {
+        this.userInfoUpdateCount = userInfoUpdateCount;
+    }
+
     public String getFirstName() {
         return (firstName == null) ? "" : firstName;
     }
@@ -105,6 +114,14 @@ public class User implements Serializable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+//    public Long getSessionsUpdateCount() {
+//        return sessionsUpdateCount;
+//    }
+//
+//    public void setSessionsUpdateCount(Long sessionsUpdateCount) {
+//        this.sessionsUpdateCount = sessionsUpdateCount;
+//    }
 
     public String getLastName() {
         return (lastName == null) ? "" : lastName;
@@ -195,8 +212,14 @@ public class User implements Serializable {
         this.avatarId = avatarId;
     }
 
-    
-    
+    public Long getBeatsAmount() {
+        return beatsAmount;
+    }
+
+    public void setBeatsAmount(Long beatsAmount) {
+        this.beatsAmount = beatsAmount;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

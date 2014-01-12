@@ -18,8 +18,9 @@ function PELoginCallback(){
     window.location.href = "/BaseProjectWeb/faces/approbation/profile.xhtml";
 }           
 function loginCallback(){
-    document.location.reload(true);
-}           
+    document.location.href = "/BaseProjectWeb/faces/index.xhtml";
+//    document.location.reload(true);
+}
            
 function LoginViewModel(){
     self = this;
@@ -147,7 +148,7 @@ function initLoginForm(){
         messages: mes
     });
     $("#registerForm").validate({
-        rules: rul, 
+        rules: rul,
         messages: mes
     });
     ko.applyBindings(new LoginViewModel(), document.getElementById('authorizationDiv'));

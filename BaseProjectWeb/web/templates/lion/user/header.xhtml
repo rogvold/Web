@@ -8,13 +8,13 @@
         <ui:composition xmlns="http://www.w3.org/1999/xhtml">
 
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
-            <a class="brand" href="ind1.xhtml">
-                <img src="../templates/lion/images/heart11.png" alt="" />
+            <a class="brand" href="home.xhtml">
+                <img src="../templates/lion/images/heart11.png" id="logoHeart" alt="" />
                 CardioMood
             </a>
 
             <div class="nav-collapse collapse">
-                <ul class="nav">
+                <ul class="nav" style="width: calc(100% - 200px);">
 
                     <!--                    Home-->
                     <c:if test="#{tab_num == 1}">
@@ -27,7 +27,7 @@
                     </c:if>
                     <c:if test="#{tab_num != 1}">
                         <li>
-                            <a href="#{request.contextPath}/faces/ind1.xhtml">
+                            <a href="#{request.contextPath}/faces/home.xhtml">
                                 <i class="icon-home icon-white"></i>
                                 Home
                             </a>
@@ -37,7 +37,7 @@
                     <!--                    History-->
                     <c:if test="#{tab_num == 2}">
                         <li class="active">
-                            <a href="#{request.contextPath}/faces/history.xhtml">
+                            <a href="#">
                                 <i class="icon-time icon-white"></i>
                                 History
                             </a>
@@ -53,9 +53,9 @@
                     </c:if>
 
                     <!--                    Friends-->
-                    <c:if test="#{tab_num == 3}">
+<!--                    <c:if test="#{tab_num == 3}">
                         <li class="active">
-                            <a href="#{request.contextPath}/faces/friends.xhtml">
+                            <a href="#">
                                 <i class="icon-glass icon-white"></i>
                                 Friends
                             </a>
@@ -68,12 +68,12 @@
                                 Friends
                             </a>
                         </li>
-                    </c:if>
+                    </c:if>-->
 
                     <!--                    Doctors-->
-                    <c:if test="#{tab_num == 4}">
+<!--                    <c:if test="#{tab_num == 4}">
                         <li class="active">
-                            <a href="#{request.contextPath}/faces/doctors.xhtml">
+                            <a href="#">
                                 <i class="icon-eye-open icon-white"></i>
                                 Doctors
                             </a>
@@ -86,7 +86,25 @@
                                 Doctors
                             </a>
                         </li>
-                    </c:if>
+                    </c:if>-->
+
+                    <li>
+                        <a href="#{request.contextPath}/logout">
+                            <i class="icon-off icon-white"></i>
+                            log out
+                        </a>
+                    </li>
+
+                    <li id="blinkingLamp" style="float: right;">
+                        <span id="stressLamp" style="display: none;">
+                            <span style="color: firebrick; color: firebrick;
+                                  font-size: 20px;
+                                  display: inline-block;
+                                  vertical-align: middle;
+                                  ">you are stressed!</span>
+                            <img src="./images/lamp.png" style="height: 30px; padding-top: 5px; " />
+                        </span>
+                    </li>
                 </ul>
             </div>
         </ui:composition>

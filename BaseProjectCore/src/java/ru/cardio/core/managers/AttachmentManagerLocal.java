@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import ru.cardio.core.jpa.entity.Attachment;
 import ru.cardio.core.jpa.entity.User;
 import ru.cardio.core.utils.UploadedFile;
+import ru.cardio.exceptions.CardioException;
 
 /**
  * Local interface for AttachmentManager EJB.
@@ -27,6 +28,12 @@ public interface AttachmentManagerLocal {
      * @return Attachment entity if succeeded or null if operation failed.
      */
     Attachment uploadFile(String fileName, String contentType, User user, byte[] contents, String tags);
+    
+    Attachment uploadAvatar(String fileName, String contentType, User user, byte[] contents, Integer width, Integer height);
+    
+    public void cropExistingFile(Long userId, Long attId, Integer x, Integer y, Integer w, Integer h) throws CardioException;
+    
+    public void cropAvatar(Long userId, Integer x, Integer y, Integer w, Integer h) throws CardioException;
     
     /**
      * Uploads multiple files

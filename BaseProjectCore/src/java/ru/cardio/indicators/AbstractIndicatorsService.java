@@ -25,8 +25,8 @@ import ru.cardio.indicators.utils.Training;
 public abstract class AbstractIndicatorsService {
 
     public static final int DEFAULT_DURATION = 5 * 60 * 1000;
-    public static final int LOWER_BORDER = 400;
-    public static final int UPPER_BORDER = 1300;
+    public static final int LOWER_BORDER = 200;
+    public static final int UPPER_BORDER = 1500;
     protected List<Integer> intervals;
     protected int duration = DEFAULT_DURATION;
     protected Training training;

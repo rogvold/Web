@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ru.cardio.web.webservices.internal;
 
-import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -12,13 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
+import ru.cardio.core.entity.EvaluationPoint;
+import ru.cardio.core.entity.SimpleEvaluation;
+import ru.cardio.core.entity.SimplePoint;
+import ru.cardio.core.entity.SyncSession;
 import ru.cardio.core.jpa.entity.CardioSession;
-import ru.cardio.core.managers.CardioSessionManagerLocal;
-import ru.cardio.core.managers.IndicatorHashManagerLocal;
-import ru.cardio.core.managers.IndicatorsManagerLocal;
+import ru.cardio.core.jpa.entity.User;
+import ru.cardio.core.managers.*;
 import ru.cardio.core.utils.IndicatorUtils;
 import ru.cardio.core.utils.SimpleSession;
-import ru.cardio.core.utils.TokenUtils;
 import ru.cardio.exceptions.CardioException;
 import ru.cardio.indicators.HRVIndicatorsService;
 import ru.cardio.json.additionals.JsonResponse;
@@ -42,6 +39,10 @@ public class InternalSessionsResource {
     CardioSessionManagerLocal cardMan;
     @EJB
     IndicatorHashManagerLocal hashMan;
+    @EJB
+    UserManagerLocal userMan;
+    @EJB
+    CardioSessionEvaluationManagerLocal cseMan;
 
     /**
      * Creates a new instance of InternalSessionsResource
@@ -72,6 +73,59 @@ public class InternalSessionsResource {
     @PUT
     @Consumes("application/json")
     public void putJson(String content) {
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("current_pulse")
+    public String getCurrentPulse(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            JsonResponse<Double> jr = new JsonResponse<Double>(ResponseConstants.OK, null, cardMan.getCurrentPulseOfUser(userId));
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("beats_amount")
+    public String getBeantsAmount(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            User u = userMan.getUserById(userId);
+            JsonResponse<Long> jr = new JsonResponse<Long>(ResponseConstants.OK, null, u.getBeatsAmount());
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("current_tension")
+    public String getCurrentTension(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            JsonResponse<Double> jr = new JsonResponse<Double>(ResponseConstants.OK, null, cardMan.getCurrentTensionOfUser(userId));
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("is_active")
+    public String isActive(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            JsonResponse<Integer> jr = new JsonResponse<Integer>(ResponseConstants.OK, null, userMan.isActive(userId) ? 1 : 0);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
     }
 
     @POST
@@ -120,7 +174,24 @@ public class InternalSessionsResource {
 
     @GET
     @Produces("application/json")
-    @Path("tension")
+    @Path("rates")
+    public String getUserRates(@Context HttpServletRequest req, @QueryParam("sessionId") Long sessionId) {
+        try {
+            //TODO: check rights
+            if (sessionId == null) {
+                throw new CardioException("getUserRates: sessionId is null");
+            }
+            List<Integer> list = cardMan.getRatesInCardioSession(sessionId, false);
+            JsonResponse<List<Integer>> jr = new JsonResponse<List<Integer>>(ResponseConstants.OK, null, list);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("tension_array")
     public String getTensionIndex(@Context HttpServletRequest req, @QueryParam("sessionId") Long sessionId) {
         try {
             Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
@@ -135,4 +206,132 @@ public class InternalSessionsResource {
             return SecureCardioExceptionWrapper.wrapException(e);
         }
     }
+
+    @GET
+    @Produces("application/json")
+    @Path("last_data_received")
+    public String getLastDataTimestamp(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            User u = userMan.getUserById(userId);
+            JsonResponse<Long> jr = new JsonResponse<Long>(ResponseConstants.OK, null, u.getLastDataRecievedDate().getTime());
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("session_evaluation")
+    public String pullSessionList(@FormParam("sessionId") Long sessionId) {
+        try {
+            SyncSession ss = cseMan.getSessionWithEvaluation(sessionId);
+            JsonResponse<SyncSession> jr = new JsonResponse<SyncSession>(ResponseConstants.OK, null, ss);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("last_rates")
+    public String lastRates(@Context HttpServletRequest req, @FormParam("amount") int amount) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            List<SimplePoint> sList = cardMan.getLastRates(userId, amount);
+            JsonResponse<List<SimplePoint>> jr = new JsonResponse<List<SimplePoint>>(ResponseConstants.OK, null, sList);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("last_session_rates")
+    public String lastSessionRates(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            List<SimplePoint> sList = cardMan.getLastSessionPoints(userId);
+            JsonResponse<List<SimplePoint>> jr = new JsonResponse<List<SimplePoint>>(ResponseConstants.OK, null, sList);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("last_session_evaluation")
+    public String lastSessionEvaluation(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            CardioSession lastCs = cardMan.getLastCardioSession(userId);
+            List<EvaluationPoint> ss = (lastCs == null) ? null : cseMan.getSessionWithEvaluation(lastCs.getId()).getEvaluation();
+            JsonResponse<List<EvaluationPoint>> jr = new JsonResponse<List<EvaluationPoint>>(ResponseConstants.OK, null, ss);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("current_session_id")
+    public String currentSessionId(@Context HttpServletRequest req) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            CardioSession lastCs = cardMan.getLastCardioSession(userId);
+            JsonResponse<Long> jr = new JsonResponse<Long>(ResponseConstants.OK, null, lastCs == null ? null : lastCs.getId());
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("last_evaluation")
+    public String lastEvaluation(@Context HttpServletRequest req, @FormParam("amount") int amount) {
+        try {
+            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+            CardioSession lastCs = cardMan.getLastCardioSession(userId);
+            List<EvaluationPoint> ss = (lastCs == null) ? null : cseMan.getSessionWithEvaluation(lastCs.getId()).getEvaluation();
+            if (ss != null && !ss.isEmpty()) {
+                if (ss.size() > amount) {
+                    ss = ss.subList(ss.size() - amount, ss.size());
+                }
+            }
+            JsonResponse<List<EvaluationPoint>> jr = new JsonResponse<List<EvaluationPoint>>(ResponseConstants.OK, null, ss);
+
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+//    @POST
+//    @Produces("application/json")
+//    @Path("last_sync_session")
+//    public String lastSyncSession(@Context HttpServletRequest req, @FormParam("amount") int amount) {
+//        try {
+//            if (amount == -1){
+//                amount = Integer.MAX_VALUE;
+//            }
+//            Long userId = SessionUtils.getCurrentUserIdThrowingException(req);
+//            CardioSession lastCs = cardMan.getLastCardioSession(userId);
+//            SyncSession ss = (lastCs == null) ? null : cseMan.getSessionWithEvaluation(lastCs.getId());
+//            if (ss != null && !ss.isEmpty()) {
+//                if (ss.size() > amount) {
+//                    ss = ss.subList(ss.size() - amount, ss.size());
+//                }
+//            }
+//            JsonResponse<List<EvaluationPoint>> jr = new JsonResponse<List<EvaluationPoint>>(ResponseConstants.OK, null, ss);
+//
+//            return SecureResponseWrapper.getJsonResponse(jr);
+//        } catch (CardioException e) {
+//            return SecureCardioExceptionWrapper.wrapException(e);
+//        }
+//    }
 }

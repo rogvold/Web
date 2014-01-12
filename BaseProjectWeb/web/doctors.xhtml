@@ -19,26 +19,36 @@
                         <ui:include src="./templates/lion/user/homeLeftBar.xhtml"/>
                     </div>
                     <div class="span9">
-                        Will be available soon
+                        <h5>
+                            My doctors
+                        </h5>
+                        <div class="block-unit span8" style="padding: 5px;" >
+                            <span class="span2" style="margin-left: 0px;">
+                                <img src="http://newsimg.bbc.co.uk/media/images/46504000/jpg/_46504828_dribenathans.jpg" />
+                            </span>
+                        </div>
+                        
+                       
+
+
                     </div>
                 </div>
             </ui:define>
-            
+
             <ui:define name="footer">
                 <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
             </ui:define>
 
-            <ui:define name="hiddenBlock">
-                <button type="button" class="btn btn-info" onclick="$('input:file').click();" style=
-                        "width: 260px; margin: 0 auto; display: block;">Change avatar</button> <input id=
-                        "fileupload" type="file" name="files[]" style="visibility:hidden; height: 1px;"
-                        data-url="/BaseProjectWeb/upload" onclick=
-                            "$('#avaProg ').toggle(); $('#avaProg .bar').css('width','0%');" />
+            <ui:define name="scripts">
+                <script type="text/javascript">
+                    $(function(){
+                        disablePreloader();  
+                    })
+                </script>
+            </ui:define>
 
-                <div class="progress progress-striped active" id="avaProg" style=
-                     "margin-top: 0px; display: none;">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
+            <ui:define name="hiddenBlock">
+
             </ui:define>
 
         </ui:composition>

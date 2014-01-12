@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:composition template="./templates/lion/template.xhtml">
+
+            <ui:define name="header">
+                <ui:include src="./templates/lion/user/header.xhtml">
+                    <ui:param name="tab_num" value="1" />
+                </ui:include>
+            </ui:define>
+
+            <ui:define name="container">
+                <div class="row">
+                    <div class="span3">
+                        <ui:include src="./templates/lion/user/homeLeftBar.xhtml"/>
+                    </div>
+                    <div class="span9">
+                        <ui:include src="./templates/lion/user/content.xhtml"></ui:include>
+                    </div>
+                </div>
+
+            </ui:define>
+
+            <ui:define name="footer">
+                <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="hiddenBlock">
+
+            </ui:define>
+
+            <ui:define name="scripts">
+
+                <script type="text/javascript">
+                    //<![CDATA[
+                    var initPieChart = function() {
+                        $('.percentage').easyPieChart({
+                            animate: 500,
+                            size:120,
+                            lineWidth:10,
+                            lineCap:'square',
+                            barColor:'#bd362f',
+                            trackColor:'rgba(0,0,0,0.1)',
+                            scaleColor:'rgba(0,0,0,0.3)'
+                        });
+                    };
+            
+                        
+                    function changePercents(percents){ 
+                        if (percents * 100 > 90) showNoty("you are very stressed");
+                        $('.btn-danger').text(Math.floor(15000*percents) / 100.0);
+                        $('.percentage').each(function() {
+                            var newValue = Math.floor(100*percents);       
+                            $(this).data('easyPieChart').update(newValue);  
+                            $('span', this).text(newValue + '%');      
+                        });     
+                    }
+            
+                    function showNoty(text){  
+                        try{
+                            $.pnotify({text: 'you are stressed', history: false });
+                        } catch(e){}
+                    }
+                   
+                    initPieChart();
+                    //                    renderGraph();
+                    
+                    $(function(){
+                        initOnlineIndicators();
+                        
+                        globalPoints = new Array();
+                        globalEvaluation = new Array();
+                        
+                        loadLastSessionRates();
+                        loadLastSessionEvaluation();
+                       
+                    });
+            
+                    //]]>
+                </script>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>
+

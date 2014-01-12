@@ -22,7 +22,6 @@
                         <ui:include src="./templates/lion/user/content.xhtml"></ui:include>
                     </div>
                 </div>
-                <a href="#" id="username" data-type="text" data-pk="1" data-original-title="Enter username">superuser</a>
 
             </ui:define>
 
@@ -31,53 +30,12 @@
             </ui:define>
 
             <ui:define name="hiddenBlock">
-                <button type="button" class="btn btn-info" onclick="$('input:file').click();" style=
-                        "width: 260px; margin: 0 auto; display: block;">Change avatar</button> 
-                <input id="fileupload" type="file" name="files[]" style="visibility:hidden; height: 1px;"
-                       data-url="/BaseProjectWeb/upload" onclick=
-                           "$('#avaProg ').toggle(); $('#avaProg .bar').css('width','0%');" />
-
-                <div class="progress progress-striped active" id="avaProg" style=
-                     "margin-top: 0px; display: none;">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
 
             </ui:define>
 
             <ui:define name="scripts">
                 <script type="text/javascript">
                     //<![CDATA[
-        
-                    function updateAvatar(avId){
-                        $.get("/BaseProjectWeb/resources/UserInfo/update_avatar?id="+avId);
-                        $('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());
-                        $('#avaProg ').toggle();
-                        setTimeout(function(){$('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());}, 1000);
-                        $.pnotify({text: 'Avatar is succesfully updated!', history: false, type: 'info', hide: false});
-                    }
-                    $(function(){
-            
-                        $('.capty-caption').css('padding-left','0px');
-            
-                        $('#fileupload').fileupload({
-                            dataType: 'json',
-                            done: function(e, data){
-                                d = data;
-                                var avId = data.result.data[0];
-                                updateAvatar(avId);
-                                //                    alert('sd');
-                            },
-                            progressall: function (e, data) {
-                                //                    alert('sdd');
-                                var progress = parseInt(data.loaded / data.total * 100, 10);
-                                $('.bar').css(
-                                'width',
-                                progress + '%'
-                            );
-                            }
-                    
-                        });
-                    });
             
                     //]]>
                 </script>
@@ -208,23 +166,16 @@
                     initPieChart();
                     renderGraph();
                     
-                    
                     $(function(){
-                        //                        $.fn.editable.defaults.mode = 'inline';
-                        $('#username').editable({
-                            type: 'textarea'
-                        });
-                        $('#username').on('save',  function(e, params){
-                            alert(params.newValue);
-                        });
+                        initOnlineIndicators();
                     });
 
                     //            $(function(){
-                    $('#ava').capty({
-                        animation: 'fade',
-                        height:   80,
-                        opacity:  .6
-                    });
+//                    $('#ava').capty({
+//                        animation: 'fade',
+//                        height:   80,
+//                        opacity:  .6
+//                    });
             
                     //]]>
                 </script>

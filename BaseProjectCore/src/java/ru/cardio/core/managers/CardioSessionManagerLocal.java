@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import ru.cardio.core.entity.Rate;
+import ru.cardio.core.entity.SimplePoint;
 import ru.cardio.core.jpa.entity.CardioSession;
 import ru.cardio.exceptions.CardioException;
 import ru.cardio.json.entity.SimpleRatesData;
@@ -71,9 +72,15 @@ public interface CardioSessionManagerLocal {
 
     public boolean deleteSession(Long sessionId);
 
+    public void deleteCardioSession(Long userId, Long timestamp) throws CardioException;
+
     public boolean userHasActiveSession(Long userId);
 
     public Double getCurrentPulse(Long sessionId) throws CardioException;
+
+    public Double getCurrentPulseOfUser(Long userId) throws CardioException;
+
+    public Double getCurrentTensionOfUser(Long userId) throws CardioException;
 
     public void syncRates(Long userId, List<Integer> ratesList, Date startDate) throws CardioException;
 
@@ -86,4 +93,18 @@ public interface CardioSessionManagerLocal {
     public void checkRights(String email, String password, Long sessionId) throws CardioException;
 
     public void checkRights(Long userId, Long sessionId) throws CardioException;
+
+    public void recalculateAllBeats() throws CardioException;
+
+    public CardioSession getCardioSessionByStart(Long userId, Date start);
+
+    public CardioSession createCardioSession(Long userId, Long timestamp, String description, List<Integer> rates) throws CardioException;
+
+    public CardioSession updateCardioSession(Long userId, Long timestamp, String description, List<Integer> additionalRates) throws CardioException;
+
+    public List<SimplePoint> getSimplePointsRates(Long timestamp, Long userId) throws CardioException;
+    
+    public List<SimplePoint> getLastRates(Long userId, int amount) throws CardioException;
+    
+    public List<SimplePoint> getLastSessionPoints(Long userId) throws CardioException;
 }

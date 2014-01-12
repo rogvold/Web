@@ -24,7 +24,7 @@ public class WebSession implements Serializable {
     private static final String LOGIN_REDIRECT_URL = "/BaseProjectWeb/faces/login.xhtml";
     private static final String APPROBATION_LOGIN_REDIRECT_URL = "/BaseProjectWeb/faces/approbation/login.xhtml";
     private static final String MONITOR_REDIRECT_URL = "/BaseProjectWeb/faces/monitor.xhtml";
-    private static final String INDEX_URL = "/BaseProjectWeb/faces/index.xhtml";
+    public static final String INDEX_URL = "/BaseProjectWeb/faces/home.xhtml";
     private static final String APPROBATION_INDEX_URL = "/BaseProjectWeb/faces/approbation/profile.xhtml";
     
     

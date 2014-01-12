@@ -12,6 +12,7 @@ import ru.cardio.core.managers.CardioSessionManagerLocal;
 import ru.cardio.core.managers.TokenManagerLocal;
 import ru.cardio.core.managers.UserManagerLocal;
 import ru.cardio.core.utils.TokenUtils;
+import ru.cardio.entity.RatesWithInfo;
 import ru.cardio.exceptions.CardioException;
 import ru.cardio.json.additionals.JsonResponse;
 import ru.cardio.json.additionals.ResponseConstants;
@@ -109,6 +110,23 @@ public class SecureSessionsResource {
             csMan.checkRights(tokenMan.getUserIdByToken(token), sessionId);
             List<Integer> list = csMan.getRatesInCardioSession(sessionId, false);
             JsonResponse<List<Integer>> jr = new JsonResponse<List<Integer>>(ResponseConstants.OK, null, list);
+            return SecureResponseWrapper.getJsonResponse(jr);
+        } catch (CardioException e) {
+            return SecureCardioExceptionWrapper.wrapException(e);
+        }
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("rates_with_info")
+    public String getSessionRatesWithInfo(@FormParam("token") String token, @FormParam("sessionId") Long sessionId) {
+        try {
+            TokenUtils.checkToken(tokenMan, token);
+            Long uId = tokenMan.getUserIdByToken(token);
+            csMan.checkRights(uId, sessionId);
+            List<Integer> list = csMan.getRatesInCardioSession(sessionId, false);
+            RatesWithInfo rwi = new RatesWithInfo(list, uId, sessionId);
+            JsonResponse<RatesWithInfo> jr = new JsonResponse<RatesWithInfo>(ResponseConstants.OK, null, rwi);
             return SecureResponseWrapper.getJsonResponse(jr);
         } catch (CardioException e) {
             return SecureCardioExceptionWrapper.wrapException(e);

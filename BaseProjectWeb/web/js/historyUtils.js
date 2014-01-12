@@ -113,17 +113,20 @@ function drawTensionPlot(divId, points, title){
             color : '#CF3300'
         },
         yaxis: {
-            color: '#92d5ea'
+            color: '#92d5ea',
+            tickLentgth: 0
         },
         xaxis: {
-            mode: "time", 
+            mode: "time",
             color: '#92d5ea'
         },
         grid: {
             borderWidth: 0
-        } 
+        }
+        
     };
     
+
     plot2 = $.plot($("#"+divId),
         [   {
             data: points, 
@@ -156,10 +159,17 @@ function getStressClass(tension){
 }
 
 function drawSessionInfo(){
-    var max = $('.selectedBar .maxBar').text();
-    var min = $('.selectedBar .minBar').text();
-    var avr = $('.selectedBar .avrBar').text()
+    var max = $('.selectedBar .maxBar span').text();
+    var min = $('.selectedBar .minBar span').text();
+    var avr = $('.selectedBar .avrBar span').text();
+    var tensTP = $('.selectedBar .tensTP').text();
+
+    //    alert(tensTP);
+    tensTP = (tensTP == undefined) ? 0 : tensTP;
+
     $('.history_page_info').hide();
+    $('#info_stress_time_percents').text((Math.floor(100.0 * tensTP) / 100.0) + '%');
+
     $('#info_max_stress').text(max);
     $('#info_min_stress').text(min);
     $('#info_avr_stress').text(avr);
@@ -173,23 +183,24 @@ function drawSessionInfo(){
     $('#info_avr_stress').next().attr('class',getStressClass(avr));
 }
 
-function drawSessionInfo(bar){
-    var max = $('.selectedBar .maxBar').text();
-    var min = $('.selectedBar .minBar').text();
-    var avr = $('.selectedBar .avrBar').text()
-    $('.history_page_info').hide();
-    
-    $('#info_stress_time_percents').text(bar.stressTimePercents*100 + '%');
-    
-    $('#info_max_stress').text(bar.max);
-    $('#info_min_stress').text(bar.min);
-    $('#info_avr_stress').text(bar.avr);
-    
-    $('#info_max_stress').next().text(getStressComment(bar.max));
-    $('#info_min_stress').next().text(getStressComment(bar.min));
-    $('#info_avr_stress').next().text(getStressComment(bar.avr));
-    
-    $('#info_max_stress').next().attr('class',(getStressClass(bar.max)));
-    $('#info_min_stress').next().attr('class',getStressClass(bar.min));
-    $('#info_avr_stress').next().attr('class',getStressClass(bar.avr));
-}
+//function drawSessionInfo(bar){
+//    //    alert('bar = ' + bar);
+//    var max = $('.selectedBar .maxBar').text();
+//    var min = $('.selectedBar .minBar').text();
+//    var avr = $('.selectedBar .avrBar').text()
+//    $('.history_page_info').hide();
+//    
+//    $('#info_stress_time_percents').text(bar.stressTimePercents*100 + '%');
+//    
+//    $('#info_max_stress').text(bar.max);
+//    $('#info_min_stress').text(bar.min);
+//    $('#info_avr_stress').text(bar.avr);
+//    
+//    $('#info_max_stress').next().text(getStressComment(bar.max));
+//    $('#info_min_stress').next().text(getStressComment(bar.min));
+//    $('#info_avr_stress').next().text(getStressComment(bar.avr));
+//    
+//    $('#info_max_stress').next().attr('class',(getStressClass(bar.max)));
+//    $('#info_min_stress').next().attr('class',getStressClass(bar.min));
+//    $('#info_avr_stress').next().attr('class',getStressClass(bar.avr));
+//}

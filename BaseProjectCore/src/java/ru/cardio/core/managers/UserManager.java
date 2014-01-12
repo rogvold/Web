@@ -75,6 +75,7 @@ public class UserManager implements UserManagerLocal {
         }
 
         User u = new User();
+        u.setUserInfoUpdateCount(1);
         u.setEmail(email);
         u.setPassword(password);
         u.setUserGroup(group);
@@ -383,6 +384,8 @@ public class UserManager implements UserManagerLocal {
         }
         user.setFirstName(fName);
         user.setLastName(lName);
+        user.setUserInfoUpdateCount(user.getUserInfoUpdateCount() == null ? 1 : user.getUserInfoUpdateCount() + 1);
+
         em.merge(user);
     }
 
@@ -444,11 +447,45 @@ public class UserManager implements UserManagerLocal {
 //            throw new CardioException("incorrect pair email/password");
 //        }
         User u = getUserByEmail(su.getEmail());
+        updateInfo(u.getId(), su);
+//
+//        u.setFirstName(su.getFirstName());
+//        u.setLastName(su.getLastName());
+//        u.setDepartment(su.getDepartment());
+//        u.setStatusMessage(su.getStatusMessage());
+//        u = em.merge(u);
+//
+//
+//        UserCard uc = cardMan.getCardByUserId(u.getId());
+//        uc.setAboutMe(su.getAbout());
+//        uc.setDescription(su.getDescription());
+//        uc.setDiagnosis(su.getDiagnosis());
+//        uc.setFirstName(su.getFirstName());
+//        uc.setLastName(su.getLastName());
+//
+//        System.out.println("su.getSex() = " + su.getSex());
+//
+//        uc.setSex(su.getSex());
+//
+//        uc.setWeight(su.getWeight());
+//        uc.setHeight(su.getHeight());
+//        uc.setAge(su.getAge());
+//        uc.setBirthDate(su.getBirthDate());
+//
+//        em.merge(uc);
+    }
+
+    @Override
+    public void updateInfo(Long userId, SimpleUser su) {
+        User u = getUserById(userId);
 
         u.setFirstName(su.getFirstName());
         u.setLastName(su.getLastName());
         u.setDepartment(su.getDepartment());
         u.setStatusMessage(su.getStatusMessage());
+
+        u.setUserInfoUpdateCount(u.getUserInfoUpdateCount() == null ? 1 : u.getUserInfoUpdateCount() + 1);
+
         u = em.merge(u);
 
 
@@ -517,5 +554,26 @@ public class UserManager implements UserManagerLocal {
         User user = getUserById(userId);
         user.setAvatarId(avatarId);
         em.merge(user);
+    }
+
+    @Override
+    public boolean isActive(Long userId) throws CardioException {
+        User u = getUserById(userId);
+        if (u == null) {
+            throw new CardioException("userId is null");
+        }
+        if ((u.getLastDataRecievedDate() != null) && ((new Date()).getTime() - u.getLastDataRecievedDate().getTime() <= CardioSessionManager.IS_USER_ACTIVE_TIMEOUT)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Integer getUserInfoVersion(Long userId) throws CardioException {
+        User u = getUserById(userId);
+        if (u == null) {
+            throw new CardioException("getUserInfoVersion: user is null");
+        }
+        return u.getUserInfoUpdateCount();
     }
 }

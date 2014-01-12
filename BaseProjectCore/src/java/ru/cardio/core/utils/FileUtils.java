@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import org.apache.log4j.Logger;
 
+
 /**
  * Contains some methods for working with files and streams
  *

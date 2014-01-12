@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <head>
+
+        <script type="text/javascript" src="./js/jquery.js" />
+        <script type="text/javascript" src="./js/moment.min.js" />
+        <script type="text/javascript" src="./js/excelTools.js" />
+
+        <link rel="stylesheet" href="./css/bootstrap.css"/>
+
+
+        <script>
+            $(function (){
+                initExcelTools();
+            });
+        </script>
+
+        <style>
+            td{
+                padding: 10px;
+            }
+        </style>
+
+        <title>Сессии пользователя</title>
+    </head>
+    <body>
+        <!--        <span style="cursor: pointer; color: firebrick;" onclick="export_excel();">
+                    export
+                </span>-->
+        <div>
+            Имя: <span id="firstName">#{excelBean.user.firstName}</span> <br/>
+            Фамилия: <span id="lastName">#{excelBean.user.lastName}</span> <br/>
+        </div>
+        <br/>
+
+        <table class="table table-bordered">
+            <tbody>
+                <thead>
+                    <tr>
+                        <td style="width: 150px;">Дата</td>
+                        <td>коментарий</td>
+                        <td>ссылка на скачивание</td>
+                    </tr>
+                    <c:forEach items="#{excelBean.sessions}" var="session"  >
+                        <tr>
+                            <td class="fixDate" data-id="#{session.id}"> <span id="pretty_#{session.id}"></span> <span style="display: none;" id="timestamp_#{session.id}" data-timestamp="#{excelBean.timestampFromDate(session.startDate)}" ></span></td>
+                            <td id="comment_#{session.id}" > #{session.description}</td>
+
+                            <td class="download_rates" data-id="#{session.id}" > <span style="cursor: pointer; color: firebrick; text-decoration: underline;"> скачать </span> </td>
+                        </tr>
+                    </c:forEach>
+
+                </thead>
+            </tbody>
+
+        </table>
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+</html>

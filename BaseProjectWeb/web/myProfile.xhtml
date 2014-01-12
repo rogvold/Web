@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <ui:composition template="./templates/lion/template.xhtml">
+
+            <ui:define name="header">
+                <ui:include src="./templates/lion/user/header.xhtml">
+                    <!--                    <ui:param name="tab_num" value="3" />-->
+                </ui:include>
+            </ui:define>
+
+            <ui:define name="container">
+                <div class="row">
+                    <div class="span3">
+                        <ui:include src="./templates/lion/user/homeLeftBar.xhtml">
+                            <ui:param name="change_avatar" value="1" />
+                        </ui:include>
+                    </div>
+
+                    <div class="span9">
+                        <h1 class="timeline_h" >
+                            Edit your profile information
+                        </h1>
+                        <span class="span4" style="margin-left: 0px;">
+                            <div class="form-unit">
+
+                                <fieldset>
+                                    <p>
+                                        <label for="firstname">Firstname</label>
+                                        <input id="firstname" name="firstname" type="text"/>
+                                        <label for="lastname">Lastname</label>
+                                        <input id="lastname" name="lastname" type="text"/>
+                                        <label for="department">Department</label>
+                                        <input id="department" name="department" type="text"/>
+
+                                        <label>Sex</label>
+                                        <span style="display: inline-block; width: 60px;">
+                                            <input id="sex_male" name="sex" value="1" type="radio"/>
+                                            <br/>
+                                            <label style="display: inline-block;" for="sex_male">Male</label>
+                                        </span>
+
+                                        <span style="display: inline-block; width: 60px;">
+                                            <input id="sex_female" name="sex" value="0" type="radio"/>
+                                            <br/>
+                                            <label style="display: inline-block;" for="sex_female">Female</label>
+                                        </span>
+
+                                        <label>Birth date</label>
+                                        <div class="input-append date" id="dp3" data-date-format="mm/dd/yyyy">
+                                            <input id="birthdate" class="span2" size="16" type="text" readonly="readonly" />
+                                            <span class="add-on"><i class="icon-th"></i></span>
+                                        </div>
+                                    </p>
+                                </fieldset>
+                            </div>
+                        </span>
+
+                        <span class="span4">
+                            <div class="form-unit">
+                                <fieldset>
+                                    <p>
+                                        <label for="weight">Weight</label>
+                                        <input id="weight" name="weight" type="text"/>
+
+                                        <label for="height">Height</label>
+                                        <input id="height" name="height" type="text"/>
+
+                                        <label for="aboutme">About me</label>
+                                        <textarea id="aboutme" rows="5" style="margin-left:5px; width:80%;"></textarea>
+
+                                        <label for="diagnosis">Diagnosis</label>
+                                        <textarea id="diagnosis" rows="5" style="margin-left:5px; width:80%;"></textarea>
+
+                                    </p>
+                                </fieldset>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="span8">
+                        <span class="btn btn-warning" style="margin: 0 auto; display: block; width: 100px;" onclick="updateProfile();">
+                            save
+                        </span>
+                    </div>
+                    <!--                    <span class="btn-link"  onclick="openAvatarDialog();">
+                                            change avatar
+                                        </span>-->
+                </div>
+            </ui:define>
+
+            <ui:define name="footer">
+                <ui:include src="./templates/lion/user/footer.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="scripts">
+
+                <script type="text/javascript">
+                    //<![CDATA[
+
+                    function getProfileInfo(){
+                        var sex;
+                        if ($("#sex_male").is(':checked')){
+                            sex = 1;
+                        }
+                        if ($("#sex_female").is(':checked')){
+                            sex = 0;
+                        }
+                        
+                        var u = {
+                            firstName : $('#firstname').val(),
+                            lastName : $('#lastname').val(),
+                            department : $('#department').val(),
+                            birthDate : $('#birthdate').val() == '' ? undefined : $('#birthdate').val() ,
+                            weight : $('#weight').val() == '' ? undefined : $('#weight').val() ,
+                            height : $('#height').val()== '' ? undefined : $('#height').val() ,
+                            about : $('#aboutme').val(),
+                            diagnosis : $('#diagnosis').val(),
+                            sex: sex
+                        }
+                        console.log(u);
+                        return u;
+                    }
+                    
+                    function fillInfoFields(su){
+                        $('#firstname').val(su.firstName);
+                        $('#lastname').val(su.lastName);
+                        $('#department').val(su.department);
+                        $('#weight').val(su.weight);
+                        $('#height').val(su.height);
+                        $('#aboutme').val(su.about);
+                        $('#diagnosis').val(su.diagnosis);
+                        if (su.sex == 1){
+                            $('#sex_male').attr('checked', 'checked');
+                        }
+                        if (su.sex == 0){
+                            $('#sex_female').attr('checked', 'checked');
+                        }
+                        
+                        $('#birthdate').val(su.birthDate);
+                        
+                        $('#dp3').attr('data-date', su.birthDate);
+                        $('#dp3').datepicker({
+                            language: 'ru'
+                        });
+                    }
+                    
+                    function loadProfile(){
+                        $.ajax({
+                            url:'/BaseProjectWeb/resources/UserInfo/get_info',
+                            type: 'GET',
+                            success: function(data){
+                                ud = data;
+                                fillInfoFields(data.data);
+                            }
+                        });
+                    }
+                    
+                    function updateProfile(){
+                        var u = getProfileInfo();
+                        $.ajax({
+                            url:'/BaseProjectWeb/resources/UserInfo/update_info',
+                            type: 'POST',
+                            data: {json: JSON.stringify(u)},
+                            success: function(data){
+                                ud = data;
+                                if (data.responseCode == 1){
+                                    $.pnotify({text: 'Profile successfully updated', history: false, type: 'info' });
+                                }else{
+                                    $.pnotify({text: data.error.message, history: false, type: 'error' });
+                                }
+                            },
+                            error: function(){
+                                $.pnotify({text: 'Error occured while profile updating', history: false, type: 'error' });
+                            }
+                        });
+                    }
+                    
+                    function initFileIpload(){
+                
+                        $('#uploadAvatarButton').bind('click', function(){
+                            $('#fileupload').click();
+                        });
+                
+                        $('#uploadProofBackButton').bind('click', function(){
+                            prepareLoadingContent();
+                        });
+                
+                        $('#fileupload').fileupload({
+                            formData: {sabir: 'successful man'},
+                            dataType: 'json',
+                            done: function(e, data){
+                                d = data;
+                                attId = data.result.data[0];
+                                //                        alert(attId);
+                                $('#prPhoto').attr('src', "/BaseProjectWeb/download?id=" + attId);
+                                setTimeout(function(){$('#prPhoto').attr('src', "/BaseProjectWeb/download?id=" + attId);}, 1000);
+                                onFileUploadDone();
+                            },
+                            progressall: function (e, data) {
+                                $('.progress').show();
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('.bar').css(
+                                'width',
+                                progress + '%'
+                            );
+                            }
+                    
+                        });
+                    }
+            
+                    function prepareLoadingContent(){
+                        $('#proofDialogUpperText').text('Here you can upload the image for your avatar');
+                        $('#proofDialogBottomText').text('If you have problems with uploading, try to use image with less size');
+                        $('#reuploadButtons').hide();
+                        $('#uploadAvatarButton').show();
+                        $('#crop_span').show();
+                        $('#prPhoto').hide();
+                        $('#preview').hide();
+                        $('.progress').hide();
+                    }
+            
+                    function onFileUploadDone(){
+                        $('#proofDialogUpperText').text('');
+                        $('#proofDialogBottomText').text('');
+                        $('.progress').hide();
+                        $('#uploadAvatarButton').hide();
+                        $('#reuploadButtons').show();
+                        $('#prPhoto').show();
+                        
+                        $('#prPhoto').Jcrop({
+                            setSelect: [10,10, 60, 80],
+                            minSize:[30, 40],
+                            onChange : updatePreview,
+                            onSelect : updatePreview,
+                            aspectRatio : 3 / 4
+                        });
+                    }
+                    
+                    function openAvatarDialog(){
+                        prepareLoadingContent();
+                        $('#avatarUploadDialog').bPopup();
+                    }
+                    
+                    $(function(){
+                        loadProfile();
+                        initFileIpload();
+                        disablePreloader();
+                    });
+                    
+
+ 
+                    function updatePreview(c) {
+                        if(parseInt(c.w) > 0) {
+                            // Show image preview
+                            var imageObj = $("#prPhoto")[0];
+                            $('#preview').show();
+                            canvas = $("#preview")[0];
+                            var context = canvas.getContext("2d");
+                            var kx = imageObj.width * 1.0 /  $('.jcrop-holder').width();
+                            var ky = imageObj.height * 1.0 /  $('.jcrop-holder').height();
+                            cropX = Math.floor(c.x * kx);
+                            cropY = Math.floor(c.y * ky);
+                            cropW = Math.floor(c.w * kx);
+                            cropH = Math.floor(c.h * ky);
+                            context.drawImage(imageObj, cropX, cropY, cropW, cropH, 0, 0, canvas.width, canvas.height);
+                        }
+                    };
+                    
+                    function updateAvatar(avId){
+                        
+                        $.ajax({
+                            url: "/BaseProjectWeb/resources/UserInfo/update_avatar?id="+avId,
+                            type: 'GET',
+                            success: function(data){
+                                setInterval(function(){
+//                                    alert('redir');
+                                    window.location.href = window.location.href;
+                                }, 1000);
+                            }
+                        });
+                        
+                        $('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());
+                        //                        $('#avaProg ').toggle();
+                        setTimeout(function(){$('#ava').attr('src', $('#ava').attr('src') + '?' + Math.random());}, 1000);
+                        $.pnotify({text: 'Avatar is succesfully updated!', history: false, type: 'info', hide: false});
+                    }
+                    
+                    function cropAvatar(){
+                        console.log('cropX = ' + cropX + '; cropY = ' + cropY + '; cropW = ' + cropW + ' ; cropH = ' + cropH);
+                        $.ajax({
+                            type: 'GET',
+                            url: '/BaseProjectWeb/resources/UserInfo/crop_image',
+                            data: {x: cropX, y: cropY, w: cropW, h: cropH, attId: attId},
+                            success: function(data){
+                                //                                $.get("/BaseProjectWeb/resources/UserInfo/update_avatar?id="+attId);
+                                updateAvatar(attId);
+                            }
+                        });
+                    }
+                    
+                    function saveAvatar(){
+                        $('#crop_span').hide();
+                        cropAvatar();
+//                        updateAvatar();
+                        $('#avatarUploadDialog').bPopup().close();
+                    }
+                    
+                    //                    $('#dp3').datepicker({
+                    //                        language: 'ru'
+                    //                    });
+                    //]]>
+                </script>
+            </ui:define>
+
+            <ui:define name="hiddenBlock">
+
+                <div id="avatarUploadDialog">
+                    <h2 style="margin-top: 0px; display: inline-block;">Avatar uploading</h2> 
+                    <a href="javascript: void();" class="b-close" style="float: right; color: #0088cc; line-height: 40px;">close</a>
+
+                    <div style="display: block; margin: 0 auto;">
+                        <p id="proofDialogUpperText">Here you can upload and edit your avatar</p>
+                        <div class="progress progress-striped active" style="margin-bottom: 2px; display: none;">
+                            <div class="bar" style="width: 0%;"></div>
+                        </div>
+
+                        <center>
+                            <span id="crop_span">
+                                <img id="prPhoto" style="display: inline-block;" src=""  />
+                                <canvas id="preview" style="width:150px;height:200px;overflow:hidden; display: none;"></canvas>
+                                <div id="reuploadButtons" style="margin: 0 auto; display: none; margin-top: 20px; margin-bottom: 10px; width: 230px; " >
+                                    <button class="btn btn-success" onclick="saveAvatar();" >Save</button>
+                                </div>
+                            </span>
+                        </center>
+
+                        <button class="btn btn-warning" id="uploadAvatarButton" style="margin: 0 auto; display: block; margin-top: 20px; margin-bottom: 10px;"> Upload </button>
+
+
+
+                        <p id="proofDialogBottomText">
+
+                        </p>
+                        <!--                        <span onclick="cropAvatar();">
+                                                    crop
+                                                </span>-->
+                    </div>
+                </div>
+
+                <div>
+                    <input id="fileupload" type="file" name="files[]" data-url="/BaseProjectWeb/upload"   style="visibility: hidden;" />
+                </div>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

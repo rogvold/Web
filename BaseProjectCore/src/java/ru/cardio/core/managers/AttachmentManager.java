@@ -1,6 +1,6 @@
 package ru.cardio.core.managers;
 
-
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.Deflater;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
@@ -18,7 +20,9 @@ import org.apache.tools.zip.ZipOutputStream;
 import ru.cardio.core.jpa.entity.Attachment;
 import ru.cardio.core.jpa.entity.User;
 import ru.cardio.core.utils.FileUtils;
+import ru.cardio.core.utils.ImageUtils;
 import ru.cardio.core.utils.UploadedFile;
+import ru.cardio.exceptions.CardioException;
 //import org.apache.tools.zip.ZipOutputStream;
 //import org.apache.tools.zip.ZipOutputStream;
 
@@ -35,6 +39,8 @@ public class AttachmentManager implements AttachmentManagerLocal {
     public static final long MAX_ZIP_SIZE = 1024 * 1024 * 40; // 40 Mb
     // TODO: default upload directory should be set in config!
     public static final String DEFAULT_UPLOAD_DIRECTORY = "uploads";
+    @EJB
+    UserManagerLocal userMan;
 
     /**
      * Stores uploaded file "as it is" and adds database entry.
@@ -76,6 +82,43 @@ public class AttachmentManager implements AttachmentManagerLocal {
         }
     }
 
+    @Override
+    public Attachment uploadAvatar(String fileName, String contentType, User user, byte[] contents, Integer width, Integer height) {
+        if (log.isTraceEnabled()) {
+            log.trace(">> uploadFile()");
+        }
+        try {
+            if (contents.length > MAX_ZIP_SIZE) {
+                log.trace("File too large!");
+                throw new IOException("File too large.");
+            }
+
+            if (!checkUploadRights(user)) {
+                return null;
+            }
+
+//            Attachment a = prepareAttachment(fileName, contentType, user, contents, tags);
+            System.out.println("uploadAvatar: trying to upload avatar " + fileName);
+            Attachment a = prepareAvatarAttachment(fileName, user, contents, 0, 0, width, height);
+
+            em.persist(a);
+
+            Set<User> uset = new HashSet();
+            uset.add(user);
+            a.setUser(uset);
+            em.merge(a);
+
+
+            if (log.isTraceEnabled()) {
+                log.trace("<< uploadFile(): " + a);
+            }
+            return a;
+        } catch (Exception ex) {
+            log.error("uploadFile(): Failed to upload file.", ex);
+            return null;
+        }
+    }
+
     /**
      * Stores uploaded file in database. If there are several files, they are
      * compressed into zip archive (with filename = user_login.zip).
@@ -88,7 +131,7 @@ public class AttachmentManager implements AttachmentManagerLocal {
     public Attachment uploadFiles(User user, List<UploadedFile> files, String tags) {
 
         System.out.println("att man: uploadfiles");
-        
+
         if (log.isTraceEnabled()) {
             log.trace(">> uploadFiles(): " + files);
         }
@@ -96,7 +139,7 @@ public class AttachmentManager implements AttachmentManagerLocal {
         if (!checkUploadRights(user)) {
             return null;
         }
-        
+
         System.out.println("after checking");
 
         if (files.isEmpty()) {
@@ -105,7 +148,7 @@ public class AttachmentManager implements AttachmentManagerLocal {
             }
             return null;
         }
-        
+
         System.out.println("files are not empty");
 
         try {
@@ -144,7 +187,7 @@ public class AttachmentManager implements AttachmentManagerLocal {
         }
         try {
             System.out.println("getUploadedFile: userId = " + userId + " ; id = " + id);
-            
+
             Attachment att = em.find(Attachment.class, id);
 //            if (!checkDownloadRights(userId, att.getId())) {
 //                return null;
@@ -154,7 +197,7 @@ public class AttachmentManager implements AttachmentManagerLocal {
                 log.trace("<< getUploadedFile(): " + att);
             }
             System.out.println("att = " + att);
-            
+
             return att;
 
         } catch (Exception ex) {
@@ -163,6 +206,50 @@ public class AttachmentManager implements AttachmentManagerLocal {
             }
         }
         return null;
+    }
+
+    @Override
+    public void cropExistingFile(Long userId, Long attId, Integer x, Integer y, Integer w, Integer h) throws CardioException {
+        try {
+            User user = userMan.getUserById(userId);
+            Attachment att = em.find(Attachment.class, attId);
+            final File file = new File(AttachmentManager.DEFAULT_UPLOAD_DIRECTORY, att.getFileName());
+            BufferedImage in = ImageIO.read(file);
+            BufferedImage cropped = ImageUtils.cropImage(in, x, y, w, h);
+            byte[] contents = ImageUtils.bufferedImageToBytes(cropped, extractTypeFromFileName(att.getName()));
+
+            System.out.println("size after cropping = " + contents.length);
+
+            File root = new File(DEFAULT_UPLOAD_DIRECTORY, "user" + user.getId().toString());
+
+
+            System.out.println("root = " + root);
+
+            root.mkdirs();
+
+            System.out.println("after rootmkdirs");
+
+            File tmpFile = File.createTempFile("upload_", ".bin", root);
+            FileUtils.writeToFile(tmpFile, contents);
+            att.setSize((long) contents.length);
+            att.setMD5(FileUtils.getMD5(tmpFile));
+            att.setFileName("user" + user.getId() + "/" + tmpFile.getName());
+            em.merge(att);
+        } catch (Exception e) {
+            throw new CardioException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void cropAvatar(Long userId, Integer x, Integer y, Integer w, Integer h) throws CardioException {
+        Long avId = userMan.getUserAvatar(userId);
+        System.out.println("try to crop avatar");
+        try {
+            cropExistingFile(userId, avId, x, y, w, h);
+        } catch (Exception e) {
+            throw new CardioException(e.getMessage());
+        }
     }
 
     /**
@@ -230,116 +317,6 @@ public class AttachmentManager implements AttachmentManagerLocal {
         return true;
     }
 
-    /**
-     * Checks if user has the right to download specified attachment
-     */
-//    @javax.ejb.TransactionAttribute(javax.ejb.TransactionAttributeType.SUPPORTS)
-//    private boolean checkDownloadRights(User u, Attachment a) {
-//        if (log.isTraceEnabled()) {
-//            log.trace(">> checkDownloadRights(): user=" + u);
-//        }
-//        //        if(a.isPublic())
-//        //            return true;
-//
-//        // do check if it is avatar
-//        Query q = em.createQuery("SELECT u FROM User u WHERE u.avatarId = :avatarId", User.class);
-//        q.setParameter("avatarId", a.getId());
-//        List<User> lst = q.getResultList();
-//        if (lst != null && !lst.isEmpty()) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("<< checkDownloadRights(): true // this is an avatar");
-//            }
-//            return true;
-//        }
-//
-//        if (a == null) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("<< checkDownloadRights(): false // attachment = null");
-//            }
-//            return false;
-//        }
-//
-//        // do check if it is a problem statement
-//        q = em.createQuery("SELECT o FROM Order o WHERE o.conditionId = :conditionId", Order.class);
-//        q.setParameter("conditionId", a.getId());
-//        lst = q.getResultList();
-//        if (lst != null && !lst.isEmpty()) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("<< checkDownloadRights(): true // this is a problem statement");
-//            }
-//            return true;
-//        }
-//        
-//        // do check if it is a solution to closed order
-//        q = em.createQuery("SELECT o FROM Order o WHERE o.solutionId = :solutionId and o.status in :statuses", Order.class);
-//        q.setParameter("solutionId", a.getId());
-//        q.setParameter("statuses", new ArrayList(){{
-//            add(Order.CLOSED_OFFLINE_ORDER_STATUS);
-//            add(Order.FULL_PAYED_OFFLINE_ORDER_STATUS);
-//            add(Order.EXPIRED_OFFLINE_ORDER_STATUS);
-//            add(Order.EXPIRED_ONLINE_ORDER_STATUS);
-//        }});
-//        lst = q.getResultList();
-//        if (lst != null && !lst.isEmpty()) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("<< checkDownloadRights(): true // this is a problem statement");
-//            }
-//            return true;
-//        }
-//
-//        if (u == null) {
-//            // guest tries to download file (not condition or avatar)
-//            if (log.isTraceEnabled()) {
-//                log.trace("<< checkDownloadRights(): false // user = null");
-//            }
-//            return false;
-//        }
-//
-//        // Admin ?
-//        if (u.getUserGroup() == 1) {
-//            return true;
-//        }
-//
-//        try {
-//            // check whether the requestor is owner of the file
-//            if (log.isTraceEnabled()) {
-//                log.trace("checkDownloadRights(): file owners >> " + a.getUser().size());
-//            }
-//            if(isOwner(u, a))
-//                return true;
-//        } catch (Exception ex) {
-//            if (log.isTraceEnabled()) {
-//                log.trace("checkDownloadRights(): false // exception while processing owners list", ex);
-//            }
-//            return false;
-//        }
-//
-//        // we might as well return false...
-//        if (log.isTraceEnabled()) {
-//            log.trace("<< checkDownloadRigths(): false");
-//        }
-//        return false;
-//    }
-//    @Override
-//    @javax.ejb.TransactionAttribute(javax.ejb.TransactionAttributeType.SUPPORTS)
-//    public boolean checkDownloadRights(Long userId, Long attachmentId) {
-//        if (log.isTraceEnabled()) {
-//            log.trace("checkDownloadRights(): userId = " + userId + " / attachmentId = " + attachmentId);
-//        }
-//        try {
-//            User u = null;
-//            if (userId != null) {
-//                u = em.getReference(User.class, userId);
-//            }
-//            return checkDownloadRights(u,
-//                    em.getReference(Attachment.class, attachmentId));
-//        } catch (Exception ex) {
-//            if (log.isDebugEnabled()) {
-//                log.debug("checkDownloadRights(): false ", ex);
-//            }
-//        }
-//        return false;
-//    }
     @Override
     @javax.ejb.TransactionAttribute(javax.ejb.TransactionAttributeType.SUPPORTS)
     public List<Attachment> getAttachmentsByUserId(Long userId) {
@@ -431,21 +408,71 @@ public class AttachmentManager implements AttachmentManagerLocal {
             a.setMimeType(contentType);
             System.out.println("tryin to new File(DEFAULT_UPLOAD_DIRECTORY, user.getLogin());");
             System.out.println("user = " + user);
-            
+
             File root = new File(DEFAULT_UPLOAD_DIRECTORY, "user" + user.getId().toString());
-            
-            
+
+
             System.out.println("root = " + root);
-            
+
             root.mkdirs();
-            
+
             System.out.println("after rootmkdirs");
-            
+
             File tmpFile = File.createTempFile("upload_", ".bin", root);
             FileUtils.writeToFile(tmpFile, contents);
             a.setSize((long) contents.length);
             a.setMD5(FileUtils.getMD5(tmpFile));
-            a.setFileName("user"+user.getId() + "/" + tmpFile.getName());
+            a.setFileName("user" + user.getId() + "/" + tmpFile.getName());
+            return a;
+        } catch (Exception ex) {
+            System.out.println("exception occured : exc = " + ex);
+            return null;
+        }
+
+    }
+
+    private String extractTypeFromFileName(String fileName) {
+        String type = "png";
+        System.out.println("try to extract type from filename = " + fileName);
+        int b = fileName.indexOf(".") + 1;
+        if (b >= 0) {
+            type = fileName.substring(b);
+        }
+        System.out.println("extractTypeFromFileName: filename = " + fileName + " -> type = " + type);
+        return type;
+    }
+
+    private Attachment prepareAvatarAttachment(String fileName, User user, byte[] contents, Integer x, Integer y, Integer width, Integer height) {
+        System.out.println("prepare attachment of single file");
+        try {
+            Attachment a = new Attachment();
+            a.setName(fileName);
+            String type = extractTypeFromFileName(fileName);
+            System.out.println("prepareAvatarAttachment: filename = " + fileName + "; type = " + type);
+//            a.setMimeType(contentType);
+            System.out.println("trying to new File(DEFAULT_UPLOAD_DIRECTORY, user.getLogin());");
+            System.out.println("user = " + user);
+
+            File root = new File(DEFAULT_UPLOAD_DIRECTORY, "user" + user.getId().toString());
+
+
+            System.out.println("root = " + root);
+
+            root.mkdirs();
+
+            System.out.println("after rootmkdirs");
+
+            File tmpFile = File.createTempFile("upload_", ".bin", root);
+
+            //resizing
+            System.out.println("before resizing: bite array length = " + contents.length);
+            contents = ImageUtils.resizeImage(contents, width, height, type);
+            System.out.println("after resizing: bite array length = " + contents.length);
+
+            FileUtils.writeToFile(tmpFile, contents);
+            a.setSize((long) contents.length);
+            a.setMD5(FileUtils.getMD5(tmpFile));
+            a.setFileName("user" + user.getId() + "/" + tmpFile.getName());
             return a;
         } catch (Exception ex) {
             System.out.println("exception occured : exc = " + ex);
