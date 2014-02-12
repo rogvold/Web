@@ -4,5 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
         <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/json/entity/SessionInfo.java</file>
         <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/jpa/entity/CardioSession.java</file>
+        <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/entity/SyncPushData.java</file>
+        <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/managers/CardioSessionEvaluationManager.java</file>
+        <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/managers/CardioSessionManagerLocal.java</file>
+        <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/managers/CardioSessionManager.java</file>
+        <file>file:/home/rogvold/Documents/GitHub/Cardio/Web/BaseProjectCore/src/java/ru/cardio/core/jpa/entity/User.java</file>
     </open-files>
 </project-private>
